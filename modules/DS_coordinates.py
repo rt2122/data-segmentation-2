@@ -12,3 +12,34 @@ def line_in_field(line):
             dec <= TARGET_DEC2), dec >= TARGET_DEC1)
 
     return dot_in_field(line['RA'], line['DEC'])
+
+
+def sweep_to_dict(name):
+    if name.endswith('.fits'):
+        name = name[:-5]
+    if name.startswith('sweep-'):
+        name = name[len('sweep-'):]
+    name = name.replace('p', '-')
+    name = name.replace('m', '-')
+    name = name.split('-')
+    name = [float(k) for k in name]
+    
+    sweep_dict = {'RA1' : name[0], 'DEC1' : name[1], 'RA2' : name[2], 'DEC2' : name[3], 
+                 'RA' : (name[0] + name[2]) / 2, 'DEC' : (name[1] + name[3]) / 2}
+    
+    return sweep_dict
+
+
+def coords_in_sweep(sweepname, coords):
+    import numpy as np
+    sweep_dict = sweep_to_dict(sweepname)
+    
+    ra = coords[0]
+    dec = coords[1]
+    
+    return ra <= sweep_dict['RA2'] and ra >= sweep_dict['RA1'] and \
+        dec <= sweep_dict['DEC2'] and dec >= sweep_dict['DEC1']
+        
+    
+    
+    
