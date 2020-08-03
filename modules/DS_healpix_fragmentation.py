@@ -26,34 +26,39 @@ def one_pixel_fragmentation(o_nside, o_pix, depth):
 
 def find_biggest_pixel(ra, dec, radius):
     from astropy.coordinates import SkyCoord
-    import healpy import hp
+    from astropy import units as u
+    import healpy as hp
+    import numpy as np
 
     
     sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
     nside = 1
     vec = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree,
                     lonlat=True)
+    radius = np.radians(radius)
     
-    while len(set(hp.query_disc(nside, vec, np.radians(radius), inclusive=True, 
-                                nest=True))) > 1:
+    while len(set(hp.query_disc(nside, vec, radius, inclusive=True, 
+                                nest=True))) != 1 and\
+        len(set(hp.query_disc(nside, vec, radius, inclusive=False, 
+                                nest=True))) != 1:
         nside *= 2
-        
-    while len(set(hp.query_disc(nside, vec, np.radians(radius), inclusive=True, 
-                                nest=True))) == 1:
-        nside *= 2
+        if nside > 2**14:
+            break
     if nside > 1:
-        nside = int(nside / 2)
-    return nside, hp.query_disc(nside, vec, np.radians(radius), inclusive=True, nest=True)[0]
+        nside = nside // 2
+    return nside, hp.vec2pix(nside, *vec, nest=True)
+
 
 def matr2dict(matr):
     d = {}
     for i in range(matr.shape[0]):
         for j in range(matr.shape[1]):
             d[matr[i, j]] = (i, j)
-            return d
+    return d
 
 def radec2pix(ra, dec, nside):
     from astropy.coordinates import SkyCoord
+    from astropy import units as u
     import healpy as hp
 
     sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
@@ -76,19 +81,21 @@ def draw_circles(ra, dec, nside, shape, mdict, radius=None):
 
 def draw_proper_circle(ra, dec, nside, shape, mdict, radius, mode='coords'):
     from astropy.coordinates import SkyCoord
+    from astropy import units as u
     import healpy as hp
     import numpy as np
 
     sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
     vec = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, lonlat=True)
     pix = hp.query_disc(nside, vec, np.radians(radius), nest=True, inclusive=True)
-    coords = [mdict[p] for p in pix]
+    coords = [mdict[p] for p in pix if p in mdict]
     if mode == 'coords':
         return np.array(coords)
     
     pic = np.zeros(shape, dtype=np.uint8)
-    pic[coords, 0]=1
-    return picf 
+    for x, y in coords:
+        pic[x, y, 0] = 1
+    return pic 
 
 def nearest_power(n):
     k = 0
@@ -117,6 +124,10 @@ def zoom_to_circle(coords, matr):
     return matr[xmin:xmax, ymin:ymax]
 
 def draw_data(mdict, nside, shape, fits_name):
+    import numpy as np
+    from astropy.io import fits
+    from tqdm.notebook import tqdm
+
     data_pic = np.zeros(shape)
     with fits.open(fits_name) as hdul:
         
