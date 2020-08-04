@@ -68,6 +68,7 @@ def radec2pix(ra, dec, nside):
 
 def draw_circles(ra, dec, nside, shape, mdict, radius=None):
     import numpy as np
+    from skimage.draw import circle
 
     if radius is None:
         radius = int(max(shape) / 20)
@@ -148,4 +149,15 @@ def draw_data(mdict, nside, shape, fits_name):
                 data_pic[x, y, k] = max(data_pic[x, y, k], ch[i])
         return data_pic
 
+def nth_max(array, n):
+    import numpy as np
+    return np.partition(array, -n)[-n]
 
+def n_max_flux(flux, n):
+    import numpy as np
+    max_n = nth_max(np.array(flux), n)
+    return flux >= max_n
+
+def n_max_flux_df(df, n, ch):
+    ch = df[ch]
+    return df[n_max_flux(ch, n)]
