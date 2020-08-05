@@ -159,5 +159,11 @@ def n_max_flux(flux, n):
     return flux >= max_n
 
 def n_max_flux_df(df, n, ch):
-    ch = df[ch]
-    return df[n_max_flux(ch, n)]
+    import numpy as np
+    if type(ch) == type(''):
+        ch = df[ch]
+    else:
+        ch = df[ch].sum(axis=1)
+    df = df[n_max_flux(ch, n)]
+    df.index = np.arange(df.shape[0])
+    return df
