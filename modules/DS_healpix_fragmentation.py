@@ -167,3 +167,13 @@ def n_max_flux_df(df, n, ch):
     df = df[n_max_flux(ch, n)]
     df.index = np.arange(df.shape[0])
     return df
+
+def show_dict_mollview(mdict, nside):
+    import healpy as hp
+    import numpy as np
+
+    a = np.zeros((hp.nside2npix(nside)))
+    for pix in mdict:
+        a[pix] = 1
+    hp.mollview(a, nest=True)
+
