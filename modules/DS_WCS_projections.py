@@ -43,7 +43,7 @@ def custom_wcs(ra, dec):
     w1.wcs.lonpole = w.wcs.lonpole
     w1.wcs.latpole = w.wcs.latpole
     w1.wcs.set_pv([(0, 0, 0)])
-    w1.array_shape = w.array_shape[1:]
+    w1.array_shape = [2048, 2048]
     return w1
 
 def ra_dec2pixels(ra_center, dec_center, ra, dec, custom=True):
