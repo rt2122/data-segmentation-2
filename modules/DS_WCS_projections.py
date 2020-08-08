@@ -60,7 +60,6 @@ def draw_data(arr, channels_data, pixels, func=max):
         x, y = int(pixels[i][0]), int(pixels[i][1])
         if x >= 0 and y >= 0 and \
             x < arr.shape[0] and y < arr.shape[1]:
-            for j, ch in enumerate(channels_data):
                 arr[x, y, j] = func(arr[x, y, j], ch[i])
 
 
