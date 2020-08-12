@@ -60,16 +60,9 @@ def draw_data(arr, channels_data, pixels, func=max):
         x, y = int(pixels[i][0]), int(pixels[i][1])
         if x >= 0 and y >= 0 and \
             x < arr.shape[0] and y < arr.shape[1]:
-                arr[x, y, j] = func(arr[x, y, j], ch[i])
+                for j, ch in enumerate(channels_data):
+                    arr[x, y, j] = func(arr[x, y, j], ch[i])
 
-
-def show_pic(pic, projection=None, label = 'label', figsize=(10, 10), vmin=0, vmax=1):
-    from matplotlib import pyplot as plt
-    fig= plt.figure(figsize=figsize)
-    ax= fig.add_axes([0.1,0.1,0.8,0.8], projection=projection)
-    plt.xlabel(label)
-    im = ax.imshow(pic, cmap=plt.get_cmap('viridis'),
-            interpolation='nearest', vmin=vmin, vmax=vmax)
 
 def dist_from_center(wcs_proj):
     import numpy as np
@@ -79,3 +72,45 @@ def dist_from_center(wcs_proj):
     pixels_t = wcs_proj.all_pix2world(pixels[:, 0], pixels[:, 1], 0)
     sc = SkyCoord(ra=pixels_t[0]*u.degree, dec=pixels_t[1]*u.degree, frame='icrs')
     return sc[0].separation(sc[1]).degree
+
+def find_radius_wcs(radius, wcs):
+    import numpy as np
+    
+    def dist_between_pix(pix0, pix1):
+        from astropy.coordinates import SkyCoord
+        from astropy import units as u
+        
+        pix = np.stack([pix0, pix1])
+        ra, dec = wcs.all_pix2world(pix[:,0], pix[:,1], 0)
+        sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+        return sc[0].separation(sc[1]).degree
+    
+    cen_pix = np.array(wcs.array_shape, dtype=np.int32) // 2
+    
+    pix_rad = 1
+    cur_pix = np.copy(cen_pix)
+    cur_pix[0] -= 1
+    
+    if dist_between_pix(cen_pix, cur_pix) > radius:
+        return pix_rad
+    
+    while cur_pix[0] >= 0:
+        if dist_between_pix(cen_pix, cur_pix) > radius:
+            break
+        
+        pix_rad += 1
+        cur_pix[0] -= 1
+    
+    return pix_rad
+
+def draw_circles(coords, data, shape, coef):
+    import numpy as np
+    from skimage.draw import circle
+
+    coef = shape[0] * coef / max(data)
+    pic = np.zeros(shape)
+    for i in range(len(data)):
+        x, y = coords[i]
+        circle_coords = circle(x, y, coef*data[i], shape=shape)
+        pic[circle_coords] += 1
+    return pic

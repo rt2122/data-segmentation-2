@@ -124,7 +124,7 @@ def zoom_to_circle(coords, matr):
     
     return matr[xmin:xmax, ymin:ymax]
 
-def draw_data(mdict, nside, shape, fits_name):
+def draw_data_fits(mdict, nside, shape, fits_name):
     import numpy as np
     from astropy.io import fits
     from tqdm.notebook import tqdm
@@ -148,25 +148,6 @@ def draw_data(mdict, nside, shape, fits_name):
             for k, ch in enumerate(flux):
                 data_pic[x, y, k] = max(data_pic[x, y, k], ch[i])
         return data_pic
-
-def nth_max(array, n):
-    import numpy as np
-    return np.partition(array, -n)[-n]
-
-def n_max_flux(flux, n):
-    import numpy as np
-    max_n = nth_max(np.array(flux), n)
-    return flux >= max_n
-
-def n_max_flux_df(df, n, ch):
-    import numpy as np
-    if type(ch) == type(''):
-        ch = df[ch]
-    else:
-        ch = df[ch].sum(axis=1)
-    df = df[n_max_flux(ch, n)]
-    df.index = np.arange(df.shape[0])
-    return df
 
 def show_dict_mollview(mdict, nside):
     import healpy as hp

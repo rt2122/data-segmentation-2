@@ -37,8 +37,8 @@ def coords_in_sweep(sweepname, coords):
     ra = coords[0]
     dec = coords[1]
     
-    return ra <= sweep_dict['RA2'] and ra >= sweep_dict['RA1'] and \
-        dec <= sweep_dict['DEC2'] and dec >= sweep_dict['DEC1']
+    return np.logical_and(np.logical_and(np.logical_and(ra <= sweep_dict['RA2'], 
+        ra >= sweep_dict['RA1']), dec <= sweep_dict['DEC2']), dec >= sweep_dict['DEC1'])
         
     
     
