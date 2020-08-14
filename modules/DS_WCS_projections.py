@@ -34,7 +34,6 @@ def custom_wcs(ra, dec):
     w = None
     with fits.open(cutout_url.format(ra, dec)) as hdul:
          w = WCS(hdul[0].header)
-         '''
     w1 = WCS(naxis=2)
     w1.wcs.cd = w.wcs.cd[:2,:2]
     w1.wcs.cdelt = w.wcs.cdelt[:2]
@@ -46,8 +45,6 @@ def custom_wcs(ra, dec):
     w1.wcs.set_pv([(0, 0, 0)])
     w1.array_shape = [2048, 2048]
     return w1
-    '''
-    return w
 def ra_dec2pixels(ra_center, dec_center, ra, dec, custom=True):
     import numpy as np
 
