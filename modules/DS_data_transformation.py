@@ -17,10 +17,12 @@ def pic2fits(pic, wcs, fitsname):
                      header=wcs.to_header())])
     hdul.writeto(fitsname)
 
-def show_pic(pic, projection=None, label = 'label', figsize=(10, 10), vmin=0, vmax=1):
+def show_pic(pic, projection=None, label = 'label', figsize=(10, 10), vmin=0, vmax=1, 
+        slices=None):
     from matplotlib import pyplot as plt
     fig= plt.figure(figsize=figsize)
-    ax= fig.add_axes([0.1,0.1,0.8,0.8], projection=projection)
+    #ax= fig.add_axes([0.1,0.1,0.8,0.8], projection=projection, slices=slices)
+    ax = plt.subplot(projection=projection, slices=slices)
     plt.xlabel(label)
     im = ax.imshow(pic, cmap=plt.get_cmap('viridis'),
             interpolation='nearest', vmin=vmin, vmax=vmax)
