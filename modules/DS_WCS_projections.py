@@ -72,17 +72,18 @@ def dist_from_center(wcs_proj):
     sc = SkyCoord(ra=pixels_t[0]*u.degree, dec=pixels_t[1]*u.degree, frame='icrs')
     return sc[0].separation(sc[1]).degree
 
-def find_radius_wcs(radius, wcs):
+def dist_between_pix(pix0, pix1, wcs):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
     import numpy as np
     
-    def dist_between_pix(pix0, pix1):
-        from astropy.coordinates import SkyCoord
-        from astropy import units as u
-        
-        pix = np.stack([pix0, pix1])
-        ra, dec = wcs.all_pix2world(pix[:,0], pix[:,1], 0)
-        sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
-        return sc[0].separation(sc[1]).degree
+    pix = np.stack([pix0, pix1])
+    ra, dec = wcs.all_pix2world(pix[:,0], pix[:,1], 0)
+    sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+    return sc[0].separation(sc[1]).degree
+
+def find_radius_wcs(radius, wcs):
+    import numpy as np
     
     cen_pix = np.array(wcs.array_shape, dtype=np.int32) // 2
     

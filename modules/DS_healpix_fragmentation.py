@@ -110,17 +110,23 @@ def nearest_power(n):
         k -= 1
     return 2**k
 
-def zoom_to_circle(coords, matr):
+def zoom_to_circle(coords, matr, add_power=True):
     xmin = coords[:, 0].min()
     xmax = coords[:, 0].max()
     ymin = coords[:, 1].min()
     ymax = coords[:, 1].max()
+    if not add_power:
+        return matr[xmin:xmax, ymin:ymax]
     xdif = xmax - xmin
     ydif = ymax - ymin
     
     map_size = nearest_power(max(xdif, ydif))
-    xmax += map_size - xdif
-    ymax += map_size - ydif
+    xdif = map_size - xdif
+    ydif = map_size - ydif
+    xmin -= xdif // 2 + xdif % 2
+    ymin -= ydif // 2 + ydif % 2
+    xmax += xdif // 2
+    ymax += ydif // 2
     
     return matr[xmin:xmax, ymin:ymax]
 

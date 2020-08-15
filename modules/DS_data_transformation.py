@@ -37,11 +37,11 @@ def show_pic(pic, projection=None, label = 'label', figsize=(10, 10), vmin=0, vm
         slices=None):
     from matplotlib import pyplot as plt
     fig = plt.figure(figsize=figsize)
-    ax = fig.add_axes([0.1,0.1,0.8,0.8], projection=projection, 
-                     slices=slices)
+    ax = fig.add_axes([0.1,0.1,0.8,0.8], projection=projection)
     plt.xlabel(label)
-    ra = ax.coords[0]
-    ra.set_format_unit('degree')
+    if not (projection is None):
+        ra = ax.coords[0]
+        ra.set_format_unit('degree')
 
     im = ax.imshow(pic, cmap=plt.get_cmap('viridis'), 
                    interpolation='nearest', vmin=0, vmax=1)
