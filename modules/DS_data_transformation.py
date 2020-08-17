@@ -26,6 +26,7 @@ def fits2df(fitsname, filtered=False):
 
 def pic2fits(pic, wcs, fitsname):
     from astropy.io import fits
+    import numpy as np
 
     hdul = fits.HDUList([fits.PrimaryHDU(), 
         fits.ImageHDU(np.stack([pic[:,:,i] for i in range(pic.shape[-1])]), 
