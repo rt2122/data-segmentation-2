@@ -1,10 +1,12 @@
-def fits2df(fitsname, filtered=False):
+def fits2df(fitsname, filtered=False, one_col=None):
     from astropy.io import fits
     from astropy.table import Table
     import numpy as np
     
     df = None
     with fits.open(fitsname) as hdul:
+        if not (one_col is None):
+            return np.array(hdul[1].data[one_col])
         tbl = Table(hdul[1].data)
         names = [name for name in tbl.colnames if len(tbl[name].shape) <= 1]
         df = tbl[names].to_pandas()
