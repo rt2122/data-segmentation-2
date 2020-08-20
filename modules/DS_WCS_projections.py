@@ -53,7 +53,7 @@ def ra_dec2pixels(ra_center, dec_center, ra, dec, custom=True):
         return np.array(w.all_world2pix(ra, dec, 0))
     w = custom_wcs(ra_center, dec_center)
     return np.array(w.all_world2pix(ra, dec, np.zeros((ra.shape)), 0))
-
+'''
 def draw_data(arr, channels_data, pixels, func=max):
     for i in range(pixels.shape[0]):
         x, y = int(pixels[i][0]), int(pixels[i][1])
@@ -62,7 +62,7 @@ def draw_data(arr, channels_data, pixels, func=max):
                 for j, ch in enumerate(channels_data):
                     arr[x, y, j] = func(arr[x, y, j], ch[i])
 
-
+'''
 def dist_from_center(wcs_proj):
     import numpy as np
     from astropy.coordinates import SkyCoord
@@ -91,11 +91,11 @@ def find_radius_wcs(radius, wcs):
     cur_pix = np.copy(cen_pix)
     cur_pix[0] -= 1
     
-    if dist_between_pix(cen_pix, cur_pix) > radius:
+    if dist_between_pix(cen_pix, cur_pix, wcs) > radius:
         return pix_rad
     
     while cur_pix[0] >= 0:
-        if dist_between_pix(cen_pix, cur_pix) > radius:
+        if dist_between_pix(cen_pix, cur_pix, wcs) > radius:
             break
         
         pix_rad += 1
@@ -103,14 +103,39 @@ def find_radius_wcs(radius, wcs):
     
     return pix_rad
 
-def draw_circles(coords, data, shape, coef):
+def draw_circles_w(ra, dec, data, wcs, shape, coef=0.02):
     import numpy as np
     from skimage.draw import circle
 
     coef = shape[0] * coef / max(data)
-    pic = np.zeros(shape)
+    pic = np.zeros(shape, dtype=np.uint8)
+    coords = wcs.all_world2pix(np.array(ra), np.array(dec), 0)
+    coords = np.array(coords, dtype=np.int32).T
     for i in range(len(data)):
         x, y = coords[i]
+        if x < 0 or y < 0 or x >= shape[0] or y >= shape[1]:
+            continue
         circle_coords = circle(x, y, coef*data[i], shape=shape)
         pic[circle_coords] += 1
+    return pic
+
+def draw_dots_w(ra, dec, data, wcs, shape, coef=0.02):
+    import numpy as np
+
+    coef = shape[0] * coef / max(data)
+    pic = np.zeros(shape)
+    coords = wcs.all_world2pix(np.array(ra), np.array(dec), 0)
+    coords = np.array(coords, dtype=np.int32).T
+    if len(shape) == 2:
+        for i in range(len(data)):
+            x, y = coords[i]
+            if x < 0 or y < 0 or x >= shape[0] or y >= shape[1]:
+                continue
+            pic[x, y] = data[i]
+    else:
+        for i in range(len(data)):
+            x, y = coords[i]
+            if x < 0 or y < 0 or x >= shape[0] or y >= shape[1]:
+                continue
+            pic[x, y, 0] = data[i]
     return pic

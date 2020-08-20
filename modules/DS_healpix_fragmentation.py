@@ -66,21 +66,39 @@ def radec2pix(ra, dec, nside):
                                   nest=True, lonlat=True)
     
 
-def draw_circles(ra, dec, nside, shape, mdict, radius=None):
+def draw_circles_h(ra, dec, data, nside, mdict, shape, coef=0.02):
     import numpy as np
     from skimage.draw import circle
 
-    if radius is None:
-        radius = int(max(shape) / 20)
+    coef = shape[0] * coef / max(data)
     pic = np.zeros(shape, dtype=np.uint8)
     pix = radec2pix(ra, dec, nside)
-    coords = [mdict[p] for p in pix]
-    for x, y in coords:
-        pic[circle(x, y, radius, shape=shape)] = 1
+    coords = [mdict[p] for p in pix if p in mdict]
+    for i in range(len(data)):
+        x, y = coords[i]
+        pic[circle(x, y, data[i] * coef, shape=shape)] = 1
     
     return pic
 
-def draw_proper_circle(ra, dec, nside, shape, mdict, radius, mode='coords'):
+def draw_dots_h(ra, dec, data, nside, mdict, shape):
+    import numpy as np
+
+    pic = np.zeros(shape)
+    pix = radec2pix(ra, dec, nside)
+    coords = [mdict[p] for p in pix if p in mdict]
+    if len(shape) == 2:
+        for i in range(len(data)):
+            x, y = coords[i]
+            pic[x, y] = data[i]
+    else:
+        for i in range(len(data)):
+            x, y = coords[i]
+            pic[x, y, 0] = data[i]
+
+    
+    return pic
+
+def draw_proper_circle(ra, dec, radius, nside, mdict, shape, coords_mode=True):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
@@ -90,12 +108,16 @@ def draw_proper_circle(ra, dec, nside, shape, mdict, radius, mode='coords'):
     vec = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, lonlat=True)
     pix = hp.query_disc(nside, vec, np.radians(radius), nest=True, inclusive=True)
     coords = [mdict[p] for p in pix if p in mdict]
-    if mode == 'coords':
+    if coords_mode:
         return np.array(coords)
     
     pic = np.zeros(shape, dtype=np.uint8)
-    for x, y in coords:
-        pic[x, y, 0] = 1
+    if len(shape) == 2:
+        for x, y in coords:
+            pic[x, y] = 1
+    else:
+        for x, y in coords:
+            pic[x, y, 0] = 1
     return pic 
 
 def nearest_power(n):
@@ -129,7 +151,7 @@ def zoom_to_circle(coords, matr, add_power=True):
     ymax += ydif // 2
     
     return matr[xmin:xmax, ymin:ymax]
-
+'''
 def draw_data_fits(mdict, nside, shape, fits_name):
     import numpy as np
     from astropy.io import fits
@@ -154,7 +176,7 @@ def draw_data_fits(mdict, nside, shape, fits_name):
             for k, ch in enumerate(flux):
                 data_pic[x, y, k] = max(data_pic[x, y, k], ch[i])
         return data_pic
-
+'''
 def show_dict_mollview(mdict, nside):
     import healpy as hp
     import numpy as np
