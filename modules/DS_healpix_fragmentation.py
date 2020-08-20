@@ -24,7 +24,7 @@ def one_pixel_fragmentation(o_nside, o_pix, depth):
     return f_matr
 
 
-def find_biggest_pixel(ra, dec, radius):
+def find_biggest_pixel(ra, dec, radius, fast=True, fast_nside=4):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
@@ -35,8 +35,9 @@ def find_biggest_pixel(ra, dec, radius):
     nside = 1
     vec = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree,
                     lonlat=True)
+    if fast:
+        return fast_nside, hp.vec2pix(fast_nside, *vec, nest=True)
     radius = np.radians(radius)
-    
     while len(set(hp.query_disc(nside, vec, radius, inclusive=True, 
                                 nest=True))) != 1 and\
         len(set(hp.query_disc(nside, vec, radius, inclusive=False, 
@@ -185,4 +186,50 @@ def show_dict_mollview(mdict, nside):
     for pix in mdict:
         a[pix] = 1
     hp.mollview(a, nest=True)
+'''
 
+def gen_data(clusters, big_pixels, n, nside=2048, min_rad=0.62):
+    import healpy as hp
+    import pandas as pd
+    from DS_healpix_fragmentation import radec2pix
+    from DS_Planck_Unet import draw_pic_with_mask
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    from tqdm.notebook import tqdm
+    
+    def nearest_clusters(df, ra, dec, radius=2):
+        sc_cen = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+        sc_cl = SkyCoord(ra=np.array(df['RA'])*u.degree, 
+                         dec=np.array(df['DEC'])*u.degree, frame='icrs')
+        return df[sc_cen.separation(sc_cl).degree < radius]
+    
+    df = pd.read_csv(clusters)
+    pix2 = radec2pix(df['RA'], df['DEC'], 2)
+    df = df[np.in1d(pix2, big_pixels)]
+    df.index = np.arange(df.shape[0])
+    
+    small_pixels = set()
+    sc = SkyCoord(ra=np.array(df['RA'])*u.degree, 
+                  dec=np.array(df['DEC'])*u.degree, frame='icrs')
+    vecs = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, 
+                      lonlat=True)
+    for i in range(df.shape[0]):
+        small_pixels = small_pixels.union(hp.query_disc(nside, vecs[i], 
+                                                np.radians(min_rad), nest=True))
+    small_pixels = np.array(list(small_pixels))
+    
+    
+    ipix = np.random.choice(small_pixels, n)
+    theta, phi = hp.pix2ang(nside=nside, nest=True, ipix=ipix, lonlat=True)
+    sc = SkyCoord(l=theta*u.degree, b=phi*u.degree, frame='galactic')
+    ra = sc.icrs.ra.degree
+    dec = sc.icrs.dec.degree
+    pics = []
+    masks = []
+    for i in tqdm(range(n)):
+        cl_list = nearest_clusters(df, ra[i], dec[i])
+        cl_list = np.stack([cl_list['RA'], cl_list['DEC']]).T
+        pic, mask = draw_pic_with_mask([ra[i], dec[i]], cl_list)
+        pics.append(pic)
+        masks.append(mask)
+    return pics, masks
