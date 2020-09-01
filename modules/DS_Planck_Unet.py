@@ -214,12 +214,15 @@ def unet_planck(input_size = (64,64,6), filters=16, blocks=5, output_layers=1, w
         prev = cur
         filters //= 2
 
-    if not (weights is None):
-        pt = Model(inputs=inputs, outputs=prev)
-        pt.load_weights(weights)
 
     prev = Conv2D(output_layers, kernel_size=3, padding='same')(prev)
     prev = Activation(sigmoid)(prev)
+
+    if not (weights is None):
+        pt = Model(inputs=inputs, outputs=prev)
+        pt.load_weights(weights)
+        pt.compile()
+        return pt
     
     model = Model(inputs=inputs, outputs=prev)
     model.compile(optimizer = Adam(lr = 1e-4), loss = binary_crossentropy, metrics = ['accuracy', iou, dice])
