@@ -24,31 +24,30 @@ def one_pixel_fragmentation(o_nside, o_pix, depth):
     return f_matr
 
 
-def find_biggest_pixel(ra, dec, radius, fast=True, fast_nside=16):
+def find_biggest_pixel(ra, dec, radius, root_nside=1, max_nside=32):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
     import numpy as np
 
-    
-    sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
-    nside = 1
-    vec = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree,
-                    lonlat=True)
-    if fast:
-        return fast_nside, hp.vec2pix(fast_nside, *vec, nest=True)
+    nside = root_nside
     radius = np.radians(radius)
-    while len(set(hp.query_disc(nside, vec, radius, inclusive=True, 
-                                nest=True))) != 1 and\
-        len(set(hp.query_disc(nside, vec, radius, inclusive=False, 
-                                nest=True))) != 1:
-        nside *= 2
-        if nside > 2**14:
+    sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+    theta = sc.galactic.l.degree
+    phi = sc.galactic.b.degree
+    vec = hp.ang2vec(theta=theta, phi=phi, lonlat=True)
+    
+    pixels = hp.query_disc(vec=vec, nside=nside, radius = radius, inclusive=False, 
+                                nest=True)
+    while len(pixels) <= 1:
+        if nside == max_nside:
             break
+        nside *= 2
+        pixels = hp.query_disc(vec=vec, nside=nside, radius = radius, inclusive=False, 
+                                    nest=True)
     if nside > 1:
-        nside = nside // 2
+        nside //= 2
     return nside, hp.vec2pix(nside, *vec, nest=True)
-
 
 def matr2dict(matr):
     d = {}
@@ -65,7 +64,15 @@ def radec2pix(ra, dec, nside):
     sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
     return hp.ang2pix(nside, sc.galactic.l.degree, sc.galactic.b.degree, 
                                   nest=True, lonlat=True)
-    
+def pix2radec(ipix, nside):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import healpy as hp
+
+    theta, phi = hp.pix2ang(nside, ipix=ipix, nest=True, lonlat=True)
+
+    sc = SkyCoord(l=theta*u.degree, b=phi*u.degree, frame='galactic')
+    return sc.icrs.ra.degree, sc.icrs.dec.degree     
 
 def draw_circles_h(ra, dec, data, nside, mdict, shape, coef=0.02):
     import numpy as np
