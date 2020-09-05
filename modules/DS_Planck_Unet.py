@@ -44,20 +44,21 @@ def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/'):
             pic[x, :, i_f] = i_s[matr[x]]
     return pic
 
-def draw_pic_with_mask(center, clusters, radius=0.84, size=64, fin_nside=2048, 
+def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
                        dirname='/home/rt2122/Data/Planck/normalized/', 
-                      mask_radius=2.5/60, retmatr=False):
+                      mask_radius=2.5/60, retmatr=False, matr=None):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np
     
-    matr = gen_matr(center[0], center[1], radius, size, fin_nside)
+    if matr is None:
+        matr = gen_matr(center[0], center[1], radius, size, fin_nside)
         
     mdict = matr2dict(matr)
     
     pic = draw_pic(matr, dirname)
     if not retmatr:
         mask = np.zeros(list(matr.shape) + [1], dtype=np.uint8)
-        for ra, dec in clusters:
+        for ra, dec in clusters_arr:
             mask = np.logical_or(mask, 
                 draw_proper_circle(ra, dec, mask_radius, fin_nside, mdict, 
                                   mask.shape, coords_mode=False))

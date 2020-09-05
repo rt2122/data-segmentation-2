@@ -24,32 +24,37 @@ def divide_figures(pic):
     
     return ans
 
-def find_centers_on_mask(mask, thr=0.8):
+def find_centers_on_mask(mask, thr_list=[0.8]):
     import numpy as np
-    
-    mask = np.copy(mask) >= thr
-    figures = divide_figures(mask)
-    centers = []
-    for figure in figures:
-        centers.append(find_centroid(figure))
+
+    thr_dict = {}
+    for thr in thr_list: 
+        mask_cur = np.copy(mask) >= thr
+        figures = divide_figures(mask_cur)
+        centers = []
+        for figure in figures:
+            centers.append(find_centroid(figure))
+        thr_dict[thr] = centers
         
-    return np.array(centers)
+    return thr_dict
 
-def find_centers_on_ans(ans, matrs, thr=0.8, count_blanck=False):
+def find_centers_on_ans(ans, matrs, thr_list=[0.8], count_blank=False):
     import numpy as np
 
-    centers = []
-    count = 0
+    thr_dict = dict(zip(thr_list, [[] for i in range(len(thr_list))]))
+    count_dict = dict(zip(thr_list, [0] * len(thr_list)))
     for i in range(ans.shape[0]):
-        new_cen = find_centers_on_mask(ans[i], thr)
-        if len(new_cen) > 0:
-            new_cen = new_cen.astype(np.int32)
-            centers.extend(list(matrs[i][[new_cen[:, 0], new_cen[:, 1]]]))
-        else:
-            count += 1
-    if count_blanck:
-        return centers, count
-    return centers
+        new_cen_dict = find_centers_on_mask(ans[i], thr_list=thr_list)
+        for thr in thr_list:
+            new_cen = new_cen_dict[thr]
+            if len(new_cen) > 0:
+                new_cen = np.array(new_cen).astype(np.int32)
+                thr_dict[thr].extend(list(matrs[i][[new_cen[:, 0], new_cen[:, 1]]]))
+            else:
+                count_dict[thr] += 1
+    if count_blank:
+        return thr_dict, count_dict
+    return thr_dict
 
 def false_clusters(n, nside, clusters_dir, bigpixels, max_rad=1):
     import os
@@ -144,7 +149,8 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr=0.8, min_dist=5/60,
     pics = np.array(pics)
     ans = model.predict(pics)
     ans = np.array(ans)
-    found_clusters, tn = find_centers_on_ans(ans, matrs, thr, count_blanck=True)
+    found_clusters, tn = find_centers_on_ans(ans, matrs, thr, count_blank=True)
+    all_found += len(found_clusters)
     fp = len(found_clusters)
     
     
