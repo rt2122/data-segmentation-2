@@ -56,37 +56,6 @@ def find_centers_on_ans(ans, matrs, thr_list=[0.8], count_blank=False):
         return thr_dict, count_dict
     return thr_dict
 
-def false_clusters(n, nside, clusters_dir, bigpixels, max_rad=1):
-    import os
-    import pandas as pd
-    import numpy as np
-    import healpy as hp
-    from astropy.coordinates import SkyCoord
-    from astropy import units as u
-    from DS_Planck_Unet import gen_batch
-    
-    files = next(os.walk(clusters_dir))[-1]
-    clusters = []
-    for file in files:
-        clusters.append(pd.read_csv(os.path.join(clusters_dir, file)))
-    clusters = pd.concat(clusters)
-    
-    no_clusters = set(np.arange(hp.nside2npix(nside)))
-    sc = SkyCoord(ra=clusters['RA']*u.degree, dec=clusters['DEC']*u.degree, frame='icrs')
-    vecs = hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, lonlat=True)
-    for vec in vecs:
-        no_clusters = no_clusters.difference(set(hp.query_disc(vec=vec, nside=nside, 
-                            nest=True, radius=np.radians(max_rad), inclusive=False)))
-        
-    no_clusters = np.array(list(no_clusters))
-    ang = hp.pix2ang(nside=nside, ipix=no_clusters, nest=True, lonlat=True)
-    bp = hp.ang2pix(nside=2, theta=ang[0], phi=ang[1], lonlat=True, nest=True)
-    no_clusters = no_clusters[np.in1d(bp, bigpixels)]
-    pics, matrs = gen_batch(np.array(no_clusters), n, nside, 
-                            pd.DataFrame({'RA' : [], 'DEC': []}))
-    return pics, matrs
-
-
 def clusters_in_pix(clusters, pix, nside):
     import pandas as pd
     import healpy as hp
@@ -100,13 +69,64 @@ def clusters_in_pix(clusters, pix, nside):
     
     return df
 
-
-def scan_pix(clusters, model, ipix, nside=2, depth=10, thr=0.8, min_dist=5/60, 
-             step=64, size=64, n_false=None, search_nside=256):
-    from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec, radec2pix
-    from DS_Planck_Unet import draw_pic_with_mask, draw_pic
+def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8], 
+                        true_clusters=None, 
+                        true_mode=True, min_dist=5/60):
+    import numpy as np
+    import pandas as pd
     from astropy.coordinates import SkyCoord
     from astropy import units as u
+    import healpy as hp
+    
+    pics = np.array(pics)
+    ans = model.predict(pics)
+    ans = np.array(ans)
+    found_clusters_dict, count_blank = \
+        find_centers_on_ans(ans, matrs, thr_list, count_blank=True)
+    
+    sc_true = None
+    if not(true_clusters is None):
+        sc_true = SkyCoord(ra=true_clusters['RA']*u.degree, 
+                       dec=true_clusters['DEC']*u.degree, frame='icrs')
+    
+    df = pd.DataFrame({'p':[0 for i in range(len(thr_list))], 
+                       'n':[0 for i in range(len(thr_list))], 
+                       'thr': [0 for i in range(len(thr_list))], 
+                       'min_dist': [0 for i in range(len(thr_list))],
+                       'all_found': [0 for i in range(len(thr_list))]})
+    for idx in range(len(thr_list)):
+        thr = thr_list[idx]
+        all_found = len(found_clusters_dict[thr])
+        if all_found > 0:
+            theta, phi = hp.pix2ang(ipix=np.array(found_clusters_dict[thr]), nest=True, 
+                            nside=nside*2**depth, lonlat=True)
+
+            sc_found = SkyCoord(l=theta*u.degree,
+                               b=phi*u.degree, frame='galactic')
+        if true_mode: 
+            p = 0
+            if all_found > 0:
+                cluster_idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true)
+                p = len(set(cluster_idx[d2d.degree <= min_dist]))
+                df['min_dist'].iloc[idx] = d2d.degree.min()
+            n = true_clusters.shape[0] - p
+
+        else:
+            p = all_found
+            n = count_blank[thr]
+            
+        df['p'].iloc[idx] = p
+        df['n'].iloc[idx] = n
+        df['thr'].iloc[idx] = thr
+        df['all_found'].iloc[idx] = all_found
+        
+    return df
+
+
+def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=5/60, 
+             step=64, size=64, n_false=None, search_nside=256, big_mask_radius=15/60):
+    from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec, radec2pix
+    from DS_Planck_Unet import draw_pic_with_mask, draw_pic
     import pandas as pd
     import numpy as np
     import healpy as hp
@@ -120,42 +140,33 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr=0.8, min_dist=5/60,
         n_false = len(true_clusters)
     
     pics, matrs = [], []
+    blank_pics, blank_matrs = [], []
     
-    for i in range(0, big_matr.shape[0] - step, step):
+    for i in range(0, big_matr.shape[0], step):
         for j in range(0, big_matr.shape[1], step):
             matr = big_matr[i:i+size,j:j+size]
             if matr.shape[0] == size and matr.shape[1] == size:
-                pic = draw_pic(matr)
-                pics.append(pic)
-                matrs.append(matr)
-    pics = np.array(pics)
-    ans = model.predict(pics)
-    ans = np.array(ans)
-    found_clusters = find_centers_on_ans(ans, matrs, thr)
-    all_found = len(found_clusters)
-    theta, phi = hp.pix2ang(ipix=found_clusters, nest=True, nside=nside*2**depth,
-                           lonlat=True)    
-    sc_true = SkyCoord(ra=true_clusters['RA']*u.degree, 
-                       dec=true_clusters['DEC']*u.degree, frame='icrs')
-    sc_found = SkyCoord(l=theta*u.degree,
-                       b=phi*u.degree, frame='galactic')
+                pic, mask = draw_pic_with_mask(matr=matr, 
+                            clusters_arr=np.array(true_clusters[['RA', 'DEC']]),
+                                center=None, mask_radius=big_mask_radius)
+                if np.count_nonzero(mask) > 0:
+                    pics.append(pic)
+                    matrs.append(matr)
+                else:
+                    blank_pics.append(pic)
+                    blank_matrs.append(matr)
     
-    idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true)
-    tp = np.count_nonzero(d2d.degree <= min_dist)
-    fn = true_clusters.shape[0] - tp
+    #----test true clusters----#
+    res_t = proc_found_clusters(pics, matrs, model, nside=nside, depth=depth,
+                                true_clusters=true_clusters, 
+                                true_mode=True, min_dist=min_dist, thr_list=thr_list)
     #----test false clusters----#
-    pics, matrs = false_clusters(n_false, search_nside, '/home/rt2122/Data/clusters/',
-                                [ipix])
-    pics = np.array(pics)
-    ans = model.predict(pics)
-    ans = np.array(ans)
-    found_clusters, tn = find_centers_on_ans(ans, matrs, thr, count_blank=True)
-    all_found += len(found_clusters)
-    fp = len(found_clusters)
+    res_f = proc_found_clusters(blank_pics, blank_matrs, model, nside=nside,
+                                depth=depth, true_mode=False, min_dist=min_dist,
+                               thr_list=thr_list)
+    res_table = pd.DataFrame({'tp' : res_t['p'], 'tn' : res_f['n'], 
+                             'fp' : res_t['all_found'] - res_t['p'] + res_f['p'],
+                             'fn' : res_t['n'], 'thr' : thr_list, 
+                              'pix2': [ipix for i in range(len(thr_list))]})
     
-    
-    
-    res_table = pd.DataFrame({'tp': tp, 'fp': fp, 'tn': tn, 'fn': fn, 
-                              'all_found' : all_found,
-                             'min_dist' : d2d.degree.min(), 'pix2' : ipix}, index=[0])
     return res_table

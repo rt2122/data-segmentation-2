@@ -1,5 +1,5 @@
-val_pix = [10, 39, 42]
-test_pix = [7]
+val_pix = [9, 38, 41]
+test_pix = [6]
 train_pix = [i for i in range(48) if not (i in val_pix) and not (i in test_pix)]
 planck_side = 2048
 min_rad_64 = 0.62
@@ -46,7 +46,7 @@ def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/'):
 
 def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
                        dirname='/home/rt2122/Data/Planck/normalized/', 
-                      mask_radius=2.5/60, retmatr=False, matr=None):
+                      mask_radius=5/60, retmatr=False, matr=None):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np
     
