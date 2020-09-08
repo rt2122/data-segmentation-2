@@ -30,9 +30,14 @@ def pic2fits(pic, wcs, fitsname):
     from astropy.io import fits
     import numpy as np
 
-    hdul = fits.HDUList([fits.PrimaryHDU(), 
-        fits.ImageHDU(np.stack([pic[:,:,i] for i in range(pic.shape[-1])]), 
-                     header=wcs.to_header())])
+    hdul = None
+    if wcs is None:
+        hdul = fits.HDUList([fits.PrimaryHDU(), 
+            fits.ImageHDU(np.stack([pic[:,:,i] for i in range(pic.shape[-1])]))]) 
+    else:       
+        hdul = fits.HDUList([fits.PrimaryHDU(), 
+            fits.ImageHDU(np.stack([pic[:,:,i] for i in range(pic.shape[-1])]), 
+                         header=wcs.to_header())])
 
     hdul.writeto(fitsname)
 
