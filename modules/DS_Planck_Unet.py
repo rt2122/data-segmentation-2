@@ -104,7 +104,7 @@ def pixels_with_clusters(clusters, big_pixels, nside, min_rad=0.62):
     small_pixels = np.array(list(small_pixels))
     return small_pixels, df
 
-def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=False):
+def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=False, size=64):
     import numpy as np
     import healpy as hp
     from DS_Planck_Unet import draw_pic_with_mask
@@ -128,7 +128,7 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
         matr = None
         pic, m = draw_pic_with_mask([ra[i], dec[i]], cl_list, retmatr=retmatr)
 
-        if not(pic.shape[0] == 64 and pic.shape[1] == 64):
+        if not(pic.shape[0] == size and pic.shape[1] == size):
             pixels_of_choice= pixels_of_choice[pixels_of_choice != ipix[i]]
             ipix[i] = np.random.choice(pixels_of_choice)
             theta[i], phi[i] = hp.pix2ang(nside=nside_choice, nest=True, 
@@ -143,14 +143,15 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
     return pics, ms
 
 
-def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.62, search_nside=512):
+def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.62, search_nside=512,
+        size=64):
     import healpy as hp
     import numpy as np
     
     small_pixels, df = pixels_with_clusters(clusters, big_pixels, search_nside, min_rad)
     
     while True:
-        pics, masks = gen_batch(small_pixels, batch_size, search_nside, df)
+        pics, masks = gen_batch(small_pixels, batch_size, search_nside, df, size=size)
         yield np.stack(pics), np.stack(masks) 
 
 
@@ -258,3 +259,21 @@ def check_gen(gen, model=None, thr=0.8):
         ans = model.predict(np.array([pic]))
         ax[1][2].imshow(ans[0,:,:,0])
         ax[2][2].imshow((ans[0,:,:,0] >= thr).astype(np.float32))
+
+def check_mask(gen, model, thr_list):
+    from matplotlib import pyplot as plt
+    import numpy as np
+
+
+    pic, mask = next(gen)
+    ans = model.predict(pic)
+    pic = pic[0]
+    mask = mask[0]
+    fig, ax = plt.subplots(3, len(thr_list) // 3 + 1, figsize=(12, 12))
+    for i in range(3):
+        for j in range(len(thr_list) // 3 + 1):
+            if i + 3*j < len(thr_list):
+                ax[i][j].imshow((ans[0,:,:,0] >= thr_list[i + 3*j]).astype(np.float32))
+                ax[i][j].set_xlabel(thr_list[i+3*j])
+    ax[-1][-1].imshow(mask[:,:,0])
+
