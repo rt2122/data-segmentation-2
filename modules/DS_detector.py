@@ -95,6 +95,7 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
                        'min_dist': [0 for i in range(len(thr_list))],
                        'all_found': [0 for i in range(len(thr_list))]})
     max_tp = []
+    max_fp = []
     for idx in range(len(thr_list)):
         thr = thr_list[idx]
         all_found = len(found_clusters_dict[thr])
@@ -106,26 +107,35 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
                                b=phi*u.degree, frame='galactic')
         if true_mode: 
             p = 0
+            fp = None
             if all_found > 0:
                 cluster_idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true)
+                fp = d2d.degree > min_dist
                 tp_idx = set(cluster_idx[d2d.degree <= min_dist])
                 p = len(tp_idx)
                 df['min_dist'].iloc[idx] = d2d.degree.min()
-            if p >= len(max_tp):
-                max_tp = true_clusters.iloc[list(tp_idx)]
 
             n = true_clusters.shape[0] - p
+
+            if p >= len(max_tp):
+                max_tp = true_clusters.iloc[list(tp_idx)]
+            if all_found - p >= len(max_fp):
+                max_fp = np.array(found_clusters_dict[thr])[fp]
+
 
         else:
             p = all_found
             n = count_blank[thr]
+
+            if p > len(max_fp):
+                max_fp = np.array(found_clusters_dict[thr])
             
         df['p'].iloc[idx] = p
         df['n'].iloc[idx] = n
         df['thr'].iloc[idx] = thr
         df['all_found'].iloc[idx] = all_found
         
-    return df, max_tp
+    return df, max_tp, max_fp
 
 
 def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=5/60, 
@@ -162,16 +172,17 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=
                     blank_matrs.append(matr)
     
     #----test true clusters----#
-    res_t, max_tp = proc_found_clusters(pics, matrs, model, nside=nside, depth=depth,
+    res_t, max_tp, max_fp = proc_found_clusters(pics, matrs, model, nside=nside, depth=depth,
                                 true_clusters=true_clusters, 
                                 true_mode=True, min_dist=min_dist, thr_list=thr_list)
     #----test false clusters----#
-    res_f, _ = proc_found_clusters(blank_pics, blank_matrs, model, nside=nside,
+    res_f, _, max_fp_a = proc_found_clusters(blank_pics, blank_matrs, model, nside=nside,
                                 depth=depth, true_mode=False, min_dist=min_dist,
                                thr_list=thr_list)
+    max_fp = np.hstack([max_fp, max_fp_a])
     res_table = pd.DataFrame({'tp' : res_t['p'], 'tn' : res_f['n'], 
                              'fp' : res_t['all_found'] - res_t['p'] + res_f['p'],
                              'fn' : res_t['n'], 'thr' : thr_list, 
                               'pix2': [ipix for i in range(len(thr_list))]})
     
-    return res_table, max_tp
+    return res_table, max_tp, max_fp
