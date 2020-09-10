@@ -94,6 +94,7 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
                        'thr': [0 for i in range(len(thr_list))], 
                        'min_dist': [0 for i in range(len(thr_list))],
                        'all_found': [0 for i in range(len(thr_list))]})
+    max_tp = []
     for idx in range(len(thr_list)):
         thr = thr_list[idx]
         all_found = len(found_clusters_dict[thr])
@@ -107,8 +108,12 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
             p = 0
             if all_found > 0:
                 cluster_idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true)
-                p = len(set(cluster_idx[d2d.degree <= min_dist]))
+                tp_idx = set(cluster_idx[d2d.degree <= min_dist])
+                p = len(tp_idx)
                 df['min_dist'].iloc[idx] = d2d.degree.min()
+            if p >= len(max_tp):
+                max_tp = true_clusters.iloc[list(tp_idx)]
+
             n = true_clusters.shape[0] - p
 
         else:
@@ -120,7 +125,7 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
         df['thr'].iloc[idx] = thr
         df['all_found'].iloc[idx] = all_found
         
-    return df
+    return df, max_tp
 
 
 def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=5/60, 
@@ -157,11 +162,11 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=
                     blank_matrs.append(matr)
     
     #----test true clusters----#
-    res_t = proc_found_clusters(pics, matrs, model, nside=nside, depth=depth,
+    res_t, max_tp = proc_found_clusters(pics, matrs, model, nside=nside, depth=depth,
                                 true_clusters=true_clusters, 
                                 true_mode=True, min_dist=min_dist, thr_list=thr_list)
     #----test false clusters----#
-    res_f = proc_found_clusters(blank_pics, blank_matrs, model, nside=nside,
+    res_f, _ = proc_found_clusters(blank_pics, blank_matrs, model, nside=nside,
                                 depth=depth, true_mode=False, min_dist=min_dist,
                                thr_list=thr_list)
     res_table = pd.DataFrame({'tp' : res_t['p'], 'tn' : res_f['n'], 
@@ -169,4 +174,4 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=
                              'fn' : res_t['n'], 'thr' : thr_list, 
                               'pix2': [ipix for i in range(len(thr_list))]})
     
-    return res_table
+    return res_table, max_tp

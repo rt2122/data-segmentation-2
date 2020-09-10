@@ -81,10 +81,10 @@ def draw_circles_h(ra, dec, data, nside, mdict, shape, coef=0.02):
     coef = shape[0] * coef / max(data)
     pic = np.zeros(shape, dtype=np.uint8)
     pix = radec2pix(ra, dec, nside)
-    coords = [mdict[p] for p in pix if p in mdict]
-    for i in range(len(data)):
-        x, y = coords[i]
-        pic[circle(x, y, data[i] * coef, shape=shape)] = 1
+    for i in range(len(pix)):
+        if pix[i] in mdict:
+            x, y = mdict[pix[i]]
+            pic[circle(x, y, data[i] * coef, shape=shape)] = 1
     
     return pic
 
