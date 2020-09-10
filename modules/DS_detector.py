@@ -29,7 +29,8 @@ def find_centers_on_mask(mask, thr_list=[0.8]):
 
     thr_dict = {}
     for thr in thr_list: 
-        mask_cur = np.copy(mask) >= thr
+        mask_cur = np.copy(mask)
+        mask_cur = mask_cur[mask_cur >= thr]
         figures = divide_figures(mask_cur)
         centers = []
         for figure in figures:
