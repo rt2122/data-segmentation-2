@@ -188,3 +188,76 @@ def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=
                               'pix2': [ipix for i in range(len(thr_list))]})
     
     return res_table, max_tp, max_fp
+
+def scan_none(pix2, model, clusters_dir='/home/rt2122/Data/clusters/', 
+              thr_list=[0.1], size=64, depth=10, 
+              planck_nside=2048, clusters_dist=15/60, ret_coords=False):
+    from DS_healpix_fragmentation import one_pixel_fragmentation
+    from DS_Planck_Unet import draw_pic
+    import os
+    import healpy as hp
+    import pandas as pd
+    import numpy as np
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    matr = one_pixel_fragmentation(2, pix2, depth)
+    true_clusters = {file[:-4] : clusters_in_pix(os.path.join(clusters_dir, file), pix2, 2) 
+                     for file in next(os.walk(clusters_dir))[-1]}
+    true_clusters['all'] = pd.concat(list(item[1] for item in true_clusters.items()))
+    
+    pic = draw_pic(matr)
+    ans = model.predict(np.array([pic]))
+    
+    thr_dict = find_centers_on_ans(ans, [matr], thr_list)
+    sc_true = {name : SkyCoord(ra=true_clusters[name]['RA']*u.degree, 
+                               dec=true_clusters[name]['DEC']*u.degree,
+                       frame='icrs') for name in true_clusters}
+    coords = {}
+    df = pd.DataFrame({
+        'tp_pz':[0] * len(thr_list), 
+        'tp_pnz':[0] * len(thr_list), 
+        'tp_m':[0] * len(thr_list), 
+        'tn':[0] * len(thr_list), 
+        'fp':[0] * len(thr_list), 
+        'fn_pz':[0] * len(thr_list), 
+        'fn_pnz':[0] * len(thr_list), 
+        'fn_m':[0] * len(thr_list), 
+                   'thr': thr_list, 
+                   'min_dist':[0] * len(thr_list),
+                   'all_found':[0] * len(thr_list)})
+    for i in range(len(thr_list)):
+        thr = thr_list[i]
+        df['all_found'][i] = len(thr_dict[thr])
+        
+        if len(thr_dict[thr]) > 0:
+            theta, phi = hp.pix2ang(nside=planck_nside, nest=True, ipix=thr_dict[thr], 
+                                lonlat=True)
+            sc_found = SkyCoord(l=theta*u.degree, b=phi*u.degree, frame='galactic')
+        
+            for name, sm_name in [('planck_z', 'pz'), 
+                                 ('planck_no_z', 'pnz'), ('mcxcwp', 'm')]:
+
+                idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true[name])
+                idx = np.unique(idx[d2d.degree <= clusters_dist])
+                tp = np.count_nonzero(d2d.degree <= clusters_dist)
+                df['tp_'+sm_name][i] = tp 
+                df['fn_'+sm_name][i] = len(true_clusters[name]) - tp
+                coords[name] = true_clusters[name].iloc[idx]
+                
+            idx, d2d, _ = sc_found.match_to_catalog_sky(sc_true['all'])
+            df['fp'][i] = np.count_nonzero(d2d.degree > clusters_dist)
+            found = pd.DataFrame({
+                'RA':sc_found.icrs.ra.degree,
+                'DEC':sc_found.icrs.dec.degree})
+            coords['fp'] = found[d2d.degree > clusters_dist]
+        
+        else:
+            df['fn_pz'][i] = len(true_clusters['planck_z'])
+            df['fn_pnz'][i] = len(true_clusters['planck_no_z'])
+            df['fn_m'][i] = len(true_clusters['mcxcwp'])
+    
+    if ret_coords:
+        return coords
+    return df
+        

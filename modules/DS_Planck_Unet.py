@@ -307,3 +307,4 @@ def check_mask(gen, model, thr_list):
                 ax[i][j].set_xlabel(thr_list[i+3*j])
     ax[-1][-1].imshow(mask[:,:,0])
 
+

@@ -88,6 +88,36 @@ def draw_circles_h(ra, dec, data, nside, mdict, shape, coef=0.02):
     
     return pic
 
+def make_x_n(x, y, size, shape, th=3):
+    import numpy as np
+    size = int(size)
+    coords = []
+    coords.extend([(xx, yy) 
+                   for xx in range(max(x-th,0), min(x+th+1,shape[0]-1)) 
+                   for yy in range(max(y-size,0), min(y+size+1,shape[1]-1))])
+    coords.extend([(xx, yy) 
+                   for xx in range(max(x-size,0), min(x+size+1,shape[0]-1)) 
+                   for yy in range(max(y-th,0), min(y+th+1,shape[1]-1))])
+    coords = np.array(coords)
+    if len(shape) > 2:
+        return coords[:,0], coords[:,1], np.zeros(len(coords))
+    return coords[:,0], coords[:,1]
+
+def draw_x_h_n(ra, dec, data, nside, mdict, shape, coef=0.02):
+    import numpy as np
+    from skimage.draw import circle
+
+    coef = shape[0] * coef / max(data)
+    pic = np.zeros(shape, dtype=np.uint8)
+    pix = radec2pix(ra, dec, nside)
+    for i in range(len(pix)):
+        if pix[i] in mdict:
+            x, y = mdict[pix[i]]
+            x_pic = make_x_n(x, y, data[i] * coef, shape=shape)
+            pic[x_pic] = 1
+    
+    return pic
+
 def draw_dots_h(ra, dec, data, nside, mdict, shape):
     import numpy as np
 
