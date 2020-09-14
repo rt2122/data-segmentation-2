@@ -13,14 +13,14 @@ def divide_figures(pic):
     import numpy as np
     from skimage.segmentation import flood, flood_fill
     
-    coords = np.array(np.where(pic == 1))
+    coords = np.array(np.where(pic != 0))
     ans = []
     while coords.shape[1] != 0:
         seed_point = tuple(coords[:, 0])
         ans.append(flood(pic, seed_point))
         pic = flood_fill(pic, seed_point, 0)
         
-        coords = np.array(np.where(pic == 1))
+        coords = np.array(np.where(pic != 0))
     
     return ans
 
@@ -31,6 +31,7 @@ def find_centers_on_mask(mask, thr_list=[0.8]):
     for thr in thr_list: 
         mask_cur = np.copy(mask)
         mask_cur = mask_cur[mask_cur >= thr]
+        #mask_cur = np.array(mask_cur >= thr, dtype=np.float32)
         figures = divide_figures(mask_cur)
         centers = []
         for figure in figures:

@@ -30,10 +30,13 @@ def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
    
     return big_matr[mins[0]:maxs[0],mins[1]:maxs[1]]
 
-def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/'):
+def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/', y=False):
     import os
     import numpy as np
-    
+   
+    if y:
+        dirname = os.path.join(dirname, 'y')
+        
     files = sorted(next(os.walk(dirname))[-1])
     pic = np.zeros(list(matr.shape) + [len(files)])
     
@@ -56,15 +59,15 @@ def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=204
     mdict = matr2dict(matr)
     
     pic = draw_pic(matr, dirname)
+    mask = np.zeros(list(matr.shape) + [1], dtype=np.uint8)
+    for ra, dec in clusters_arr:
+        mask = np.logical_or(mask, 
+            draw_proper_circle(ra, dec, mask_radius, fin_nside, mdict, 
+                              mask.shape, coords_mode=False))
     if not retmatr:
-        mask = np.zeros(list(matr.shape) + [1], dtype=np.uint8)
-        for ra, dec in clusters_arr:
-            mask = np.logical_or(mask, 
-                draw_proper_circle(ra, dec, mask_radius, fin_nside, mdict, 
-                                  mask.shape, coords_mode=False))
         return pic, mask
 
-    return pic, matr
+    return pic, mask, matr
 
 def nearest_clusters(df, theta, phi, radius=2, galactic=True):
     from astropy.coordinates import SkyCoord
@@ -104,7 +107,8 @@ def pixels_with_clusters(clusters, big_pixels, nside, min_rad=0.62):
     small_pixels = np.array(list(small_pixels))
     return small_pixels, df
 
-def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=False, size=64):
+def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=False, size=64,
+        print_coords=False):
     import numpy as np
     import healpy as hp
     from DS_Planck_Unet import draw_pic_with_mask
@@ -118,7 +122,8 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
     ra = sc.icrs.ra.degree
     dec = sc.icrs.dec.degree
     pics = []
-    ms = []
+    matrs = []
+    masks = []
 
     i = 0
     while i < batch_size:
@@ -126,7 +131,11 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
         cl_list = np.stack([cl_list['RA'], cl_list['DEC']]).T
         pic, mask = None, None
         matr = None
-        pic, m = draw_pic_with_mask([ra[i], dec[i]], cl_list, retmatr=retmatr)
+        ret = draw_pic_with_mask([ra[i], dec[i]], cl_list, retmatr=retmatr)
+        pic = ret[0]
+        mask = ret[1]
+        if retmatr:
+            matr = ret[2]
 
         if not(pic.shape[0] == size and pic.shape[1] == size):
             pixels_of_choice= pixels_of_choice[pixels_of_choice != ipix[i]]
@@ -138,21 +147,34 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
             dec[i] = sc_cur.icrs.dec.degree
         else:
             pics.append(pic)
-            ms.append(m)
+            matrs.append(matr)
+            masks.append(mask)
+            if print_coords:
+                print(ra[i], dec[i])
             i += 1
-    return pics, ms
+
+    if retmatr:
+        return pics, masks, matrs
+
+    return pics, masks
 
 
-def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.62, search_nside=512,
-        size=64):
+def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.08, search_nside=512,
+        size=64, retmatr=False, print_coords=False):
     import healpy as hp
     import numpy as np
     
     small_pixels, df = pixels_with_clusters(clusters, big_pixels, search_nside, min_rad)
     
     while True:
-        pics, masks = gen_batch(small_pixels, batch_size, search_nside, df, size=size)
-        yield np.stack(pics), np.stack(masks) 
+        if retmatr:
+            pics, masks, matrs = gen_batch(small_pixels, batch_size, search_nside, df, size=size,
+                    retmatr=retmatr, print_coords=print_coords)
+            yield np.stack(pics), np.stack(masks) , np.stack(matrs)
+        else:
+            pics, masks = gen_batch(small_pixels, batch_size, search_nside, df, size=size,
+                    retmatr=retmatr, print_coords=print_coords)
+            yield np.stack(pics), np.stack(masks) 
 
 
 
@@ -243,10 +265,14 @@ def unet_planck(input_size = (64,64,6), filters=16, blocks=5, output_layers=1, w
     
     return model
 
-def check_gen(gen, model=None, thr=0.8):
+def check_gen(gen, model=None, thr=0.8, y=False):
     from matplotlib import pyplot as plt
     import numpy as np
-    pic, mask = next(gen)
+    pic, mask, matr = None, None, None
+    if y:
+        pic, mask, matr = next(gen)
+    else:
+        pic, mask = next(gen)
     print(pic.shape, mask.shape)
     pic = pic[0]
     mask = mask[0]
@@ -258,7 +284,11 @@ def check_gen(gen, model=None, thr=0.8):
     if not (model is None):
         ans = model.predict(np.array([pic]))
         ax[1][2].imshow(ans[0,:,:,0])
-        ax[2][2].imshow((ans[0,:,:,0] >= thr).astype(np.float32))
+        if y:
+            cpic = draw_pic(matr[0], y=True)
+            ax[2][2].imshow(cpic[:,:,0])
+        else:
+            ax[2][2].imshow((ans[0,:,:,0] >= thr).astype(np.float32))
 
 def check_mask(gen, model, thr_list):
     from matplotlib import pyplot as plt
