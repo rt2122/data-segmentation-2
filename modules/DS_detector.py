@@ -1,6 +1,7 @@
 def find_centroid(pic):
     from skimage.measure import moments
     import numpy as np
+    #print(pic.shape)
     
     if len(pic.shape) > 2:
         pic = np.copy(pic).reshape(list(pic.shape)[:-1])
@@ -12,6 +13,7 @@ def find_centroid(pic):
 def divide_figures(pic):
     import numpy as np
     from skimage.segmentation import flood, flood_fill
+    #print(pic.shape)
     
     coords = np.array(np.where(pic != 0))
     ans = []
@@ -30,8 +32,8 @@ def find_centers_on_mask(mask, thr_list=[0.8]):
     thr_dict = {}
     for thr in thr_list: 
         mask_cur = np.copy(mask)
-        mask_cur = mask_cur[mask_cur >= thr]
-        #mask_cur = np.array(mask_cur >= thr, dtype=np.float32)
+        #mask_cur = mask_cur[mask_cur >= thr]
+        mask_cur = np.array(mask_cur >= thr, dtype=np.float32)
         figures = divide_figures(mask_cur)
         centers = []
         for figure in figures:

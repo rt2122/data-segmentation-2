@@ -197,7 +197,7 @@ def dice(y_pred, y_true, eps=0.1):
     return dice_sum
 
 
-def unet_planck(input_size = (64,64,6), filters=16, blocks=5, output_layers=1, weights=None): 
+def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, weights=None): 
     import numpy as np 
     from tensorflow.keras.callbacks import ModelCheckpoint, LearningRateScheduler
     from tensorflow.keras.optimizers import Adam, SGD
@@ -220,8 +220,8 @@ def unet_planck(input_size = (64,64,6), filters=16, blocks=5, output_layers=1, w
     for i in range(blocks):
         cur = Conv2D(filters=filters, kernel_size=(3, 3), padding = 'same', kernel_initializer = 'he_normal')(prev)
         #cur = BatchNormalization()(cur)
-        cur = Activation(relu)(cur)
         cur = Dropout(0.2)(cur)
+        cur = Activation(relu)(cur)
 
         cur = Conv2D(filters=filters, kernel_size=(3, 3), padding = 'same', kernel_initializer = 'he_normal')(cur)
         #cur = BatchNormalization()(cur)
@@ -237,13 +237,13 @@ def unet_planck(input_size = (64,64,6), filters=16, blocks=5, output_layers=1, w
     for i in range(blocks - 1, -1, -1):
         cur = UpSampling2D()(prev)
         cur = Conv2D(filters=filters, kernel_size=3, padding='same')(cur)
-        #cur = Dropout(0.2)(cur)
+        cur = Dropout(0.2)(cur)
         cur = Activation(relu)(cur)
         cur = concatenate([cur, encoder[i]], axis=3)
 
         cur = Conv2D(filters=filters, kernel_size=3, padding='same')(cur)
         cur = Activation(relu)(cur)
-        #cur = Dropout(0.2)(cur)
+        cur = Dropout(0.2)(cur)
         #cur = Conv2D(filters=filters, kernel_size=3, padding='same')(cur)
         #cur = Activation(relu)(cur)
 
