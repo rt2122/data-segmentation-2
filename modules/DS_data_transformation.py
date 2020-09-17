@@ -82,3 +82,14 @@ def normalize(pic):
         pic[:,:,i] -= np.mean(pic[:,:,i])
         pic[:,:,i] /= np.std(pic[:,:,i])
     return pic
+
+def draw_df(df, data, base, figsize=(8, 6)):
+    from matplotlib import pyplot as plt
+    fig, ax = plt.subplots(1, figsize=figsize)
+    colors = 'bgrcmykw'
+    plt.gca().invert_xaxis()
+    for c, label in zip(colors[:len(data)], data):
+        line, = ax.plot(base, data[label], c+'o-')
+        line.set_label(label)
+    ax.legend()
+    plt.show()
