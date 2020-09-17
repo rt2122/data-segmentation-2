@@ -92,4 +92,5 @@ def draw_df(df, data, base, figsize=(8, 6)):
         line, = ax.plot(base, data[label], c+'o-')
         line.set_label(label)
     ax.legend()
+    ax.grid()
     plt.show()

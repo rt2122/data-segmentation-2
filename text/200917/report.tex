@@ -1,0 +1,33 @@
+\documentclass{article}
+    \usepackage{amssymb}
+    \usepackage[utf8]{inputenc}
+    \usepackage[russian]{babel}
+    \usepackage[left=2cm,right=2cm,
+        top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+    }
+
+\begin{document}
+\begin{center}{\hugeОтчет по курсовой работе за неделю\\}\end{center}
+Дата: 17.9.2020\\
+Научные руководители: Герасимов С.В., Мещеряков А.В.\\
+Студент: Немешаева Алиса\\
+Курс: 4\\
+
+\renewcommand{\labelitemi}{$\blacksquare$}
+\renewcommand\labelitemii{$\square$}
+За прошедшую неделю была проведена следующая работа:\\
+\begin{enumerate}
+    \item Построена \hyperlink{https://github.com/rt2122/data-segmentation-2/blob/master/Planck\_Unet/train\_unet\_planck\_z\_8\_filters.ipynb}{модель}, повторяющая по параметрам модель из \hyperlink{https://www.aanda.org/articles/aa/pdf/2020/02/aa36919-19.pdf}{статьи}.\\
+    \item Проведены \hyperlink{https://github.com/rt2122/data-segmentation-2/blob/master/Planck\_Unet/scan\_planck\_z\_f8.ipynb}{проверки} модели на тестовой области, полнота на которой достигла 0,975.\\
+    \item Создан \hyperlink{https://github.com/rt2122/data-segmentation-2/blob/master/modules/DS\_detector.py}{более быстрый метод} сканирования тестовой области.\\
+
+\end{enumerate}
+
+Общее количество строк кода: 14374\\
+\end{document}
