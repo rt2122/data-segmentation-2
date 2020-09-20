@@ -83,14 +83,34 @@ def normalize(pic):
         pic[:,:,i] /= np.std(pic[:,:,i])
     return pic
 
-def draw_df(df, data, base, figsize=(8, 6)):
+
+def draw_df(df, data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
+               save=False):
     from matplotlib import pyplot as plt
+    import numpy as np
     fig, ax = plt.subplots(1, figsize=figsize)
     colors = 'bgrcmykw'
     plt.gca().invert_xaxis()
+    max_y = 0
+    min_y = 100
     for c, label in zip(colors[:len(data)], data):
         line, = ax.plot(base, data[label], c+'o-')
         line.set_label(label)
+        max_y = max(max_y, max(data[label]))
+        min_y = min(min_y, min(data[label]))
     ax.legend()
-    ax.grid()
+    if grids:
+        if xgrid is None:
+            ax.set_xticks(base)
+        else:
+            ax.set_xticks(xgrid)
+            
+        if ygrid is None:
+            ax.set_yticks(np.arange(min_y, max_y, (max_y-min_y) / 10))
+        else:
+            ax.set_yticks(ygrid)
+        #ax.grid(True)
+        plt.grid(b=True, which='major', color='#666666', linestyle=':')
+    if save:
+        plt.savefig('pic.png')
     plt.show()

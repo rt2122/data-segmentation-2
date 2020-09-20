@@ -74,6 +74,12 @@ def pix2radec(ipix, nside):
     sc = SkyCoord(l=theta*u.degree, b=phi*u.degree, frame='galactic')
     return sc.icrs.ra.degree, sc.icrs.dec.degree     
 
+def pix2pix(ipix, nside, nside_fin):
+    import healpy as hp
+
+    vec = hp.pix2vec(ipix=ipix, nside=nside, nest=True)
+    return hp.vec2pix(nside_fin, *vec, nest=True)
+
 def draw_circles_h(ra, dec, data, nside, mdict, shape, coef=0.02):
     import numpy as np
     from skimage.draw import circle

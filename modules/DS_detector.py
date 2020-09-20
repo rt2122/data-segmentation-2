@@ -1,7 +1,6 @@
 def find_centroid(pic):
     from skimage.measure import moments
     import numpy as np
-    #print(pic.shape)
     
     if len(pic.shape) > 2:
         pic = np.copy(pic).reshape(list(pic.shape)[:-1])
@@ -13,7 +12,6 @@ def find_centroid(pic):
 def divide_figures(pic):
     import numpy as np
     from skimage.segmentation import flood, flood_fill
-    #print(pic.shape)
     
     coords = np.array(np.where(pic != 0))
     ans = []
@@ -26,41 +24,39 @@ def divide_figures(pic):
     
     return ans
 
-def find_centers_on_mask(mask, thr_list=[0.8]):
+def find_centers_on_mask(mask, thr, binary=True):
     import numpy as np
 
-    thr_dict = {}
-    for thr in thr_list: 
-        mask_cur = np.copy(mask)
-        #mask_cur = mask_cur[mask_cur >= thr]
+    mask_cur = np.copy(mask)
+    if binary:
         mask_cur = np.array(mask_cur >= thr, dtype=np.float32)
-        figures = divide_figures(mask_cur)
-        centers = []
-        for figure in figures:
-            centers.append(find_centroid(figure))
-        thr_dict[thr] = centers
+    else:
+        mask_cur = mask_cur[mask_cur >= thr]
+    figures = divide_figures(mask_cur)
+    centers = []
+    for figure in figures:
+        centers.append(find_centroid(figure))
+    return centers
         
-    return thr_dict
-
+'''
 def find_centers_on_ans(ans, matrs, thr_list=[0.8], count_blank=False):
     import numpy as np
 
-    thr_dict = dict(zip(thr_list, [[] for i in range(len(thr_list))]))
+    centers = []
+    #thr_dict = dict(zip(thr_list, [[] for i in range(len(thr_list))]))
     count_dict = dict(zip(thr_list, [0] * len(thr_list)))
     for i in range(ans.shape[0]):
-        new_cen_dict = find_centers_on_mask(ans[i], thr_list=thr_list)
-        for thr in thr_list:
-            new_cen = new_cen_dict[thr]
-            if len(new_cen) > 0:
-                new_cen = np.array(new_cen).astype(np.int32)
-                thr_dict[thr].extend(list(matrs[i][[new_cen[:, 0], new_cen[:, 1]]]))
-            else:
-                count_dict[thr] += 1
+        new_cen = find_centers_on_mask(ans[i], thr_list=thr_list)
+        if len(new_cen) > 0:
+            new_cen = np.array(new_cen).astype(np.int32)
+            centers.extend(list(matrs[i][[new_cen[:, 0], new_cen[:, 1]]]))
+        else:
+            count_dict[thr] += 1
     if count_blank:
         return thr_dict, count_dict
     return thr_dict
-
-def clusters_in_pix(clusters, pix, nside):
+'''
+def clusters_in_pix(clusters, pix, nside, search_nside=None):
     import pandas as pd
     import healpy as hp
     import numpy as np
@@ -70,9 +66,12 @@ def clusters_in_pix(clusters, pix, nside):
     cl_pix = radec2pix(df['RA'], df['DEC'], nside)
     df = df[cl_pix == pix]
     df.index = np.arange(df.shape[0])
+    if not (search_nside is None):
+        search_pix = radec2pix(df['RA'], df['DEC'], search_nside)
+        df['search'] = search_pix
     
     return df
-
+'''
 def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8], 
                         true_clusters=None, 
                         true_mode=True, min_dist=5/60):
@@ -140,8 +139,6 @@ def proc_found_clusters(pics, matrs, model, nside=2, depth=10, thr_list=[0.8],
         df['all_found'].iloc[idx] = all_found
         
     return df, max_tp, max_fp
-
-
 def scan_pix(clusters, model, ipix, nside=2, depth=10, thr_list=[0.8], min_dist=5/60, 
              step=64, size=64, n_false=None, search_nside=256, big_mask_radius=15/60):
     from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec, radec2pix
@@ -262,4 +259,4 @@ def scan_none(pix2, model, clusters_dir='/home/rt2122/Data/clusters/',
     if ret_coords:
         return coords
     return df
-        
+'''
