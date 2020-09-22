@@ -137,7 +137,7 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
         if retmatr:
             matr = ret[2]
 
-        if not(pic.shape[0] == size and pic.shape[1] == size):
+        if not(pic.shape[0] == size and pic.shape[1] == size) or np.count_nonzero(mask) == 0:
             pixels_of_choice= pixels_of_choice[pixels_of_choice != ipix[i]]
             ipix[i] = np.random.choice(pixels_of_choice)
             theta[i], phi[i] = hp.pix2ang(nside=nside_choice, nest=True, 
