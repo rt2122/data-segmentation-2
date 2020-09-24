@@ -1,0 +1,37 @@
+\documentclass{article}
+    \usepackage{amssymb}
+    \usepackage[utf8]{inputenc}
+    \usepackage[russian]{babel}
+    \usepackage[left=2cm,right=2cm,
+        top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+    }
+
+\begin{document}
+\begin{center}{\hugeОтчет по курсовой работе за неделю\\}\end{center}
+Дата: 25.9.2020\\
+Научные руководители: Герасимов С.В., Мещеряков А.В.\\
+Студент: Немешаева Алиса\\
+Курс: 4\\
+
+\renewcommand{\labelitemi}{$\blacksquare$}
+\renewcommand\labelitemii{$\square$}
+\begin{enumerate}
+    \item Главной целью на прошлую и текущую недели являлось повторение результатов \hyperlink{https://www.aanda.org/articles/aa/pdf/2020/02/aa36919-19.pdf}{статьи}
+            (примерное совпадение графиков recall и false positive). В прошлый раз удалось достигнуть 
+            recall 0,975 при пороговом значении для масок 0,1. В статье для такого порога значение 
+            recall составило 1,0.\\
+    \item Для достижения лучшего результата было обучено еще несколько моделей, их отличие от 
+        предыдущей заключется в увеличении расстояния скоплений от центров патчей. Была достигнута 
+        полнота 1.0 на тестовой области, но для более точного воспроизведения результатов нужно 
+        продолжать обучение модели,
+        \hyperlink{https://github.com/rt2122/data-segmentation-2/blob/master/Planck\_Unet/scan\_planck\_z\_f8\_d0.8.ipynb}{графики}.\\
+\end{enumerate}
+
+Общее количество строк кода: 1502\\
+\end{document}

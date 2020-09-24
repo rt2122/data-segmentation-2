@@ -49,7 +49,7 @@ def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/', y=False):
 
 def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
                        dirname='/home/rt2122/Data/Planck/normalized/', 
-                      mask_radius=5/60, retmatr=False, matr=None, centers_in_patch=False):
+                      mask_radius=2.5/60, retmatr=False, matr=None, centers_in_patch=False):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np
     
