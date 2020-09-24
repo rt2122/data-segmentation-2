@@ -142,7 +142,16 @@ def draw_dots_h(ra, dec, data, nside, mdict, shape):
     
     return pic
 
-def draw_proper_circle(ra, dec, radius, nside, mdict, shape, coords_mode=True):
+def draw_proper_circle_s(ras, decs, radius, nside, mdict, shape, centers_in_patch=False):
+    import numpy as np
+    res = np.zeros(shape)
+    for ra, dec in zip(ras, decs):
+        res = np.logical_or(res, draw_proper_circle(ra, dec, radius, nside, mdict, shape, 
+            False, centers_in_patch))
+    return res
+
+def draw_proper_circle(ra, dec, radius, nside, mdict, shape, coords_mode=True, 
+        centers_in_patch=False):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
@@ -156,6 +165,10 @@ def draw_proper_circle(ra, dec, radius, nside, mdict, shape, coords_mode=True):
         return np.array(coords)
     
     pic = np.zeros(shape, dtype=np.uint8)
+    if centers_in_patch:
+        cl_pix = hp.vec2pix(nside, *vec, nest=True)
+        if not (cl_pix in mdict):
+            return pic
     if len(shape) == 2:
         for x, y in coords:
             pic[x, y] = 1

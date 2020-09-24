@@ -49,7 +49,7 @@ def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/', y=False):
 
 def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
                        dirname='/home/rt2122/Data/Planck/normalized/', 
-                      mask_radius=5/60, retmatr=False, matr=None):
+                      mask_radius=5/60, retmatr=False, matr=None, centers_in_patch=False):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np
     
@@ -63,7 +63,7 @@ def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=204
     for ra, dec in clusters_arr:
         mask = np.logical_or(mask, 
             draw_proper_circle(ra, dec, mask_radius, fin_nside, mdict, 
-                              mask.shape, coords_mode=False))
+                              mask.shape, coords_mode=False, centers_in_patch=centers_in_patch))
     if not retmatr:
         return pic, mask
 
@@ -108,10 +108,9 @@ def pixels_with_clusters(clusters, big_pixels, nside, min_rad=0.62):
     return small_pixels, df
 
 def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=False, size=64,
-        print_coords=False):
+        print_coords=False, centers_in_patch=False):
     import numpy as np
     import healpy as hp
-    from DS_Planck_Unet import draw_pic_with_mask
     from astropy.coordinates import SkyCoord
     from astropy import units as u
 
@@ -131,7 +130,8 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
         cl_list = np.stack([cl_list['RA'], cl_list['DEC']]).T
         pic, mask = None, None
         matr = None
-        ret = draw_pic_with_mask([ra[i], dec[i]], cl_list, retmatr=retmatr)
+        ret = draw_pic_with_mask([ra[i], dec[i]], cl_list, retmatr=retmatr,
+                centers_in_patch=centers_in_patch)
         pic = ret[0]
         mask = ret[1]
         if retmatr:
@@ -160,21 +160,22 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
 
 
 def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.08, search_nside=512,
-        size=64, retmatr=False, print_coords=False):
+        size=64, retmatr=False, print_coords=False, centers_in_patch=False):
     import healpy as hp
     import numpy as np
+    from tensorflow import convert_to_tensor
     
     small_pixels, df = pixels_with_clusters(clusters, big_pixels, search_nside, min_rad)
     
     while True:
         if retmatr:
             pics, masks, matrs = gen_batch(small_pixels, batch_size, search_nside, df, size=size,
-                    retmatr=retmatr, print_coords=print_coords)
+                    retmatr=retmatr, print_coords=print_coords, centers_in_patch=centers_in_patch)
             yield np.stack(pics), np.stack(masks) , np.stack(matrs)
         else:
             pics, masks = gen_batch(small_pixels, batch_size, search_nside, df, size=size,
-                    retmatr=retmatr, print_coords=print_coords)
-            yield np.stack(pics), np.stack(masks) 
+                    retmatr=retmatr, print_coords=print_coords, centers_in_patch=centers_in_patch)
+            yield convert_to_tensor(np.stack(pics)), convert_to_tensor(np.stack(masks)) 
 
 
 
@@ -198,7 +199,7 @@ def dice(y_pred, y_true, eps=0.1):
 
 
 def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, weights=None): 
-    import numpy as np 
+    #import numpy as np 
     from tensorflow.keras.callbacks import ModelCheckpoint, LearningRateScheduler
     from tensorflow.keras.optimizers import Adam, SGD
     from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, concatenate, UpSampling2D
