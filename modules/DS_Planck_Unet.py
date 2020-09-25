@@ -266,6 +266,10 @@ def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, we
     
     return model
 
+def load_planck_model(path):
+    from tensorflow.keras.models import load_model
+    return load_model(path, custom_objects={'iou' : iou, 'dice' : dice})
+
 def check_gen(gen, model=None, thr=0.8, y=False):
     from matplotlib import pyplot as plt
     import numpy as np
