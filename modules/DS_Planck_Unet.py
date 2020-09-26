@@ -312,4 +312,19 @@ def check_mask(gen, model, thr_list):
                 ax[i][j].set_xlabel(thr_list[i+3*j])
     ax[-1][-1].imshow(mask[:,:,0])
 
-
+def gen_data_from_pregen(path, batch_size):
+    import os
+    import numpy as np
+    from tensorflow import convert_to_tensor
+    
+    n_pics = len(next(os.walk(os.path.join(path, 'x')))[-1])
+    while True:
+        idx_sh = np.arange(n_pics)
+        np.random.shuffle(idx_sh)
+        for st in range(0, n_pics, batch_size):
+            x = []
+            y = []
+            for idx in idx_sh[st:st+batch_size]:
+                x.append(np.load(os.path.join(path, 'x', str(idx)) + '.npy'))
+                y.append(np.load(os.path.join(path, 'y', str(idx)) + '.npy'))
+            yield convert_to_tensor(np.stack(x)), convert_to_tensor(np.stack(y))
