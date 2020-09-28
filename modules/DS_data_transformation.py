@@ -84,13 +84,14 @@ def normalize(pic):
     return pic
 
 
-def draw_df(df, data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
-               save=False):
+def draw_df(data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
+               save=False, invert=True):
     from matplotlib import pyplot as plt
     import numpy as np
     fig, ax = plt.subplots(1, figsize=figsize)
     colors = 'bgrcmykw'
-    plt.gca().invert_xaxis()
+    if invert:
+        plt.gca().invert_xaxis()
     max_y = 0
     min_y = 100
     for c, label in zip(colors[:len(data)], data):
