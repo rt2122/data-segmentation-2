@@ -27,17 +27,19 @@ def divide_figures(pic):
 def find_centers_on_mask(mask, thr, binary=True):
     import numpy as np
 
-    mask_cur = np.copy(mask)
-    if binary:
-        mask_cur = np.array(mask_cur >= thr, dtype=np.float32)
-    else:
-        mask_cur = mask_cur[mask_cur >= thr]
-    figures = divide_figures(mask_cur)
+    mask_binary = np.copy(mask)
+    mask_binary = np.array(mask_binary >= thr, dtype=np.float32)
+    
+    figures = divide_figures(mask_binary)
     centers = []
     for figure in figures:
-        centers.append(find_centroid(figure))
+        if not binary:
+            f = np.zeros_like(mask)
+            f[np.where(figure)] = mask[np.where(figure)]
+            centers.append(find_centroid(f))
+        else:
+            centers.append(find_centroid(figure))
     return centers
-        
 
 def clusters_in_pix(clusters, pix, nside, search_nside=None):
     import pandas as pd
@@ -90,15 +92,15 @@ def gen_pics_for_detection(ipix, model, nside=2, depth=10, step=64, size=64,
     return {'true_clusters' : true_clusters,
             'pics' : pics, 'matrs' : matrs, 'masks' : masks, 'ans' : ans} 
 
-def detect_clusters_on_pic(ans, matr, thr):
+def detect_clusters_on_pic(ans, matr, thr, binary):
     import numpy as np
-    centers = find_centers_on_mask(ans, thr)
+    centers = find_centers_on_mask(ans, thr, binary)
     if len(centers) > 0:
         centers = np.array(centers, dtype=np.int32)
         centers = matr[centers[:,0], centers[:,1]]
     return centers
 
-def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/60):
+def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/60, binary=True):
     import numpy as np
     import pandas as pd
     from DS_healpix_fragmentation import pix2radec
@@ -120,7 +122,7 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
     fp_sc = None
     
     for i in range(len(ans)):
-        centers = detect_clusters_on_pic(ans[i], matrs[i], thr)
+        centers = detect_clusters_on_pic(ans[i], matrs[i], thr, binary)
         if np.count_nonzero(masks[i]) and len(centers) == 0:
             stat_df['tn'] += 1
         if len(centers) > 0:
