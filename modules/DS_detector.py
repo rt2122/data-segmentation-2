@@ -114,8 +114,9 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
     true_clusters = all_dict['true_clusters']
     sc_true_clusters = {cat : SkyCoord(ra=true_clusters[cat]['RA']*u.degree, 
                                  dec=true_clusters[cat]['DEC']*u.degree, 
-                                 frame='icrs') for cat in true_clusters}
-    for cat_name in true_clusters:
+                                 frame='icrs') for cat in true_clusters 
+                                 if len(true_clusters[cat]) > 0}
+    for cat_name in sc_true_clusters:
         true_clusters[cat_name]['found'] = False
     params = ['tp', 'fp', 'tn', 'fn']
     stat_df = dict(zip(params, [0] * len(params)))
@@ -129,7 +130,7 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
         if len(centers) > 0:
             centers = pix2radec(centers, nside=base_nside)
             sc = SkyCoord(ra=centers[0]*u.degree, dec=centers[1]*u.degree, frame='icrs')
-            for cat in true_clusters:
+            for cat in sc_true_clusters:
                 idx, d2d, _ = sc_true_clusters[cat].match_to_catalog_sky(sc)
                 true_clusters[cat]['found'] = np.logical_or(d2d.degree <= max_dist,
                                                            true_clusters[cat]['found'])
@@ -151,7 +152,7 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
     stat_df['fp'] = len(fp)
 
     all_stats = {}
-    for cat in true_clusters:
+    for cat in sc_true_clusters:
         stat_df['tp'] = np.count_nonzero(true_clusters[cat]['found'])
         stat_df['fn'] = np.count_nonzero(np.logical_not(true_clusters[cat]['found']))
         all_stats[cat] = stat_df.copy()
