@@ -85,7 +85,7 @@ def normalize(pic):
 
 
 def draw_df(data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
-               save=False, invert=True):
+               save=False, invert=True, comment='', comm_coords=(0.6, 0.1)):
     from matplotlib import pyplot as plt
     import numpy as np
     fig, ax = plt.subplots(1, figsize=figsize)
@@ -112,6 +112,7 @@ def draw_df(data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
             ax.set_yticks(ygrid)
         #ax.grid(True)
         plt.grid(b=True, which='major', color='#666666', linestyle=':')
+    plt.text(*comm_coords, comment)
     if save:
         plt.savefig('pic.png')
     plt.show()

@@ -1,0 +1,19 @@
+\documentclass{article}
+  \usepackage[utf8]{inputenc}
+  \usepackage[russian]{babel}
+  \usepackage[left=2cm,right=2cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+  \usepackage{makecell}
+  \usepackage{graphicx}
+  \graphicspath{{pictures/}}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+ 
+\begin{document}
+    \begin{table}[h!]
+        \begin{tabular}{p{0.45\linewidth}p{0.45\linewidth}}
+            \textbf{40 эпох} & \textbf{14 эпох}\\
+            \includegraphics[width=\linewidth]{recall40} & \includegraphics[width=\linewidth]{recall14}\\ 
+            \includegraphics[width=\linewidth]{fp40} & \includegraphics[width=\linewidth]{fp14}\\ 
+        \end{tabular}
+    \end{table}
+\end{document}

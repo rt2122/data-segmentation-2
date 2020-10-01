@@ -101,7 +101,7 @@ def detect_clusters_on_pic(ans, matr, thr, binary):
     return centers
 
 def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/60, binary=True, 
-        get_coords_mode=False):
+        get_coords_mode=False, all_catalogs_mode=False):
     import numpy as np
     import pandas as pd
     from DS_healpix_fragmentation import pix2radec
@@ -147,8 +147,16 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
                                      frame='icrs')
     if get_coords_mode:
         return {'true_clusters' : true_clusters, 'fp' : fp}
-            
-    stat_df['tp'] = np.count_nonzero(true_clusters[main_cat]['found'])
-    stat_df['fn'] = np.count_nonzero(np.logical_not(true_clusters[main_cat]['found']))
+    
     stat_df['fp'] = len(fp)
-    return stat_df
+
+    all_stats = {}
+    for cat in true_clusters:
+        stat_df['tp'] = np.count_nonzero(true_clusters[cat]['found'])
+        stat_df['fn'] = np.count_nonzero(np.logical_not(true_clusters[cat]['found']))
+        all_stats[cat] = stat_df.copy()
+
+    if all_catalogs_mode:
+        return all_stats
+
+    return all_stats['cat']
