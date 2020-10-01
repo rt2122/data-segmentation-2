@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.16)  1 OCT 2020 11:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.8.16)  1 OCT 2020 12:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -326,7 +326,12 @@ File: l3backend-pdfmode.def 2020-06-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count181
 \l__pdf_internal_box=\box47
 )
-No file act_comp.aux.
+(./act_comp.aux
+LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 4
+.
+ (/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
+File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
@@ -342,11 +347,6 @@ LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 11.
-LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 1
-1.
-(/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
-File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
-)
 LaTeX Font Info:    ... okay on input line 11.
 
 *geometry* driver: auto-detecting
@@ -424,19 +424,19 @@ File: pictures/fp40.png Graphic file (type png)
 <use pictures/fp40.png>
 Package pdftex.def Info: pictures/fp40.png  used on input line 16.
 (pdftex.def)             Requested size: 225.21626pt x 165.43929pt.
-<pictures/fp14.png, id=5, 487.8225pt x 362.35374pt>
+<pictures/fp14.png, id=5, 487.8225pt x 358.33875pt>
 File: pictures/fp14.png Graphic file (type png)
 <use pictures/fp14.png>
 Package pdftex.def Info: pictures/fp14.png  used on input line 16.
-(pdftex.def)             Requested size: 225.21626pt x 167.29294pt.
+(pdftex.def)             Requested size: 225.21626pt x 165.43929pt.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./pictures/recall40.png> <
 ./pictures/recall14.png> <./pictures/fp40.png> <./pictures/fp14.png>] (./act_co
 mp.aux) ) 
 Here is how much of TeX's memory you used:
- 3222 strings out of 480478
- 42516 string characters out of 5905959
+ 3224 strings out of 480478
+ 42542 string characters out of 5905959
  299516 words of memory out of 5000000
  19249 multiletter control sequences out of 15000+600000
  533952 words of font info for 26 fonts, out of 8000000 for 9000
@@ -445,7 +445,7 @@ Here is how much of TeX's memory you used:
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr
 /share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-di
 st/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on act_comp.pdf (1 page, 84016 bytes).
+Output written on act_comp.pdf (1 page, 87411 bytes).
 PDF statistics:
  26 PDF objects out of 1000 (max. 8388607)
  12 compressed objects within 1 object stream
