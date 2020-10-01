@@ -100,7 +100,8 @@ def detect_clusters_on_pic(ans, matr, thr, binary):
         centers = matr[centers[:,0], centers[:,1]]
     return centers
 
-def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/60, binary=True):
+def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/60, binary=True, 
+        get_coords_mode=False):
     import numpy as np
     import pandas as pd
     from DS_healpix_fragmentation import pix2radec
@@ -144,6 +145,8 @@ def detect_clusters(all_dict, thr, base_nside=2048, main_cat='all', max_dist=15/
                     fp = pd.concat([fp, fp_new])
                     fp_sc = SkyCoord(ra=fp['RA']*u.degree, dec=fp['DEC']*u.degree, 
                                      frame='icrs')
+    if get_coords_mode:
+        return {'true_clusters' : true_clusters, 'fp' : fp}
             
     stat_df['tp'] = np.count_nonzero(true_clusters[main_cat]['found'])
     stat_df['fn'] = np.count_nonzero(np.logical_not(true_clusters[main_cat]['found']))
