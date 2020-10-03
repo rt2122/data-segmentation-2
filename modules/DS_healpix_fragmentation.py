@@ -61,7 +61,7 @@ def radec2pix(ra, dec, nside):
     from astropy import units as u
     import healpy as hp
 
-    sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+    sc = SkyCoord(ra=np.array(ra)*u.degree, dec=np.array(dec)*u.degree, frame='icrs')
     return hp.ang2pix(nside, sc.galactic.l.degree, sc.galactic.b.degree, 
                                   nest=True, lonlat=True)
 def pix2radec(ipix, nside):
