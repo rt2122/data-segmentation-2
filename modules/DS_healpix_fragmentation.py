@@ -60,6 +60,7 @@ def radec2pix(ra, dec, nside):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
+    import numpy as np
 
     sc = SkyCoord(ra=np.array(ra)*u.degree, dec=np.array(dec)*u.degree, frame='icrs')
     return hp.ang2pix(nside, sc.galactic.l.degree, sc.galactic.b.degree, 
