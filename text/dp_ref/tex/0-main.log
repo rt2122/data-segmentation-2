@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.5)  8 OCT 2020 12:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.5)  8 OCT 2020 16:50
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -644,14 +644,14 @@ File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 \Gin@req@width=\dimen167
 )
 
-./10-preamble.tex:33: LaTeX Error: Option clash for package geometry.
+./10-preamble.tex:30: LaTeX Error: Option clash for package geometry.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.33 
-     
+l.30 \linespread
+                {1.5}
 The package geometry has already been loaded with options:
   [left=20mm,right=10mm,top=20mm,bottom=20mm,headsep=0pt]
 There has now been an attempt to load it with options
@@ -690,7 +690,7 @@ Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
 \everycr=\toks32
 \minrowclearance=\skip74
 )
-Package color Info: Redefining color green on input line 40.
+Package color Info: Redefining color green on input line 41.
 )
 (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
 File: l3backend-pdfmode.def 2020-06-03 L3 backend support: PDF mode
@@ -925,22 +925,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 9--10
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--14
+Underfull \hbox (badness 10000) in paragraph at lines 12--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 15--16
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 17--18
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 19--20
+Underfull \hbox (badness 10000) in paragraph at lines 18--19
 
  []
 
@@ -948,64 +943,64 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.20 
+l.19 
       [1
 
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 21--22
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 33--33
-[]|\T2A/cmr/m/n/12 Apache Software Foundation, Oracle, Sun
- []
-
-) [3] (./32-chapter-two.tex
-Underfull \hbox (badness 10000) in paragraph at lines 4--8
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 9--10
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 10--12
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 12--14
-
- []
-
-
-Underfull \hbox (badness 1231) in paragraph at lines 16--19
-\T2A/cmr/m/n/12 На^^?при^^?мер поль^^?зо^^?ва^^?тель мо^^?жет со^^?зда^^?вать в
-еб-^^?при^^?ло^^?же^^?ния, управ^^?ля^^?е^^?мые PHP, ис^^?поль^^?зуя
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 16--19
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 20--21
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 22--24
+Underfull \hbox (badness 10000) in paragraph at lines 22--23
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 34--34
+[]|\T2A/cmr/m/n/12 Apache Software Foundation, Oracle, Sun
+ []
+
+) [3] (./32-chapter-two.tex
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 25--26
+Underfull \hbox (badness 10000) in paragraph at lines 10--11
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--13
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--15
+
+ []
+
+
+Underfull \hbox (badness 1231) in paragraph at lines 17--20
+\T2A/cmr/m/n/12 На^^?при^^?мер поль^^?зо^^?ва^^?тель мо^^?жет со^^?зда^^?вать в
+еб-^^?при^^?ло^^?же^^?ния, управ^^?ля^^?е^^?мые PHP, ис^^?поль^^?зуя
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 17--20
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--22
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--25
 
  []
 
@@ -1020,12 +1015,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 27--28
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--30
+Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31--36
+Underfull \hbox (badness 10000) in paragraph at lines 29--31
 
  []
 
@@ -1034,18 +1029,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--36
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 36--40
+Underfull \hbox (badness 10000) in paragraph at lines 32--37
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 40--43
+Underfull \hbox (badness 10000) in paragraph at lines 37--41
 
  []
 
-./32-chapter-two.tex:47: You can't use `macro parameter character #' in horizon
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--44
+
+ []
+
+./32-chapter-two.tex:48: You can't use `macro parameter character #' in horizon
 tal mode.
-l.47 ...Р№СЃС‚РІР° СЏР·С‹РєРѕРІ Visual Basic Рё C#
+l.48 ...Р№СЃС‚РІР° СЏР·С‹РєРѕРІ Visual Basic Рё C#
                                                   .
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -1053,101 +1053,93 @@ If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--49
+Underfull \hbox (badness 10000) in paragraph at lines 46--50
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--54
+Underfull \hbox (badness 10000) in paragraph at lines 52--55
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--62
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 63--68
+Underfull \hbox (badness 10000) in paragraph at lines 56--63
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 70--80
+Underfull \hbox (badness 10000) in paragraph at lines 64--69
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--86
+Underfull \hbox (badness 10000) in paragraph at lines 71--81
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--96
+Underfull \hbox (badness 10000) in paragraph at lines 82--87
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--103
+Underfull \hbox (badness 10000) in paragraph at lines 89--97
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 104--107
+Underfull \hbox (badness 10000) in paragraph at lines 99--104
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--108
 
  []
 
 (/usr/share/texmf-dist/tex/latex/ucs/data/uni-0.def
 File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
 )
-Underfull \hbox (badness 10000) in paragraph at lines 109--117
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 118--124
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 125--129
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 130--135
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 137--142
+Underfull \hbox (badness 10000) in paragraph at lines 110--118
 
  []
 
 [7]
-Underfull \hbox (badness 1484) in paragraph at lines 143--152
+Underfull \hbox (badness 10000) in paragraph at lines 119--125
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--130
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--136
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--143
+
+ []
+
+
+Underfull \hbox (badness 1484) in paragraph at lines 144--153
 []\T2A/cmr/m/n/12 Visual Studio вклю^^?ча^^?ет ре^^?дак^^?тор ко^^?да, под^^?де
 р^^?жи^^?ва^^?ю^^?щий IntelliSense (ком^^?по^^?нент
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--152
+Underfull \hbox (badness 10000) in paragraph at lines 144--153
 
  []
 
-./32-chapter-two.tex:156: You can't use `macro parameter character #' in horizo
+[8]
+./32-chapter-two.tex:157: You can't use `macro parameter character #' in horizo
 ntal mode.
-l.156 Basic .NET, C #
+l.157 Basic .NET, C #
                      , F #, JavaScript, TypeScript, XML, XSLT, HTML Рё CSS. ...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-./32-chapter-two.tex:156: You can't use `macro parameter character #' in horizo
-ntal mode.
-l.156 Basic .NET, C #, F #
-                          , JavaScript, TypeScript, XML, XSLT, HTML Рё CSS. ...
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
 If you're in the wrong mode, you might be able to
@@ -1155,47 +1147,42 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 
 ./32-chapter-two.tex:157: You can't use `macro parameter character #' in horizo
 ntal mode.
-l.157 ...° С‡РµСЂРµР· РїР»Р°РіРёРЅС‹. Java (Рё J #
-                                                  )
+l.157 Basic .NET, C #, F #
+                          , JavaScript, TypeScript, XML, XSLT, HTML Рё CSS. ...
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
 If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 153--159
+Underfull \hbox (badness 10000) in paragraph at lines 154--160
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 160--163
+Underfull \hbox (badness 10000) in paragraph at lines 161--164
 
  []
 
 
-Underfull \hbox (badness 3189) in paragraph at lines 165--170
+Underfull \hbox (badness 3189) in paragraph at lines 166--171
 []\T2A/cmr/m/n/12 Code::Blocks раз^^?ра^^?бо^^?танa ко^^?ман^^?дой раз^^?ра^^?б
 от^^?чи^^?ков Code::Blocks team. На^^?пи^^?са^^?на
  []
 
 
-Underfull \hbox (badness 1629) in paragraph at lines 165--170
+Underfull \hbox (badness 1629) in paragraph at lines 166--171
 \T2A/cmr/m/n/12 на C++. Онa ис^^?поль^^?зу^^?ет крос^^?сплат^^?фор^^?мен^^?ную 
 опе^^?ра^^?ци^^?он^^?ную си^^?сте^^?му. Это бес^^?плат^^?ная
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 165--170
+Underfull \hbox (badness 10000) in paragraph at lines 166--171
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--172
-
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 173--174
+Underfull \hbox (badness 10000) in paragraph at lines 172--173
 
  []
 
@@ -1219,114 +1206,103 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--178
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 178--180
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--183
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 185--198
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 200--208
-
- []
-
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 210--221
+Underfull \hbox (badness 10000) in paragraph at lines 178--179
 
  []
 
 
-Underfull \hbox (badness 1248) in paragraph at lines 223--235
-\T2A/cmr/m/n/12 на^^?пи^^?сан на язы^^?ке Java. Она ис^^?поль^^?зу^^?ет крос^^?
-сплат^^?фор^^?мен^^?ную опе^^?ра^^?ци^^?он^^?ную си^^?сте^^?му и
+Underfull \hbox (badness 10000) in paragraph at lines 179--181
+
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 223--235
+Underfull \hbox (badness 10000) in paragraph at lines 183--185
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 187--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 202--210
 
  []
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 237--254
+Underfull \hbox (badness 10000) in paragraph at lines 212--223
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--237
 
  []
 
 [11]
-Overfull \hbox (1.9703pt too wide) in paragraph at lines 262--262
-[]|\T2A/cmr/m/n/12 Отладчик| 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 262--262
-[]|\T2A/cmr/m/n/12 Автодо-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 262--262
-[]|\T2A/cmr/m/n/12 Браузер
- []
-
-
-Overfull \hbox (15.18843pt too wide) in paragraph at lines 260--272
- [][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 295--295
-[]|\T2A/cmr/m/n/12 Разработка
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 306--313
+Underfull \hbox (badness 10000) in paragraph at lines 239--256
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 314--318
-
+Overfull \hbox (1.9703pt too wide) in paragraph at lines 264--264
+[]|\T2A/cmr/m/n/12 Отладчик| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--325
-
+Underfull \hbox (badness 10000) in paragraph at lines 264--264
+[]|\T2A/cmr/m/n/12 Автодо-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--328
-
+Underfull \hbox (badness 10000) in paragraph at lines 264--264
+[]|\T2A/cmr/m/n/12 Браузер
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--330
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 331--335
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 336--338
-
+Overfull \hbox (15.18843pt too wide) in paragraph at lines 262--274
+ [][] 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 341--342
+Underfull \hbox (badness 10000) in paragraph at lines 297--297
+[]|\T2A/cmr/m/n/12 Разработка
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 308--315
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--343
+Underfull \hbox (badness 10000) in paragraph at lines 316--320
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 321--326
+
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 327--330
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--332
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--337
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 338--340
 
  []
 
@@ -1336,48 +1312,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 343--344
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 344--347
+Underfull \hbox (badness 10000) in paragraph at lines 344--345
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 347--351
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 351--352
+Underfull \hbox (badness 10000) in paragraph at lines 346--350
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 352--353
+Underfull \hbox (badness 10000) in paragraph at lines 350--354
+
+ []
+
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 354--355
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 357--358
+Underfull \hbox (badness 10000) in paragraph at lines 355--356
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--359
+Underfull \hbox (badness 10000) in paragraph at lines 360--361
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 359--360
-
- []
-
-
-Underfull \hbox (badness 1377) in paragraph at lines 360--362
-[]\T2A/cmr/m/n/12 плагин Command-T, вдох^^?нов^^?лен^^?ный ок^^?ном ѕПе^^?рей^^
-?ти к фай^^?луї, при^^?вя^^?зан^^?ным к
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 360--362
+Underfull \hbox (badness 10000) in paragraph at lines 361--362
 
  []
 
@@ -1386,98 +1356,99 @@ Underfull \hbox (badness 10000) in paragraph at lines 362--363
 
  []
 
-[14]
+
+Underfull \hbox (badness 1377) in paragraph at lines 363--365
+[]\T2A/cmr/m/n/12 плагин Command-T, вдох^^?нов^^?лен^^?ный ок^^?ном ѕПе^^?рей^^
+?ти к фай^^?луї, при^^?вя^^?зан^^?ным к
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 363--365
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 369--370
+Underfull \hbox (badness 10000) in paragraph at lines 365--366
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 370--372
+Underfull \hbox (badness 10000) in paragraph at lines 366--368
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 372--375
+Underfull \hbox (badness 10000) in paragraph at lines 372--373
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--377
+Underfull \hbox (badness 10000) in paragraph at lines 373--375
+
+ []
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 375--378
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 377--378
+Underfull \hbox (badness 10000) in paragraph at lines 378--380
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 378--379
+Underfull \hbox (badness 10000) in paragraph at lines 380--381
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 379--381
+Underfull \hbox (badness 10000) in paragraph at lines 381--382
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 385--386
+Underfull \hbox (badness 10000) in paragraph at lines 382--384
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 386--387
+Underfull \hbox (badness 10000) in paragraph at lines 388--389
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 387--388
+Underfull \hbox (badness 10000) in paragraph at lines 389--390
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 392--393
-
- []
-
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+Underfull \hbox (badness 10000) in paragraph at lines 390--391
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 394--396
+Underfull \hbox (badness 10000) in paragraph at lines 395--396
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 400--402
+Underfull \hbox (badness 10000) in paragraph at lines 396--397
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--409
+Underfull \hbox (badness 10000) in paragraph at lines 397--399
+
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 403--405
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 413--414
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 414--415
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 415--416
+Underfull \hbox (badness 10000) in paragraph at lines 405--412
 
  []
 
@@ -1497,95 +1468,113 @@ Underfull \hbox (badness 10000) in paragraph at lines 418--419
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 422--427
-
- []
-
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 428--434
+Underfull \hbox (badness 10000) in paragraph at lines 419--420
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--436
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 437--441
+Underfull \hbox (badness 10000) in paragraph at lines 421--422
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 442--445
+Underfull \hbox (badness 10000) in paragraph at lines 425--430
+
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 431--437
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 454--454
+Underfull \hbox (badness 10000) in paragraph at lines 438--439
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 440--444
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 445--448
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 457--457
 []|\T2A/cmr/m/n/12 Нажатие
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 461--461
+Underfull \hbox (badness 10000) in paragraph at lines 464--464
 []|\T2A/cmr/m/n/12 Пользова-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 461--461
+Underfull \hbox (badness 10000) in paragraph at lines 464--464
 \T2A/cmr/m/n/12 тельская
  []
 
 
-Underfull \hbox (badness 1688) in paragraph at lines 465--469
+Underfull \hbox (badness 1688) in paragraph at lines 468--472
 []|\T2A/cmr/m/n/12 Emacs, из^^?на^^?чаль^^?но пред^^?на^^?зна^^?чен^^?ный
  []
 
 
-Underfull \hbox (badness 1270) in paragraph at lines 465--469
+Underfull \hbox (badness 1270) in paragraph at lines 468--472
 \T2A/cmr/m/n/12 ци^^?о^^?наль^^?но^^?го ин^^?тер^^?ва^^?ла и из^^?ме^^?не^^?ния
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 471--471
+Underfull \hbox (badness 10000) in paragraph at lines 474--474
 []|\T2A/cmr/m/n/12 Поддержка
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 471--471
+Underfull \hbox (badness 10000) in paragraph at lines 474--474
 \T2A/cmr/m/n/12 язы^^?ков и
  []
 
 
-Underfull \hbox (badness 1867) in paragraph at lines 473--474
+Underfull \hbox (badness 1867) in paragraph at lines 476--477
 []|\T2A/cmr/m/n/12 Emacs пол^^?но^^?стью под^^?дер^^?жи^^?ва^^?ет все
  []
 
 
-Underfull \hbox (badness 7907) in paragraph at lines 473--474
+Underfull \hbox (badness 7907) in paragraph at lines 476--477
 \T2A/cmr/m/n/12 Unicode-^^?сов^^?ме^^?сти^^?мые си^^?сте^^?мы пись^^?
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 476--476
+Underfull \hbox (badness 10000) in paragraph at lines 479--479
 []|\T2A/cmr/m/n/12 Интерфейс
  []
 
 
-Underfull \hbox (badness 1953) in paragraph at lines 476--479
+Underfull \hbox (badness 1953) in paragraph at lines 479--482
 []|\T2A/cmr/m/n/12 Vim ис^^?поль^^?зу^^?ет раз^^?лич^^?ные ре^^?жи^^?мы
  []
 
 
-Overfull \hbox (14.39874pt too wide) in paragraph at lines 451--485
+Overfull \hbox (14.39874pt too wide) in paragraph at lines 454--488
  [][] 
  []
 
 
+LaTeX Warning: Float too large for page by 109.26407pt on input line 488.
+
+
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-) [17] [18] (./33-chapter-three.tex
+) [19] [20] (./33-chapter-three.tex
 Underfull \hbox (badness 10000) in paragraph at lines 4--7
 
  []
@@ -1606,7 +1595,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 13--19
 
  []
 
-) [19
+) [21
 
 
 
@@ -1625,7 +1614,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 15--18
 
  []
 
-) [20
+) [22
 
 
 
@@ -1644,7 +1633,7 @@ I'll just pretend that you didn't ask for it.
 If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
-)) [21
+)) [23
 
 
 
@@ -1665,10 +1654,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 38.
  ) 
 Here is how much of TeX's memory you used:
- 14988 strings out of 480478
- 208310 string characters out of 5905959
- 478527 words of memory out of 5000000
- 30615 multiletter control sequences out of 15000+600000
+ 14989 strings out of 480478
+ 208309 string characters out of 5905959
+ 472518 words of memory out of 5000000
+ 30614 multiletter control sequences out of 15000+600000
  542806 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  54i,11n,51p,990b,654s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1679,10 +1668,10 @@ ublic/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/
 sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></
 usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm2488.pfb></usr/share/texmf
 -dist/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on 0-main.pdf (23 pages, 210537 bytes).
+Output written on 0-main.pdf (25 pages, 212200 bytes).
 PDF statistics:
- 327 PDF objects out of 1000 (max. 8388607)
- 287 compressed objects within 3 object streams
- 79 named destinations out of 1000 (max. 500000)
+ 336 PDF objects out of 1000 (max. 8388607)
+ 294 compressed objects within 3 object streams
+ 81 named destinations out of 1000 (max. 500000)
  261 words of extra memory for PDF output out of 10000 (max. 10000000)
 
