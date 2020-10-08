@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \def\selectlanguageifdefined#1{
 \expandafter\ifx\csname date#1\endcsname\relax
 \else\language\csname l@#1\endcsname\fi}
@@ -7,33 +7,120 @@
 \ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi
 \ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
 
-\bibitem{Berkutov}
+\bibitem{intellij}
 \selectlanguageifdefined{russian}
-\BibEmph{Беркутов,~А.М.} Системы комплекстной
-  электромагнитотерапии~/ А.М.~Беркутов. ---
-\newblock М.: Бином, 2000.
+\BibEmph{С.~Давыдов,~А.~Ефимов.} IntelliJ IDEA.
+  Профессиональное программирование на
+  Java.~/ А.~Ефимов.~С.~Давыдов. ---
+\newblock СПб.: БХВ, 2005.
 
-\bibitem{Zolotuhina_Ulaschik}
-\selectlanguageifdefined{russian}
-\BibEmph{И.Е.~Золотухина,~В.С.~Улащик}. Основы
-  импульсной магнитотерапии~/
-  В.С.~Улащик~И.Е.~Золотухина. ---
-\newblock Витебск: Витебская областная
-  типография, 2008.
+\bibitem{comp}
+\selectlanguageifdefined{english}
+\BibEmph{S.~Satav~S.~Satpathy,~K.~Satao}. A Comparative Study and Critical
+  Analysis of Various Integrated Development Environments of C, C++, and Java
+  Languages for Optimum Development~/ K.~Satao~S.~Satav, S.~Satpathy. ---
+\newblock 2011.
 
-\bibitem{Ulaschik_Physio}
-\selectlanguageifdefined{russian}
-\BibEmph{Улащик,~В.С.} Физиотерапия.
-  Универсальная медицинская энциклопедия~/
-  В.С.~Улащик. ---
-\newblock Минск: Книжный дом, 2008.
+\bibitem{comp1}
+\selectlanguageifdefined{english}
+\BibEmph{S.~Kavitha,~S.~Sindhu}. COMPARISON OF INTEGRATED DEVELOPMENT
+  ENVIRONMENT (IDE) DEBUGGING TOOLS: ECLIPSE VS NETBEANS~/
+  S.~Sindhu~S.~Kavitha. ---
+\newblock International Research Journal of Engineering and Technology, 2015.
 
-\bibitem{Gular_Limpanskiy}
+\bibitem{intellij1}
+\selectlanguageifdefined{english}
+\BibEmph{S.~Saunders~D. K.~Fields,~E.~Belayev}. IntelliJ IDEA in action~/
+  E.~Belayev~S.~Saunders, D. K.~Fields. ---
+\newblock Greenwich, Conn. : Manning, 2006.
+
+\bibitem{vim}
 \selectlanguageifdefined{russian}
-\BibEmph{С.А.~Гуляр,~Ю.П.~Лиманский}. Постоянные
-  магнитные поля и их применение в
-  медицине~/ Ю.П.~Лиманский~С.А.~Гуляр. ---
-\newblock Киев: Ин-т физиол. им. А.А. Богомольца
-  НАН Украины, 2006.
+\BibEmph{Анфилатов,~И.} Немного о VIM и IDE~/
+  И.~Анфилатов. ---
+\newblock Habr, 2017.
+
+\bibitem{netbeans}
+\selectlanguageifdefined{english}
+\BibEmph{Boudreau~T.;~Glick,~J.; Greene~S.} NetBeans: The Definitive Guide~/
+  J.; Greene~S.~Boudreau, T.;~Glick. ---
+\newblock 2002.
+
+\bibitem{vim1}
+\selectlanguageifdefined{english}
+\BibEmph{A.~Robbins~E.~Hannah,~L.~Lamb}. Learning the vi and Vim Editors~/
+  L.~Lamb~A.~Robbins, E.~Hannah. ---
+\newblock O'Reilly Media, 2008.
+
+\bibitem{solaris}
+\selectlanguageifdefined{english}
+\BibEmph{Gove,~Darryl}. Solaris Application Programming~/ Darryl~Gove. ---
+\newblock 2008.
+
+\bibitem{bluej}
+\selectlanguageifdefined{english}
+\BibEmph{Barnes~David J.;~Kölling,~Michael}. Objects First with Java: A
+  Practical Introduction Using BlueJ~/ Michael~Barnes, David J.;~Kölling. ---
+\newblock 2011.
+
+\bibitem{eclipse}
+\selectlanguageifdefined{english}
+\BibEmph{Holzner,~Steve}. Eclipse~/ Steve~Holzner. ---
+\newblock 2004.
+
+\bibitem{eclipse1}
+\selectlanguageifdefined{english}
+\BibEmph{Burnette,~Ed}. Eclipse IDE Pocket Guide~/ Ed~Burnette. ---
+\newblock 2005.
+
+\bibitem{emacs}
+\selectlanguageifdefined{english}
+\BibEmph{Ciccarelli,~Eugene}. An Introduction to the Emacs Editor~/
+  Eugene~Ciccarelli. ---
+\newblock 1978.
+
+\bibitem{emacs1}
+\selectlanguageifdefined{english}
+\BibEmph{Stallman,~Richard~M.} EMACS: The Extensible, Customizable,
+  Self-Documenting Display Editor~/ Richard~M.~Stallman. ---
+\newblock 1981.
+
+\bibitem{emacs2}
+\selectlanguageifdefined{english}
+\BibEmph{Glickstein,~Bob}. Writing GNU Emacs Extensions~/ Bob~Glickstein. ---
+\newblock 1997.
+
+\bibitem{vim2}
+\selectlanguageifdefined{english}
+\BibEmph{Neil,~Drew}. Practical Vim~/ Drew~Neil. ---
+\newblock 2015.
+
+\bibitem{vim3}
+\selectlanguageifdefined{english}
+\BibEmph{Oualline,~Steve}. Vim (Vi Improved)~/ Steve~Oualline. ---
+\newblock 2001.
+
+\bibitem{intellij2}
+\selectlanguageifdefined{english}
+\BibEmph{Krochmalski,~Jaroslaw}. IntelliJ IDEA Essentials~/
+  Jaroslaw~Krochmalski. ---
+\newblock 2014.
+
+\bibitem{qt}
+\selectlanguageifdefined{english}
+\BibEmph{Eng,~Lee~Zhi}. Qt5 C++ GUI Programming Cookbook~/ Lee~Zhi~Eng. ---
+\newblock 2019.
+
+\bibitem{visual}
+\selectlanguageifdefined{english}
+\BibEmph{Ritchie,~Peter}. Practical Microsoft Visual Studio 2015~/
+  Peter~Ritchie. ---
+\newblock 2016.
+
+\bibitem{visual1}
+\selectlanguageifdefined{english}
+\BibEmph{Шарп,~Джон}. Microsoft Visual C#. Подробное
+  руководство~/ Джон~Шарп. ---
+\newblock 2015.
 
 \end{thebibliography}
