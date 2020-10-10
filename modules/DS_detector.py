@@ -30,8 +30,8 @@ def get_radius(figure, center):
     center = np.array(center)
     
     edge = np.where(roberts(figure) != 0)
-    min_rad = figure.shape[0]
-    max_rad = 0
+    min_rad = figure.shape[0] * 2
+    max_rad = -1
     
     for point in zip(*edge):
         rad = np.linalg.norm(center - np.array(point))
