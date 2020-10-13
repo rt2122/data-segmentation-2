@@ -30,15 +30,13 @@ def get_radius(figure, center):
     center = np.array(center)
     
     edge = np.where(roberts(figure) != 0)
-    min_rad = figure.shape[0] * 2
-    max_rad = -1
+    rads = []
     
     for point in zip(*edge):
-        rad = np.linalg.norm(center - np.array(point))
-        min_rad = min(min_rad, rad)
-        max_rad = max(max_rad, rad)
-    
-    return min_rad, max_rad
+        rads.append(np.linalg.norm(center - np.array(point)))
+    if len(rads) == 0:
+        return 0, 0, 0
+    return min(rads), np.mean(rads), max(rads)
 
 def divide_figures(pic):
     import numpy as np
@@ -63,8 +61,9 @@ def find_centers_on_mask(mask, thr, binary=True):
     
     figures = divide_figures(mask_binary)
     centers = []
-    areas = []
+    area = []
     min_rad = []
+    mean_rad = []
     max_rad = []
     min_pred = []
     max_pred = []
@@ -77,15 +76,17 @@ def find_centers_on_mask(mask, thr, binary=True):
         else:
             centers.append(find_centroid(figure))
         
-        areas.append(np.count_nonzero(figure))
+        area.append(np.count_nonzero(figure))
         rads = get_radius(figure[:,:,0], centers[-1])
         min_rad.append(rads[0])
-        max_rad.append(rads[1])
+        mean_rad.append(rads[1])
+        max_rad.append(rads[2])
         min_pred.append(np.partition(list(set(f.flatten())), 1)[1])
         max_pred.append(f.max())
 
-    return {'centers' : np.array(centers), 'areas' : np.array(areas), 
+    return {'centers' : np.array(centers), 'area' : np.array(area), 
             'min_rad' : np.array(min_rad), 'max_rad' : np.array(max_rad),
+            'mean_rad' : np.array(mean_rad),
            'min_pred': np.array(min_pred), 'max_pred' : np.array(max_pred)}
 
 def clusters_in_pix(clusters, pix, nside, search_nside=None):
@@ -125,6 +126,7 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
                             clusters_arr=np.array(true_clusters[['RA', 'DEC']]))
     
     pics, matrs, masks = [], [], []
+    pic_idx = []
     for i in range(0, big_matr.shape[0], step):
         for j in range(0, big_matr.shape[1], step):
             pic = big_pic[i:i+size,j:j+size,:]
@@ -132,15 +134,16 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
             matr = big_matr[i:i+size,j:j+size]
             
             if pic.shape == (size, size, pic.shape[-1]):
-                if np.count_nonzero(mask) > 0:
-                    pics.append(pic)
-                    matrs.append(matr)
-                    masks.append(mask)
+                pics.append(pic)
+                matrs.append(matr)
+                masks.append(mask)
+                pic_idx.append((i, j))
  
     
     ans = model.predict(np.array(pics))
     return {'true_clusters' : true_clusters,
-            'pics' : pics, 'matrs' : matrs, 'masks' : masks, 'ans' : ans} 
+            'pics' : pics, 'matrs' : matrs, 'masks' : masks, 'ans' : ans,
+            'pic_idx' : pic_idx} 
 
 def detect_clusters_on_pic(ans, matr, thr, binary):
     import numpy as np
@@ -168,7 +171,7 @@ def detect_clusters(all_dict, thr, base_nside=2048, tp_dist=5/60,
                                 dec=true_clusters['DEC']*u.degree, frame='icrs')
     
     res_cat = pd.DataFrame({'RA' : [], 'DEC' : [], 'area' : [], 
-                      'min_rad' : [], 'max_rad' : [],
+        'min_rad' : [], 'max_rad' : [], 'mean_rad' : [],
                       'min_pred' : [], 'max_pred' : [], 
                       'tRA':[], 'tDEC' : []})
     res_cat['status'] = ''
@@ -192,9 +195,10 @@ def detect_clusters(all_dict, thr, base_nside=2048, tp_dist=5/60,
 
             res_cat_new = pd.DataFrame({'RA':centers[0],
                                   'DEC':centers[1],
-                                  'area' : dd_pic['areas'],          
+                                  'area' : dd_pic['area'],          
                 'min_rad' : dd_pic['min_rad'],
                 'max_rad' : dd_pic['max_rad'],
+                'mean_rad' : dd_pic['mean_rad'],
                 'min_pred' : dd_pic['min_pred'],
                 'max_pred' : dd_pic['max_pred'],
                                       })
@@ -216,15 +220,6 @@ def detect_clusters(all_dict, thr, base_nside=2048, tp_dist=5/60,
                 res_cat = res_cat_new
                 res_cat_sc = sc
             else: 
-                '''
-                res_cat_new = pd.DataFrame({'RA':centers[0][res_cat_new_idx],
-                                  'DEC':centers[1][res_cat_new_idx],
-                                  'area' : dd_pic['areas'][res_cat_new_idx],          
-                'min_rad' : dd_pic['min_rad'][res_cat_new_idx],
-                'max_rad' : dd_pic['max_rad'][res_cat_new_idx],
-                'min_pred' : dd_pic['min_pred'][res_cat_new_idx],
-                'max_pred' : dd_pic['max_pred'][res_cat_new_idx],
-                                      })'''
                 
                 res_cat_new_fp = res_cat_new[res_cat_new['status'] == 'fp']
                 res_cat_new_fp.index = np.arange(len(res_cat_new_fp))
@@ -281,3 +276,69 @@ def detect_clusters(all_dict, thr, base_nside=2048, tp_dist=5/60,
     all_stats = pd.concat([all_stats[cat] for cat in all_stats], ignore_index=True)
     return all_stats 
 
+def connect_masks(ans, pic_idx, size=64, big_shape=(1024, 1024, 1)):
+    import numpy as np
+    
+    connected_ans = np.zeros(big_shape)
+    coef = np.zeros(big_shape)
+    
+    for i in range(len(ans)):
+        x, y = pic_idx[i]
+        connected_ans[x:x+size, y:y+size, :] += ans[i]
+        coef[x:x+size,y:y+size, :] += np.ones((size, size, 1))
+    
+    connected_ans /= coef
+    return connected_ans
+
+def detect_clusters_connected(all_dict, thr, ipix, depth=10, 
+                              base_nside=2048, tp_dist=5/60,
+                             binary=False):
+    import numpy as np
+    import pandas as pd
+    from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    true_clusters = all_dict['true_clusters']
+    big_ans = connect_masks(all_dict['ans'], all_dict['pic_idx'])
+    big_matr = one_pixel_fragmentation(2, ipix, depth)
+    
+    dd = detect_clusters_on_pic(big_ans, big_matr, thr, binary)
+    
+    res_cat = pd.DataFrame({'RA' : [], 'DEC' : [], 'area' : [], 
+        'min_rad' : [], 'max_rad' : [], 'mean_rad':[]
+                      'min_pred' : [], 'max_pred' : [], 
+                      'tRA':[], 'tDEC' : [], 
+                      'status' :[], 'catalog':[]})
+    ra, dec = pix2radec(dd['centers'], nside=base_nside)
+    res_cat['RA'] = ra
+    res_cat['DEC'] = dec
+    for prm in ['area', 'min_rad', 'max_rad', 'min_pred', 'max_pred', 'mean_rad']:
+        res_cat[prm] = dd[prm]
+    
+    res_cat_sc = SkyCoord(ra=ra*u.degree, dec=dec*u.degree, frame='icrs')
+    true_clusters_sc = SkyCoord(ra=true_clusters['RA']*u.degree, 
+                               dec=true_clusters['DEC']*u.degree)
+    
+    idx, d2d, _ = res_cat_sc.match_to_catalog_sky(true_clusters_sc)
+    matched = d2d.degree <= tp_dist
+    res_cat['status'] = 'fp'
+    res_cat['status'].iloc[matched] = 'tp'
+    res_cat['catalog'].iloc[matched] = np.array(
+        true_clusters['catalog'][idx[matched]])
+    res_cat['tRA'].iloc[matched] = np.array(true_clusters['RA'][idx[matched]])
+    res_cat['tDEC'].iloc[matched] = np.array(true_clusters['DEC'][idx[matched]])
+    
+    res_cat_tp = res_cat[res_cat['status'] == 'tp']
+    res_cat_tp = res_cat_tp.drop_duplicates(subset=['tRA', 'tDEC'])
+    res_cat = pd.concat([res_cat[res_cat['status'] != 'tp'], res_cat_tp], 
+                        ignore_index=True)
+ 
+    
+    true_clusters['found'] = False
+    true_clusters['found'].iloc[idx[matched]] = True
+    true_clusters['status'] = 'fn'
+    
+    res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog']]
+                         [true_clusters['found']==False]], ignore_index=True)
+    return res_cat
