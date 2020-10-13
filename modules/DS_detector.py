@@ -306,7 +306,7 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
     dd = detect_clusters_on_pic(big_ans, big_matr, thr, binary)
     
     res_cat = pd.DataFrame({'RA' : [], 'DEC' : [], 'area' : [], 
-        'min_rad' : [], 'max_rad' : [], 'mean_rad':[]
+        'min_rad' : [], 'max_rad' : [], 'mean_rad':[],
                       'min_pred' : [], 'max_pred' : [], 
                       'tRA':[], 'tDEC' : [], 
                       'status' :[], 'catalog':[]})
