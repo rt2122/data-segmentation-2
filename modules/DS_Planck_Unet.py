@@ -82,7 +82,7 @@ def nearest_clusters(df, theta, phi, radius=2, galactic=True):
         sc_cen = SkyCoord(ra=theta*u.degree, dec=phi*u.degree, frame='icrs')
     return df[sc_cen.separation(sc_cl).degree < radius]
 
-def pixels_with_clusters(clusters, big_pixels, nside, min_rad=0.62):
+def pixels_with_clusters(clusters_files, big_pixels, nside, min_rad=0.62):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import pandas as pd
@@ -91,7 +91,9 @@ def pixels_with_clusters(clusters, big_pixels, nside, min_rad=0.62):
     from DS_healpix_fragmentation import radec2pix
 
     
-    df = pd.read_csv(clusters)
+    df = [pd.read_csv(clusters_file) for clusters_file in clusters_files]
+    df = pd.concat(df, ignore_index=True)
+
     pix2 = radec2pix(df['RA'], df['DEC'], 2)
     df = df[np.in1d(pix2, big_pixels)]
     df.index = np.arange(df.shape[0])
@@ -325,6 +327,8 @@ def gen_data_from_pregen(path, batch_size):
             x = []
             y = []
             for idx in idx_sh[st:st+batch_size]:
+                #print('#', idx, '#')
                 x.append(np.load(os.path.join(path, 'x', str(idx)) + '.npy'))
                 y.append(np.load(os.path.join(path, 'y', str(idx)) + '.npy'))
-            yield convert_to_tensor(np.stack(x)), convert_to_tensor(np.stack(y))
+            yield convert_to_tensor(np.stack(x).astype(np.float32)), \
+                    convert_to_tensor(np.stack(y).astype(np.float32))
