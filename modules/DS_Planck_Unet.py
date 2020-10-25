@@ -199,8 +199,8 @@ def dice(y_pred, y_true, eps=0.1):
         dice_sum += K.mean((2 * inters + eps) / (union + eps))
     return dice_sum
 
-
-def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, weights=None): 
+def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, weights=None, 
+        lr=1e-4): 
     #import numpy as np 
     from tensorflow.keras.callbacks import ModelCheckpoint, LearningRateScheduler
     from tensorflow.keras.optimizers import Adam, SGD
@@ -209,7 +209,7 @@ def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, we
     from tensorflow.keras.callbacks import ModelCheckpoint
     from tensorflow.keras.models import Model
     from tensorflow.keras.layers import Activation
-    from tensorflow.keras.activations import relu, sigmoid
+    from tensorflow.keras.activations import relu, sigmoid, softmax
     from tensorflow.keras.layers import UpSampling2D
     from tensorflow.keras.losses import binary_crossentropy, categorical_crossentropy,\
             sparse_categorical_crossentropy
@@ -264,7 +264,8 @@ def unet_planck(input_size = (64,64,6), filters=8, blocks=5, output_layers=1, we
         return pt
     
     model = Model(inputs=inputs, outputs=prev)
-    model.compile(optimizer = Adam(lr = 1e-4), loss = binary_crossentropy, metrics = ['accuracy', iou, dice])
+    model.compile(optimizer = Adam(lr = lr), loss = binary_crossentropy, 
+            metrics = ['accuracy', iou, dice])
     
     return model
 
@@ -319,7 +320,8 @@ def gen_data_from_pregen(path, batch_size):
     import numpy as np
     from tensorflow import convert_to_tensor
     
-    n_pics = len(next(os.walk(os.path.join(path, 'x')))[-1])
+    pic_names = next(os.walk(os.path.join(path, 'x')))[-1]
+    n_pics = len(pic_names)
     while True:
         idx_sh = np.arange(n_pics)
         np.random.shuffle(idx_sh)
@@ -327,8 +329,10 @@ def gen_data_from_pregen(path, batch_size):
             x = []
             y = []
             for idx in idx_sh[st:st+batch_size]:
-                #print('#', idx, '#')
-                x.append(np.load(os.path.join(path, 'x', str(idx)) + '.npy'))
-                y.append(np.load(os.path.join(path, 'y', str(idx)) + '.npy'))
-            yield convert_to_tensor(np.stack(x).astype(np.float32)), \
-                    convert_to_tensor(np.stack(y).astype(np.float32))
+                #print('#', pic_names[idx], '#')
+                x.append(np.load(os.path.join(path, 'x', pic_names[idx])))
+                y.append(np.load(os.path.join(path, 'y', pic_names[idx])))
+            #yield convert_to_tensor(np.stack(x).astype(np.float64)), \
+            #        convert_to_tensor(np.stack(y).astype(np.float64))
+            yield np.stack(x).astype(np.float64), \
+                    np.stack(y).astype(np.float64)
