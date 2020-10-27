@@ -161,13 +161,13 @@ def gen_batch(pixels_of_choice, batch_size, nside_choice, clusters, retmatr=Fals
     return pics, masks
 
 
-def gen_data(clusters, big_pixels, batch_size, nside=2048, min_rad=0.08, search_nside=512,
+def gen_data(clusters_files, big_pixels, batch_size, nside=2048, min_rad=0.08, search_nside=512,
         size=64, retmatr=False, print_coords=False, centers_in_patch=False):
     import healpy as hp
     import numpy as np
     from tensorflow import convert_to_tensor
     
-    small_pixels, df = pixels_with_clusters(clusters, big_pixels, search_nside, min_rad)
+    small_pixels, df = pixels_with_clusters(clusters_files, big_pixels, search_nside, min_rad)
     
     while True:
         if retmatr:
