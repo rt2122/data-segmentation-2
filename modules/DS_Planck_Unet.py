@@ -1,6 +1,7 @@
 val_pix = [9, 38, 41]
 test_pix = [6]
 train_pix = [i for i in range(48) if not (i in val_pix) and not (i in test_pix)]
+train_pix_act = [2, 8, 10, 11, 13, 15, 32, 33, 36, 37, 40, 42, 43, 44, 45, 46]
 planck_side = 2048
 min_rad_64 = 0.62
 
