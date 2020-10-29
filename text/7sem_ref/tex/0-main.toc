@@ -1,7 +1,0 @@
-\babel@toc {russian}{}
-\contentsline {chapter}{\CYRV \cyrv \cyre \cyrd \cyre \cyrn \cyri \cyre }{1}{section*.2}%
-\contentsline {chapter}{\numberline {1}\IeC {\CYRP }\IeC {\cyre }\IeC {\cyrr }\IeC {\cyrv }\IeC {\cyra }\IeC {\cyrya } \IeC {\cyrg }\IeC {\cyrl }\IeC {\cyra }\IeC {\cyrv }\IeC {\cyra }}{2}{chapter.1}%
-\contentsline {chapter}{\numberline {2}\IeC {\CYRV }\IeC {\cyrt }\IeC {\cyro }\IeC {\cyrr }\IeC {\cyra }\IeC {\cyrya } \IeC {\cyrg }\IeC {\cyrl }\IeC {\cyra }\IeC {\cyrv }\IeC {\cyra }}{3}{chapter.2}%
-\contentsline {chapter}{\CYRZ \cyra \cyrk \cyrl \cyryu \cyrch \cyre \cyrn \cyri \cyre }{4}{section*.3}%
-\contentsline {chapter}{\CYRS \cyrp \cyri \cyrs \cyro \cyrk ~ \cyri \cyrs \cyrp \cyro \cyrl \cyrsftsn \cyrz \cyro \cyrv \cyra \cyrn \cyrn \cyrery \cyrh ~ \cyri \cyrs \cyrt \cyro \cyrch \cyrn \cyri \cyrk \cyro \cyrv }{5}{section*.4}%
-\contentsline {chapter}{\numberline {\CYRA }\IeC {\CYRP }\IeC {\cyre }\IeC {\cyrr }\IeC {\cyrv }\IeC {\cyro }\IeC {\cyre } \IeC {\CYRP }\IeC {\cyrr }\IeC {\cyri }\IeC {\cyrl }\IeC {\cyro }\IeC {\cyrzh }\IeC {\cyre }\IeC {\cyrn }\IeC {\cyri }\IeC {\cyre }}{6}{appendix.A}%

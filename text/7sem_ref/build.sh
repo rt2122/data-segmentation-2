@@ -10,8 +10,8 @@ IMG='tex/inc/img'
 MAINTEX='0-main'
 
 # Конвертация eps
-find -E $IMG/ -type f -name "*.eps" -exec epstopdf {} ";" ;
-find -E $IMG -type f -name "*.eps" -exec rm -f {} \;
+find $IMG -regextype posix-extended -type f -name "*.eps" -exec epstopdf {} ";" ;
+find $IMG -regextype posix-extended -type f -name "*.eps" -exec rm -f {} \;
 
 # Сборка latex
 cd tex
@@ -28,6 +28,6 @@ cp $MAINTEX.pdf ../$PDF_NAME
 cd ..
 
 # Clear
-find -E $TEX/ -maxdepth 1 -type f ! -regex ".*\.(tex|log|blg|bib|cls|sty|bst|clo|asm|gitignore)" -exec rm -f {} \; ;
+find $TEX/ -regextype posix-extended  -maxdepth 1 -type f ! -regex ".*\.(tex|log|blg|bib|cls|sty|bst|clo|asm|gitignore)" -exec rm -f {} \; ;
 
 
