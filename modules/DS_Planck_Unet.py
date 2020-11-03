@@ -354,7 +354,7 @@ def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, si
         pic_dict[pix] = np.load(os.path.join(pregen_dir, str(pix), 'pic.npy'))
         mask_dict[pix] = np.load(os.path.join(pregen_dir, str(pix), 'mask.npy'))
     
-    while 4:
+    while True:
         sample = patches.sample(frac=1)
         
         for i in range(0, len(patches), batch_size):
