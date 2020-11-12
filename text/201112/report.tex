@@ -14,6 +14,8 @@
   \usepackage{graphicx}
   \graphicspath{{pictures/}}
   \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{subcaption}
+%\captionsetup{compatibility=false}
 
 \begin{document}
 \begin{center}{\hugeОтчет по курсовой работе за неделю\\}\end{center}
@@ -25,7 +27,28 @@
 \renewcommand{\labelitemi}{$\blacksquare$}
 \renewcommand\labelitemii{$\square$}
 \begin{enumerate}
-    \item \_\\
+    \item Построены карты сегментации для Coma Cluster с помощью последних лучших моделей\\
+        \begin{figure}[h]
+
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width=0.7\linewidth]{pz_act_coma} 
+                \caption{Для модели обученной на каталоге planck\_z}
+            \end{subfigure}
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width=0.7\linewidth]{pz_coma}
+                \caption{Для модели обученной на каталоге planck\_z+act}
+            \end{subfigure}
+
+        \caption{Маска скопления для Coma Cluster синим цветом}
+        \end{figure}
+    \item Может показаться, что стоит рассмотреть параметр площади пятна скопления на маске 
+        сегментации. Но этот параметр не позволяет разделить каталог по степени уверенности в 
+        объектах.\\
+        \begin{figure}[h]
+            \center{\includegraphics[width=0.7\linewidth]{act_model_area_pred_ind}}
+        \caption{Зависимость объектов каталога по параметрам area и max\_pred}
+        \end{figure}
+
     \item На этой неделе была написана базовая часть статьи о полученных каталогах по данным 
         planck\_z и planck\_z+act. Для написания вводной части использовались некотрые статьи, 
         далее приведены ссылки на них и выжимки из введений:\\
