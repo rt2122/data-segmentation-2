@@ -69,8 +69,9 @@ def pix2radec(ipix, nside):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import healpy as hp
+    import numpy as np
 
-    theta, phi = hp.pix2ang(nside, ipix=ipix, nest=True, lonlat=True)
+    theta, phi = hp.pix2ang(nside, ipix=np.array(ipix), nest=True, lonlat=True)
 
     sc = SkyCoord(l=theta*u.degree, b=phi*u.degree, frame='galactic')
     return sc.icrs.ra.degree, sc.icrs.dec.degree     
