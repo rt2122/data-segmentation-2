@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.5)  7 NOV 2020 14:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.5)  18 NOV 2020 13:10
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -856,27 +856,17 @@ File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
 (/usr/share/texmf-dist/tex/latex/ucs/data/uni-32.def
 File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
 )
-Underfull \hbox (badness 10000) in paragraph at lines 14--17
+Underfull \hbox (badness 10000) in paragraph at lines 14--18
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 18--24
+Underfull \hbox (badness 10000) in paragraph at lines 19--25
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 25--28
-
- []
-
-<inc/img/coma_sdss.jpg, id=71, 246.6816pt x 214.1601pt>
-File: inc/img/coma_sdss.jpg Graphic file (type jpg)
-<use inc/img/coma_sdss.jpg>
-Package pdftex.def Info: inc/img/coma_sdss.jpg  used on input line 30.
-(pdftex.def)             Requested size: 273.14923pt x 237.16171pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 35--37
+Underfull \hbox (badness 10000) in paragraph at lines 26--29
 
  []
 
@@ -884,53 +874,63 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.39 \item P
-            SZ2 - РєР°С‚Р°Р»РѕРі, РѕСЃРЅРѕРІР°РЅРЅС‹Р№ РЅР° РґР°РЅРЅС‹С… РјР...
-[1
+l.29 
+      [1
 
 
 
  <./inc/img/model.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 39--41
+<inc/img/coma_sdss.jpg, id=77, 246.6816pt x 214.1601pt>
+File: inc/img/coma_sdss.jpg Graphic file (type jpg)
+<use inc/img/coma_sdss.jpg>
+Package pdftex.def Info: inc/img/coma_sdss.jpg  used on input line 31.
+(pdftex.def)             Requested size: 273.14923pt x 237.16171pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--38
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 42--44
+Underfull \hbox (badness 10000) in paragraph at lines 40--42
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 45--47
+Underfull \hbox (badness 10000) in paragraph at lines 43--45
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 46--48
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--54
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--57
+Underfull \hbox (badness 10000) in paragraph at lines 53--55
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 58--60
+Underfull \hbox (badness 10000) in paragraph at lines 56--58
+
+ []
+
+[2 <./inc/img/coma_sdss.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 59--61
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 60--63
+Underfull \hbox (badness 10000) in paragraph at lines 61--64
 
  []
 
-) [2] [3 <./inc/img/coma_sdss.jpg>] (./31-chapter-one.tex
+) [3] (./31-chapter-one.tex
 Underfull \hbox (badness 1077) in paragraph at lines 5--9
 \T2A/cmr/m/n/12 сег^^?мен^^?та^^?ции скоп^^?ле^^?ний. Еј сим^^?мет^^?рич^^?ная 
 струк^^?ту^^?ра поз^^?во^^?ля^^?ет аб^^?стра^^?ги^^?ро^^?вать
@@ -951,7 +951,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 14--18
 
  []
 
-<inc/img/planck_pre.png, id=90, 1452.42625pt x 526.96875pt>
+<inc/img/planck_pre.png, id=92, 1452.42625pt x 526.96875pt>
 File: inc/img/planck_pre.png Graphic file (type png)
 <use inc/img/planck_pre.png>
 Package pdftex.def Info: inc/img/planck_pre.png  used on input line 20.
@@ -962,12 +962,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--27
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--32
+Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 33--36
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 31--32
 
  []
 
@@ -976,7 +981,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 33--36
 
 
  <./inc/img/planck_pre.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 37--38
+Underfull \hbox (badness 10000) in paragraph at lines 32--33
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--37
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--39
 
  []
 
@@ -996,36 +1011,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 41--42
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 44--46
+Underfull \hbox (badness 10000) in paragraph at lines 44--45
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 47--48
+Underfull \hbox (badness 10000) in paragraph at lines 46--54
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--49
-
+Underfull \hbox (badness 1158) in paragraph at lines 55--64
+\T2A/cmr/m/n/12 чить эф^^?фек^^?тив^^?ность обу^^?че^^?ния. Для из^^?ме^^?не^^?
+ния ве^^?сов ней^^?ро^^?се^^?ти ис^^?поль^^?зо^^?вал^^?ся
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
+Underfull \hbox (badness 10000) in paragraph at lines 55--64
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 53--54
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 65--68
 
  []
 
-) [5] (./32-chapter-two.tex
+) [6] (./32-chapter-two.tex
 Underfull \hbox (badness 10000) in paragraph at lines 4--5
 
  []
@@ -1045,11 +1056,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 24--38
 
  []
 
-[6
+[7
 
 
 
-]) [7] (./33-chapter-three.tex
+]) [8] (./33-chapter-three.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--6
 
  []
@@ -1121,17 +1132,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--26
 
  []
 
-<inc/img/patch.png, id=124, 622.325pt x 621.32124pt>
+<inc/img/patch.png, id=130, 622.325pt x 621.32124pt>
 File: inc/img/patch.png Graphic file (type png)
 <use inc/img/patch.png>
 Package pdftex.def Info: inc/img/patch.png  used on input line 29.
 (pdftex.def)             Requested size: 227.62206pt x 227.24965pt.
-<inc/img/step_comp.png, id=125, 1058.95625pt x 766.865pt>
+<inc/img/step_comp.png, id=131, 1058.95625pt x 766.865pt>
 File: inc/img/step_comp.png Graphic file (type png)
 <use inc/img/step_comp.png>
 Package pdftex.def Info: inc/img/step_comp.png  used on input line 38.
 (pdftex.def)             Requested size: 273.14923pt x 197.8005pt.
-[8
+[9
 
 
 
@@ -1140,7 +1151,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 42--44
 
  []
 
-) [9] [10 <./inc/img/patch.png> <./inc/img/step_comp.png>]
+) [10] [11 <./inc/img/patch.png> <./inc/img/step_comp.png>]
 (./34-chapter-four.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
@@ -1166,17 +1177,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--10
 
  []
 
-) [11
+) [12
 
 
 
 ] (./5-biblio.tex (./0-main.bbl
-Underfull \hbox (badness 1418) in paragraph at lines 18--22
+Underfull \hbox (badness 1418) in paragraph at lines 24--28
 \T2A/cmr/m/n/12 works for Biomed^^?i^^?cal Im^^?age Seg^^?men^^?ta^^?tion / Tho
 mas Brox Olaf Ron^^?neberg^^?er,
  []
 
-)) [12
+)) [13
 
 
 
@@ -1198,9 +1209,9 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 41.
  ) 
 Here is how much of TeX's memory you used:
  14856 strings out of 480478
- 206965 string characters out of 5905959
+ 206957 string characters out of 5905959
  463180 words of memory out of 5000000
- 30518 multiletter control sequences out of 15000+600000
+ 30517 multiletter control sequences out of 15000+600000
  542806 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  54i,7n,51p,2644b,784s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1215,10 +1226,10 @@ blic/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/s
 frm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></u
 sr/share/texmf-dist/fonts/type1/public/cm-super/sfrm2488.pfb></usr/share/texmf-
 dist/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on 0-main.pdf (14 pages, 4061880 bytes).
+Output written on 0-main.pdf (15 pages, 4064777 bytes).
 PDF statistics:
- 210 PDF objects out of 1000 (max. 8388607)
- 167 compressed objects within 2 object streams
- 40 named destinations out of 1000 (max. 500000)
+ 216 PDF objects out of 1000 (max. 8388607)
+ 172 compressed objects within 2 object streams
+ 41 named destinations out of 1000 (max. 500000)
  126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
