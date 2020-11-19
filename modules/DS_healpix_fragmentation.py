@@ -210,38 +210,12 @@ def zoom_to_circle(coords, matr, add_power=True):
     ymax += ydif // 2
     
     return matr[xmin:xmax, ymin:ymax]
-'''
-def draw_data_fits(mdict, nside, shape, fits_name):
+
+def radec2vec(ra, dec):
     import numpy as np
-    from astropy.io import fits
-    from tqdm.notebook import tqdm
-
-    data_pic = np.zeros(shape)
-    with fits.open(fits_name) as hdul:
-        
-        data = hdul[1].data
-        flux = (data['FLUX_G'], data['FLUX_R'], data['FLUX_Z'])
-        ra = data['RA']
-        dec = data['DEC']
-        pixels = radec2pix(ra, dec, nside)
-
-        coords = []
-        for pix in tqdm(pixels):
-            if pix in mdict:
-                coords.append(mdict[pix])
-
-        for i in tqdm(range(len(coords))):
-            x, y = coords[i]
-            for k, ch in enumerate(flux):
-                data_pic[x, y, k] = max(data_pic[x, y, k], ch[i])
-        return data_pic
-'''
-def show_dict_mollview(mdict, nside):
     import healpy as hp
-    import numpy as np
-
-    a = np.zeros((hp.nside2npix(nside)))
-    for pix in mdict:
-        a[pix] = 1
-    hp.mollview(a, nest=True)
-
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    sc = SkyCoord(ra=np.array(ra)*u.degree, dec=np.array(dec)*u.degree, frame='icrs')
+    return hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, lonlat=True)

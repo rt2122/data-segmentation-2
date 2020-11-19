@@ -1,0 +1,43 @@
+\documentclass{article}
+    \usepackage{amssymb}
+    \usepackage[utf8]{inputenc}
+    \usepackage[russian]{babel}
+    \usepackage[left=2cm,right=2cm,
+        top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+    }
+  \usepackage{graphicx}
+  \graphicspath{{pictures/}}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{subcaption}
+%\captionsetup{compatibility=false}
+
+\begin{document}
+\begin{center}{\hugeОтчет по курсовой работе за неделю\\}\end{center}
+Дата: 19.11.2020\\
+Научные руководители: Герасимов С.В., Мещеряков А.В.\\
+Студент: Немешаева Алиса\\
+Курс: 4\\
+
+\renewcommand{\labelitemi}{$\blacksquare$}
+\renewcommand\labelitemii{$\square$}
+\begin{enumerate}
+    \item На этой неделе началась работа по созданию классификатора детектированных объектов для 
+        создания ранжированных каталогов.\\
+    \item Классификатор нужен для того, чтобы можно было генерировать каталоги с разной степенью 
+        полноты и надежности.\\
+    \item Был написан код для генерации обучающей выборки для классификатора.\\
+    \item Начато обучение модели SVM для классификации.\\
+    \item Продолжение работы над статьей по каталогам: исправление введения и главы <<Обзор 
+        существующих решений>> 
+\end{enumerate}
+
+Отчет согласован с научным руководителем.\\
+Общее количество строк кода за эту неделю: 184\\
+\hyperlink{https://github.com/rt2122/data-segmentation-2}{Репозиторий}\\ 
+\end{document}
