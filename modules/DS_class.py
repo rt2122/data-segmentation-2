@@ -71,3 +71,19 @@ def gen_data_for_class(tp_coef, n, cats, pix2, dirname='/home/rt2122/Data/cluste
     
     y = np.array(df['y'])
     return X, y
+
+def detected_cat2class(cat_df, clf, label='class', radius=7.5/60, class_len=50, nn_mode=False):
+    import numpy as np
+    import pandas as pd
+    from DS_healpix_fragmentation import radec2pix
+    
+    X = np.stack([radec2line_class([cat_df['RA'].iloc[i], cat_df['DEC'].iloc[i]], 
+                                radius=radius, class_len=class_len).flatten()
+               for i in range(len(cat_df))])
+    if nn_mode:
+        ans = clf.predict(X)
+        cat_df[label] = ans
+    else:
+        ans = clf.predict_proba(X)
+        cat_df[label] = ans[:, 1]
+    return cat_df
