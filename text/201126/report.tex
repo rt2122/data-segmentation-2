@@ -33,6 +33,28 @@
     \item \hyperlink{https://www.overleaf.com/read/zcgvtyscsyhv}{Статья.}\\
     \item Для классификации опробованы другие варианты моделей: Multilayer Perceptron, Random 
         Forest.\\ 
+    
+        \begin{figure}[h]
+
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width=0.7\linewidth]{pres_recall} 
+                \caption{Кривая presicion-recall для Random Forest}
+            \end{subfigure}
+            \begin{subfigure}{0.5\textwidth}
+                \includegraphics[width=0.7\linewidth]{hist}
+                \caption{Распределение предсказаний с вероятностью по tp и fp объектам из 
+                    детектированного каталога}
+            \end{subfigure}
+
+        \caption{Результаты классификации Random Forest}
+        \end{figure}
+    \item Построены маски для объектов: Shapley, Abell 399, Coma Cluster, Leo Cluster.\\
+        \begin{figure}[h]
+                \includegraphics[width=0.7\linewidth]{4clusters} 
+                \caption{Первые три канала карт Planck, маска prediction index и карта y-параметра
+                    для упомянутых объектов}
+        \end{figure}
+
 \end{enumerate}
 
 Отчет согласован с научным руководителем.\\
