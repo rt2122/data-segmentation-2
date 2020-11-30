@@ -127,8 +127,15 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
     
     pics, matrs, masks = [], [], []
     pic_idx = []
-    for i in range(0, big_matr.shape[0], step):
-        for j in range(0, big_matr.shape[1], step):
+
+    starts = []
+    for k in range(2):
+        x_st = [i for i in range(0, big_matr.shape[k], step) 
+                if i + size <= big_matr.shape[k]] + [big_matr.shape[k] - size]
+        starts.append(x_st) 
+
+    for i in starts[0]:
+        for j in starts[1]:
             pic = big_pic[i:i+size,j:j+size,:]
             mask = big_mask[i:i+size,j:j+size,:]
             matr = big_matr[i:i+size,j:j+size]
