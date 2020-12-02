@@ -117,6 +117,7 @@ def draw_df(data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
         plt.savefig('pic.png')
     plt.show()
 
-def get_prm(prm, s):
+
+def get_prm(prm, s, w='\d'):
     import re
-    return re.search(prm + '(\w+)_', s)[0][len(prm):]
+    return re.search(prm + r'(' + w + '+)', s)[0][len(prm):]
