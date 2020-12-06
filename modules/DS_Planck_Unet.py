@@ -32,7 +32,7 @@ def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
    
     return big_matr[mins[0]:maxs[0],mins[1]:maxs[1]]
 
-def draw_pic(matr, dirname=PLANCK_NORMALIZED_DIR, y=False):
+def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized', y=False):
     import os
     import numpy as np
    
@@ -50,7 +50,7 @@ def draw_pic(matr, dirname=PLANCK_NORMALIZED_DIR, y=False):
     return pic
 
 def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
-                       dirname=PLANCK_NORMALIZED_DIR, 
+                       dirname='/home/rt2122/Data/Planck/normalized/', 
                       mask_radius=2.5/60, retmatr=False, matr=None, centers_in_patch=False):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np

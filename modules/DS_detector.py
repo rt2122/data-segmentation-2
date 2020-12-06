@@ -107,7 +107,8 @@ def clusters_in_pix(clusters, pix, nside, search_nside=None):
 
 
 def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10, 
-        mask_radius=15/60, clusters_dir='/home/rt2122/Data/clusters/'):
+        mask_radius=15/60, clusters_dir='/home/rt2122/Data/clusters/', 
+        planck_dirname='/home/rt2122/Data/Planck/normalized/'):
     from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec, radec2pix
     from DS_Planck_Unet import draw_pic_with_mask, draw_pic
     import pandas as pd
@@ -123,7 +124,8 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
     big_matr = one_pixel_fragmentation(big_nside, ipix, depth)
     big_pic, big_mask = draw_pic_with_mask(center=None, matr=big_matr, 
                             mask_radius=mask_radius,
-                            clusters_arr=np.array(true_clusters[['RA', 'DEC']]))
+                            clusters_arr=np.array(true_clusters[['RA', 'DEC']]), 
+                            dirname=planck_dirname)
     
     pics, matrs, masks = [], [], []
     pic_idx = []
