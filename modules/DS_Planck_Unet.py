@@ -4,6 +4,7 @@ train_pix = [i for i in range(48) if not (i in val_pix) and not (i in test_pix)]
 train_pix_act = [2, 8, 10, 11, 13, 15, 32, 33, 36, 37, 40, 42, 43, 44, 45, 46]
 planck_side = 2048
 min_rad_64 = 0.62
+from DS_DIRS import *
 
 def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
     from DS_healpix_fragmentation import find_biggest_pixel, one_pixel_fragmentation,\
@@ -31,7 +32,7 @@ def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
    
     return big_matr[mins[0]:maxs[0],mins[1]:maxs[1]]
 
-def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/', y=False):
+def draw_pic(matr, dirname=PLANCK_NORMALIZED_DIR, y=False):
     import os
     import numpy as np
    
@@ -49,7 +50,7 @@ def draw_pic(matr, dirname='/home/rt2122/Data/Planck/normalized/', y=False):
     return pic
 
 def draw_pic_with_mask(center, clusters_arr, radius=0.84, size=64, fin_nside=2048, 
-                       dirname='/home/rt2122/Data/Planck/normalized/', 
+                       dirname=PLANCK_NORMALIZED_DIR, 
                       mask_radius=2.5/60, retmatr=False, matr=None, centers_in_patch=False):
     from DS_healpix_fragmentation import matr2dict, draw_proper_circle
     import numpy as np
