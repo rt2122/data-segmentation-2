@@ -121,3 +121,24 @@ def draw_df(data, base, figsize=(8, 6), grids=True, xgrid=None, ygrid=None,
 def get_prm(prm, s, w='\d'):
     import re
     return re.search(prm + r'(' + w + '+)', s)[0][len(prm):]
+
+def calc_error(det_cat, true_cat, shift=15/60, match_dist=5/60, n_try=20, seed=0):
+    import numpy as np
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    error = []
+    np.random.seed(seed)
+    for _ in range(n_try):
+        det_sc = SkyCoord(ra=np.array(det_cat['RA']) * u.degree, 
+                          dec=np.array(det_cat['DEC']) * u.degree, frame='icrs')
+        angles = np.random.randint(0, 360, len(det_cat))
+        det_sc = det_sc.directional_offset_by(angles*u.degree, shift)
+
+        true_sc = SkyCoord(ra=np.array(true_cat['RA']) * u.degree, 
+                           dec=np.array(true_cat['DEC']) * u.degree, frame='icrs')
+        _, d2d, _ = det_sc.match_to_catalog_sky(true_sc)
+        c_error = np.count_nonzero(d2d.degree < match_dist)
+        error.append(c_error)
+    error = np.array(error)
+    return error.mean(), error.std() / np.sqrt(n_try - 1)
