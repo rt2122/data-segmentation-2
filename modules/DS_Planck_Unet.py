@@ -338,7 +338,8 @@ def gen_data_from_pregen(path, batch_size):
             yield np.stack(x).astype(np.float64), \
                     np.stack(y).astype(np.float64)
 
-def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, size=64):
+def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, size=64, no_sample=False, 
+                             rotate_aug=False):
     import numpy as np
     import pandas as pd
     import os
@@ -356,6 +357,8 @@ def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, si
     
     while True:
         sample = patches.sample(frac=1)
+        if no_sample:
+            sample = patches
         
         for i in range(0, len(patches), batch_size):
             pics = []
@@ -372,5 +375,11 @@ def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, si
                 
                 pics.append(pic_dict[pix][x:x+size,y:y+size,:])
                 masks.append(mask_dict[pix][x:x+size,y:y+size,:])
+                
+                if rotate_aug:
+                    n_rot = np.random.randint(4)
+                    pics[-1] = np.rot90(pics[-1], n_rot)
+                    masks[-1] = np.rot90(masks[-1], n_rot)
+                
             
             yield np.stack(pics), np.stack(masks)
