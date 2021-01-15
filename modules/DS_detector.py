@@ -230,7 +230,9 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
                          [true_clusters['found']==False]], ignore_index=True)
     return res_cat
 
-def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None):
+def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None, 
+        clusters_dir='/home/rt2122/Data/clusters/', 
+        planck_dirname='/home/rt2122/Data/Planck/normalized/'):
     from tqdm.notebook import tqdm
     import pandas as pd
     
@@ -240,7 +242,8 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
         cur_cat = []
         for i in big_pix:
             model = load_planck_model(models[model_name])
-            all_dict = gen_pics_for_detection(i, model, step=step)
+            all_dict = gen_pics_for_detection(i, model, step=step, clusters_dir=clusters_dir,
+                    planck_dirname=planck_dirname)
             coords = detect_clusters_connected(all_dict, thr, i)
             cur_cat.append(coords)
             if not (save_inter_cats is None):
