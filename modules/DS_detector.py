@@ -229,3 +229,21 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
     res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog']]
                          [true_clusters['found']==False]], ignore_index=True)
     return res_cat
+
+def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None):
+    from tqdm.notebook import tqdm
+    import pandas as pd
+    
+    from DS_Planck_Unet import load_planck_model
+    
+    for model_name in tqdm(models):
+        cur_cat = []
+        for i in big_pix:
+            model = load_planck_model(models[model_name])
+            all_dict = gen_pics_for_detection(i, model, step=step)
+            coords = detect_clusters_connected(all_dict, thr, i)
+            cur_cat.append(coords)
+            if not (save_inter_cats is None):
+                coords.to_csv(save_inter_cats.format(pix=i, model=model_name), index=False)
+        cur_cat = pd.concat(cur_cat, ignore_index=True)
+        cur_cat.to_csv(cat_name.format(model=model_name, thr=thr, step=step), index=False)
