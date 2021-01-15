@@ -191,6 +191,8 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
     big_matr = one_pixel_fragmentation(2, ipix, depth)
     
     dd = detect_clusters_on_pic(big_ans, big_matr, thr, binary)
+    if len(dd['centers']) == 0:
+        return pd.DataFrame([], index=[])
     
     res_cat = pd.DataFrame({'RA' : [], 'DEC' : [], 'area' : [], 
         'min_rad' : [], 'max_rad' : [], 'mean_rad':[],
