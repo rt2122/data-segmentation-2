@@ -217,9 +217,10 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
             i = 3
         line, = ax[i].plot(hist.index, hist[metr], metr_colors[metr]+'o-',
                           markersize=5)
+        line.set_label(metr)
         line, = ax[i].plot(hist.index, hist['val_' + metr], metr_colors[metr]+'o-',
                           markersize=5, alpha=0.5)
-        line.set_label(metr)
+        line.set_label('val_'+metr)
     
     #### ticks, grid, labels, legend ####
     ax[0].set_yticks(np.arange(0, 1.1, 0.1), minor=True)
