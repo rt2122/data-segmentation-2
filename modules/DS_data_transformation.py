@@ -184,7 +184,8 @@ def stats_by_epoch(dir_name):
         
     return pd.concat(res_df)
 
-def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
+def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0], fp_max=None, loss_max=None, 
+        iou_max=None):
     import pandas as pd
     import numpy as np
     import pickle
@@ -229,15 +230,26 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
     #### ticks, grid, labels, legend ####
     ax[0].set_yticks(np.arange(0, 1.1, 0.1), minor=True)
     ax[0].set_yticks(np.arange(0, 1.1, 0.2))
-    ax[1].set_yticks(np.arange(0, max(stats_df['fp']), 50), minor=True)
-    ax[1].set_yticks(np.arange(0, max(stats_df['fp']), 100))
+    if fp_max is None:
+        fp_max = max(stats_df['fp'])
+    ax[1].set_yticks(np.arange(0, fp_max, 50), minor=True)
+    ax[1].set_yticks(np.arange(0, fp_max, 100))
+    if iou_max is None:
+        iou_max = max(hist['iou'])
+    ax[2].set_yticks(np.arange(0, iou_max+0.01, 0.005), minor=True)
+    ax[2].set_yticks(np.arange(0, iou_max+0.01, 0.01))
+    if loss_max is None:
+        loss_max = max(hist['loss'])
+    ax[3].set_yticks(np.arange(0, loss_max, 0.05), minor=True)
+    ax[3].set_yticks(np.arange(0, loss_max, 0.1))
+
     
     for i in range(4):
         ax[i].legend()
         ax[i].set_xticks(stats_df.index[4::5])
         ax[i].set_xticks(stats_df.index, minor=True)
-        ax[i].grid(True, which='major')
-        ax[i].grid(True, which='minor', alpha=0.2)
+        ax[i].grid(True, axis='both', which='major')
+        ax[i].grid(True, axis='both', which='minor', alpha=0.2)
     
     ax[3].set_xlabel('epochs')
     ax[0].set_ylabel('recall')
