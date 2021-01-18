@@ -193,6 +193,13 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
     stats_df = stats_df.sort_index()
     cats_colors = {'planck_z' : 'b', 'planck_no_z' : 'g', 'mcxcwp' : 'r', 'actwp' : 'c'}
     metr_colors = {'iou' : 'r', 'dice' : 'b', 'loss' : 'c'}
+
+    hist = None
+    with open(hist_file, 'rb') as f:
+        d = pickle.load(f)
+        hist = pd.DataFrame(d, index=np.arange(1, len(d['loss']) + 1))
+
+    min_ep = max(hist.index.max(), stats_df.index.max())
     
     fig, ax = plt.subplots(4, 1, figsize=(12,18), sharex=True)
     plt.subplots_adjust(hspace=0.05)
@@ -208,9 +215,6 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
     line.set_label('fp')
     
     ####        history          ####
-    hist = None
-    with open(hist_file, 'rb') as f:
-        hist = pd.DataFrame(pickle.load(f), index=stats_df.index)
     for metr in metr_colors:
         i = 2
         if metr == 'loss':
