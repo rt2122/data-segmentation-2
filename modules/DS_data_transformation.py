@@ -184,37 +184,61 @@ def stats_by_epoch(dir_name):
         
     return pd.concat(res_df)
 
-
-def plot_stats_ep(stats_df, text='', text_coords=[0,0]):
+def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0]):
     import pandas as pd
     import numpy as np
+    import pickle
     from matplotlib import pyplot as plt
     
     stats_df = stats_df.sort_index()
     cats_colors = {'planck_z' : 'b', 'planck_no_z' : 'g', 'mcxcwp' : 'r', 'actwp' : 'c'}
+    metr_colors = {'iou' : 'r', 'dice' : 'b', 'loss' : 'c'}
     
-
-    fig, ax = plt.subplots(2, 1, figsize=(12,8), sharex=True)
+    fig, ax = plt.subplots(4, 1, figsize=(12,18), sharex=True)
+    plt.subplots_adjust(hspace=0.05)
+    
+    ####         recalls         ####
     for cat in cats_colors:
-        line, = ax[0].plot(stats_df.index, stats_df[cat+'_recall'], c=cats_colors[cat])
+        line, = ax[0].plot(stats_df.index, stats_df[cat+'_recall'], cats_colors[cat]+'o-',
+                          markersize=5)
         line.set_label(cat)
-    
-    line, = ax[1].plot(stats_df.index, stats_df['fp'], c='k')
+        
+    ####         fp              ####
+    line, = ax[1].plot(stats_df.index, stats_df['fp'], 'ko-', markersize=5)
     line.set_label('fp')
     
+    ####        history          ####
+    hist = None
+    with open(hist_file, 'rb') as f:
+        hist = pd.DataFrame(pickle.load(f), index=stats_df.index)
+    for metr in metr_colors:
+        i = 2
+        if metr == 'loss':
+            i = 3
+        line, = ax[i].plot(hist.index, hist[metr], metr_colors[metr]+'o-',
+                          markersize=5)
+        line, = ax[i].plot(hist.index, hist['val_' + metr], metr_colors[metr]+'o-',
+                          markersize=5, alpha=0.5)
+        line.set_label(metr)
+    
+    #### ticks, grid, labels, legend ####
     ax[0].set_yticks(np.arange(0, 1.1, 0.1), minor=True)
     ax[0].set_yticks(np.arange(0, 1.1, 0.2))
     ax[1].set_yticks(np.arange(0, max(stats_df['fp']), 50), minor=True)
     ax[1].set_yticks(np.arange(0, max(stats_df['fp']), 100))
     
-    for i in range(2):
+    for i in range(4):
         ax[i].legend()
         ax[i].set_xticks(stats_df.index[4::5])
         ax[i].set_xticks(stats_df.index, minor=True)
         ax[i].grid(True, which='major')
         ax[i].grid(True, which='minor', alpha=0.2)
     
-    ax[1].set_xlabel('epochs')
+    ax[3].set_xlabel('epochs')
     ax[0].set_ylabel('recall')
     ax[1].set_ylabel('fp')
+    ax[2].set_ylabel('metrics')
+    ax[3].set_ylabel('metrics')
     ax[1].text(*text_coords, text, c='r', size=20)
+    
+    
