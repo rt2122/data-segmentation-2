@@ -1,0 +1,3 @@
+/home/rt2122/Data/gen_pred_ind/pz14_scans/scan.npy
+/home/rt2122/Data/gen_pred_ind/catalog_v4.fits
+./pz14_test.csv

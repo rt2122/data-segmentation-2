@@ -1,0 +1,4 @@
+/home/rt2122/Data/gen_pred_ind/pz14_scans/scan.npy
+/home/rt2122/Data/gen_pred_ind/LH_catalog_v4_SRGz-sdss-v17_class_QvG_SSvQG_SSvQvG_Z3vALL_catalog-full.gz_pkl
+./pz14_lh.csv
+gz_pkl

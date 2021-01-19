@@ -65,3 +65,18 @@ def full_scan(model_name, scan_name, step=8, planck_dir='/home/rt2122/Data/Planc
         matr = matr.flatten()
         scan[matr] = mask
     np.save(scan_name, scan)
+
+def radec2pred_ind(scan_name, input_name, output_name, mode='fits'):
+    from DS_healpix_fragmentation import radec2pix
+    import os
+    import numpy as np
+    import pandas as pd
+    
+    in_df = get_df(input_name, mode=mode)
+    in_df['healpix'] = radec2pix(in_df['RA'], in_df['DEC'], 2**11)
+    
+    scan = np.load(scan_name)
+    in_df['pred_ind'] = scan[in_df['healpix']]
+    
+    in_df.index.name='index'
+    in_df.to_csv(output_name)

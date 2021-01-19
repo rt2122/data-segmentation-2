@@ -1,0 +1,3 @@
+./pz14_scan8.npy
+../LH_20191129/LH_catalog_v4_SRGz-sdss-v17_class_QvG_SSvQG_SSvQvG_Z3vALL_catalog-full.gz_pkl
+./pz14_s8_LH.csv
