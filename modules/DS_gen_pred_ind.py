@@ -54,6 +54,7 @@ def full_scan(model_name, scan_name, step=8, planck_dir='/home/rt2122/Data/Planc
     from DS_Planck_Unet import load_planck_model
     import os
     import healpy as hp
+    import numpy as np
     
     model = load_planck_model(model_name)
     scan = np.zeros(hp.nside2npix(2**11))
