@@ -22,6 +22,7 @@ def gen_scan_pix(ipix, model, big_nside=2, depth=10, step=8, size=64,
                  planck_dir='/home/rt2122/Data/Planck/normalized'):
     from DS_healpix_fragmentation import one_pixel_fragmentation
     from DS_Planck_Unet import draw_pic
+    import numpy as np
     
     big_matr = one_pixel_fragmentation(big_nside, ipix, depth)
     big_pic = draw_pic(big_matr, dirname=planck_dir)
