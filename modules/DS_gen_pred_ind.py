@@ -49,7 +49,7 @@ def gen_scan_pix(ipix, model, big_nside=2, depth=10, step=8, size=64,
     big_mask /= coef
     return big_mask, big_matr
 
-def full_scan(model_name, scan_name, step=8):
+def full_scan(model_name, scan_name, step=8, planck_dir='/home/rt2122/Data/Planck/normalized'):
     from tqdm.notebook import tqdm
     from DS_Planck_Unet import load_planck_model
     import os
@@ -58,7 +58,7 @@ def full_scan(model_name, scan_name, step=8):
     model = load_planck_model(model_name)
     scan = np.zeros(hp.nside2npix(2**11))
     for i in tqdm(range(48)):
-        mask, matr = gen_scan_pix(i, model, step=step)
+        mask, matr = gen_scan_pix(i, model, step=step, planck_dir=planck_dir)
         mask = mask.flatten()
         matr = matr.flatten()
         scan[matr] = mask
