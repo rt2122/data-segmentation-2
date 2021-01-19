@@ -184,8 +184,7 @@ def stats_by_epoch(dir_name):
         
     return pd.concat(res_df)
 
-def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0], fp_max=None, loss_max=None, 
-        iou_max=None):
+def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0], limits={}):
     import pandas as pd
     import numpy as np
     import pickle
@@ -230,10 +229,12 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0], fp_max=None, 
     #### ticks, grid, labels, legend ####
     ax[0].set_yticks(np.arange(0, 1.1, 0.1), minor=True)
     ax[0].set_yticks(np.arange(0, 1.1, 0.2))
-    if fp_max is None:
-        fp_max = max(stats_df['fp'])
-    ax[1].set_yticks(np.arange(0, fp_max, 50), minor=True)
-    ax[1].set_yticks(np.arange(0, fp_max, 100))
+    if not (fp in limits):
+        limits['fp'] = [min(stats_df['fp']), max(stats_df['fp'])]
+        fp_min = limits['fp'][0]
+        limits['fp'][0] = (fp_min // 100) * 100
+    ax[1].set_yticks(np.arange(*limits['fp'], 50), minor=True)
+    ax[1].set_yticks(np.arange(*limits['fp'], 100))
     if iou_max is None:
         iou_max = max(hist['iou'])
     ax[2].set_yticks(np.arange(0, iou_max+0.01, 0.005), minor=True)
