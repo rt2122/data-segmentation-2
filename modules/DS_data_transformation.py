@@ -259,4 +259,38 @@ def plot_stats_ep(stats_df, hist_file, text='', text_coords=[0,0], limits={}):
     ax[3].set_ylabel('metrics')
     ax[1].text(*text_coords, text, c='r', size=20)
     
+ 
+def plot_history(hist_file, loss_tick=None, cut_eps=[0, -1]):
+    import pickle
+    import pandas as pd
+    import numpy as np
+    from matplotlib import pyplot as plt
     
+    hist = None
+    with open(hist_file, 'rb') as f:
+        hist = pickle.load(f)
+        hist = pd.DataFrame(hist, index=np.arange(1, len(hist['loss']) + 1))
+    _, ax = plt.subplots(2, 1, figsize=(10,14))
+    
+    hist = hist.iloc[cut_eps[0]:cut_eps[1]]
+    
+    line, = ax[0].plot(hist.index, hist['loss'], 'co-')
+    line.set_label('loss')
+    line, = ax[0].plot(hist.index, hist['val_loss'], 'co-', alpha=0.5)
+    line.set_label('val_loss')
+    if not (loss_tick is None):
+        ax[0].set_xtick(loss_tick[::5])
+        ax[0].set_xtick(loss_tick, minor=True)
+    
+    for c, metr in zip('rb', ['iou', 'dice']):
+        line, = ax[1].plot(hist.index, hist[metr], c+'o-')
+        line.set_label(metr)
+        line, = ax[1].plot(hist.index, hist['val_'+metr], c+'o-', alpha=0.5)
+        line.set_label('val_'+metr)
+    
+    for i in range(2):
+        ax[i].legend()
+        ax[i].set_xticks(hist.index, minor=True)
+        ax[i].set_xticks(hist.index[4::5])
+        ax[i].grid(True, axis='both', which='major')
+        ax[i].grid(True, axis='both', which='minor', alpha=0.2)
