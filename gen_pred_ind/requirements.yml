@@ -1,0 +1,38 @@
+name: base
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - _tflow_select=2.3.0=mkl
+  - anaconda=2020.07=py38_0
+  - anaconda-client=1.7.2=py38_0
+  - anaconda-navigator=1.9.12=py38_0
+  - anaconda-project=0.8.4=py_0
+  - astropy=4.0.1.post1=py38h7b6447c_1
+  - conda-build=3.18.11=py38_0
+  - conda-env=2.6.0=1
+  - conda-package-handling=1.7.2=py38h03888b9_0
+  - conda-verify=3.4.2=py_1
+  - matplotlib=3.2.2=0
+  - matplotlib-base=3.2.2=py38hef1b27d_0
+  - numpy=1.18.5=py38ha1c710e_0
+  - numpy-base=1.18.5=py38hde5b4d6_0
+  - numpydoc=1.1.0=py_0
+  - pandas=1.0.5=py38h0573a6f_0
+  - pip=20.1.1=py38_1
+  - python=3.8.3=hcff3b4d_2
+  - python-dateutil=2.8.1=py_0
+  - python-jsonrpc-server=0.3.4=py_1
+  - python-language-server=0.34.1=py38_0
+  - python-libarchive-c=2.9=py_0
+  - pip:
+    - healpy==1.14.0
+    - jupyter-contrib-core==0.3.3
+    - jupyter-contrib-nbextensions==0.5.1
+    - jupyter-highlight-selected-word==0.2.0
+    - jupyter-latex-envs==1.4.6
+    - jupyter-nbextensions-configurator==0.4.1
+    - keras-preprocessing==1.1.2
+    - tensorboard==2.3.0
+    - tensorflow==2.3.1
+    - tensorflow-estimator==2.3.0
