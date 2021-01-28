@@ -198,7 +198,7 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
         'min_rad' : [], 'max_rad' : [], 'mean_rad':[],
                       'min_pred' : [], 'max_pred' : [], 
                       'tRA':[], 'tDEC' : [], 
-                      'status' :[], 'catalog':[]})
+                      'status' :[], 'catalog':[], 'M500' : [], 'z' : []})
     ra, dec = pix2radec(dd['centers'], nside=base_nside)
     res_cat['RA'] = ra
     res_cat['DEC'] = dec
@@ -217,6 +217,8 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
         true_clusters['catalog'][idx[matched]])
     res_cat['tRA'].iloc[matched] = np.array(true_clusters['RA'][idx[matched]])
     res_cat['tDEC'].iloc[matched] = np.array(true_clusters['DEC'][idx[matched]])
+    res_cat['M500'].iloc[matched] = np.array(true_clusters['M500'][idx[matched]])
+    res_cat['z'].iloc[matched] = np.array(true_clusters['z'][idx[matched]])
     
     res_cat_tp = res_cat[res_cat['status'] == 'tp']
     res_cat_tp = res_cat_tp.drop_duplicates(subset=['tRA', 'tDEC'])
@@ -227,8 +229,11 @@ def detect_clusters_connected(all_dict, thr, ipix, depth=10,
     true_clusters['found'] = False
     true_clusters['found'].iloc[idx[matched]] = True
     true_clusters['status'] = 'fn'
+    true_clusters['tRA'] = true_clusters['RA']
+    true_clusters['tDEC'] = true_clusters['DEC']
     
-    res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog']]
+    res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog', 'M500', 'z', 
+                            'tRA', 'tDEC']]
                          [true_clusters['found']==False]], ignore_index=True)
     return res_cat
 
@@ -242,7 +247,7 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
     
     for model_name in tqdm(models):
         cur_cat = []
-        for i in big_pix:
+        for i in tqdm(big_pix):
             model = load_planck_model(models[model_name])
             all_dict = gen_pics_for_detection(i, model, step=step, clusters_dir=clusters_dir,
                     planck_dirname=planck_dirname)

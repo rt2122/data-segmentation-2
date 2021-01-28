@@ -294,3 +294,15 @@ def plot_history(hist_file, loss_tick=None, cut_eps=[0, -1]):
         ax[i].set_xticks(hist.index[4::5])
         ax[i].grid(True, axis='both', which='major')
         ax[i].grid(True, axis='both', which='minor', alpha=0.2)
+        
+
+def mark_cat(cat, d):
+    import numpy as np
+    import pandas as pd
+    from DS_healpix_fragmentation import radec2pix
+    
+    pix2 = radec2pix(cat['RA'], cat['DEC'], 2)
+    cat['pix2'] = ''
+    for name in d:
+        cat['pix2'].loc[np.in1d(pix2, d[name])] = name
+    return cat
