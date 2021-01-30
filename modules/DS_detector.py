@@ -257,3 +257,57 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
                 coords.to_csv(save_inter_cats.format(pix=i, model=model_name), index=False)
         cur_cat = pd.concat(cur_cat, ignore_index=True)
         cur_cat.to_csv(cat_name.format(model=model_name, thr=thr, step=step), index=False)
+
+
+def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
+    import numpy as np
+    import pandas as pd
+    import os
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    res_cat = pd.read_csv(name)
+    true_clusters = pack_all_catalogs(clusters_dir)
+    
+    if 'status' in list(res_cat):
+        res_cat = res_cat[res_cat['status'] != 'fn']
+        res_cat.index = np.arange(len(res_cat))
+    
+    res_cat_sc = SkyCoord(ra=np.array(res_cat['RA'])*u.degree, 
+                          dec=np.array(res_cat['DEC'])*u.degree, frame='icrs')
+    true_clusters_sc = SkyCoord(ra=true_clusters['RA']*u.degree, 
+                               dec=true_clusters['DEC']*u.degree)
+    
+    idx, d2d, _ = res_cat_sc.match_to_catalog_sky(true_clusters_sc)
+    matched = d2d.degree <= tp_dist
+    
+    res_cat['status'] = 'fp'
+    res_cat['status'].iloc[matched] = 'tp'
+    res_cat['catalog'] = ''
+    res_cat['catalog'].iloc[matched] = np.array(
+        true_clusters['catalog'][idx[matched]])
+    res_cat['tRA'] = np.nan
+    res_cat['tRA'].iloc[matched] = np.array(true_clusters['RA'][idx[matched]])
+    res_cat['tDEC'] = np.nan
+    res_cat['tDEC'].iloc[matched] = np.array(true_clusters['DEC'][idx[matched]])
+    res_cat['M500'] = np.nan
+    res_cat['M500'].iloc[matched] = np.array(true_clusters['M500'][idx[matched]])
+    res_cat['z'] = np.nan
+    res_cat['z'].iloc[matched] = np.array(true_clusters['z'][idx[matched]])
+    
+    res_cat_tp = res_cat[res_cat['status'] == 'tp']
+    res_cat_tp = res_cat_tp.drop_duplicates(subset=['tRA', 'tDEC'])
+    res_cat = pd.concat([res_cat[res_cat['status'] != 'tp'], res_cat_tp], 
+                        ignore_index=True)
+ 
+    
+    true_clusters['found'] = False
+    true_clusters['found'].iloc[idx[matched]] = True
+    true_clusters['status'] = 'fn'
+    true_clusters['tRA'] = true_clusters['RA']
+    true_clusters['tDEC'] = true_clusters['DEC']
+    
+    res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog', 'M500', 'z', 
+                            'tRA', 'tDEC']]
+                         [true_clusters['found']==False]], ignore_index=True)
+    return res_cat
