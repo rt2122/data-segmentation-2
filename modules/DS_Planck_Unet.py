@@ -346,9 +346,8 @@ def gen_data_from_pregen(path, batch_size):
             #        convert_to_tensor(np.stack(y).astype(np.float64))
             yield np.stack(x).astype(np.float64), \
                     np.stack(y).astype(np.float64)
-
-def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, size=64, no_sample=False, 
-                             rotate_aug=False):
+def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_pics, pregen_masks, size=64, 
+        no_sample=False, rotate_aug=False):
     import numpy as np
     import pandas as pd
     import os
@@ -361,15 +360,15 @@ def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, si
     mask_dict = {}
     
     for pix in big_pixels:
-        pic_dict[pix] = np.load(os.path.join(pregen_dir, str(pix), 'pic.npy'))
-        mask_dict[pix] = np.load(os.path.join(pregen_dir, str(pix), 'mask.npy'))
+        pic_dict[pix] = np.load(os.path.join(pregen_pics, str(pix) + '.npy'))
+        mask_dict[pix] = np.load(os.path.join(pregen_masks, str(pix) + '.npy'))
     
     while True:
         sample = patches.sample(frac=1)
         if no_sample:
             sample = patches
         
-        for i in range(0, len(patches), batch_size):
+        for i in range(0, len(patches) - batch_size, batch_size):
             pics = []
             masks = []
             
@@ -377,10 +376,10 @@ def gen_data_while_training(big_pixels, batch_size, patches_file, pregen_dir, si
             cur_x = np.array(sample['x'].iloc[i:i+batch_size])
             cur_y = np.array(sample['y'].iloc[i:i+batch_size])
             
-            for i in range(batch_size):
-                pix = cur_pix[i]
-                x = cur_x[i]
-                y = cur_y[i]
+            for j in range(batch_size):
+                pix = cur_pix[j]
+                x = cur_x[j]
+                y = cur_y[j]
                 
                 pics.append(pic_dict[pix][x:x+size,y:y+size,:])
                 masks.append(mask_dict[pix][x:x+size,y:y+size,:])
