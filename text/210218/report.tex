@@ -1,0 +1,72 @@
+\documentclass{article}
+    \usepackage{amssymb}
+    \usepackage[utf8]{inputenc}
+    \usepackage[russian]{babel}
+    \usepackage[left=2cm,right=2cm,
+        top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+    }
+  \usepackage{graphicx}
+  \usepackage{booktabs}
+  \graphicspath{{pictures/}}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{subcaption}
+%\captionsetup{compatibility=false}
+
+\begin{document}
+\begin{center}{\hugeОтчет по курсовой работе за неделю\\}\end{center}
+Дата: 18.2.2021\\
+Научные руководители: Герасимов С.В., Мещеряков А.В.\\
+Студент: Немешаева Алиса\\
+Курс: 4\\
+
+\renewcommand{\labelitemi}{$\blacksquare$}
+\renewcommand\labelitemii{$\square$}
+\begin{enumerate}
+    \item Создан каталог скоплений act\_found\_pz\_rot28 для обчения новой модели. Этот каталог 
+        создан на основе оригинального каталога ACT. Из ACT были исключены скопления, что уже 
+        содержатся в каталоге planck\_z (на его основе создавалась обучающая выборка для предыдущих 
+        моделей). Из оставшихся скоплений в каталог act\_found\_pz\_rot28 (сокращённо act\_found) 
+        были добавлены те, что модель pz\_rot28 может детектировать (то есть те скопления, что 
+        находятся в каталоге, созданном на основе модели pz\_rot28).\\
+    \item После этого была создана обучающая выборка - образцовые карты сегментации на основе 
+        каталогов planck\_z и act\_found. На основе этих карт и координат патчей pz\_only\_patches
+        (созданы на основе каталога planck\_z) была создана модель pz\_act\_found.\\
+\end{enumerate}
+
+\begin{table}
+\begin{tabular}{llrrrrr}
+\toprule
+{} &                         name &  planck\_z &  planck\_no\_z &    mcxcwp &     actwp &    fp \\
+\midrule
+0  &                         pz14 &  0.939394 &     0.821429 &  0.155340 &  0.130435 &   949 \\
+1  &                         pz40 &  0.931818 &     0.785714 &  0.145631 &  0.130435 &  1180 \\
+2  &                     pz\_rot19 &  0.962121 &     0.750000 &  0.165049 &  0.145221 &  1439 \\
+3  &                     pz\_rot28 &  0.962121 &     0.785714 &  0.174757 &  0.141544 &  1287 \\
+4  &                     pz\_rot33 &  0.954545 &     0.785714 &  0.155340 &  0.154412 &  1379 \\
+5  &                     pz\_act10 &  0.901515 &     0.821429 &  0.097087 &  0.089202 &   624 \\
+6  &                     pz\_act14 &  0.825758 &     0.750000 &  0.058252 &  0.043478 &   557 \\
+7  &       pz\_act\_rot\_drop0.1\_ep9 &  0.931818 &     0.750000 &  0.155340 &  0.094518 &   605 \\
+8  &   pz\_act\_jan\_rot\_drop0.1\_ep6 &  0.954545 &     0.785714 &  0.106796 &  0.093750 &   693 \\
+9  &   pz\_act\_feb\_rot\_drop0.1\_ep5 &  0.969697 &     0.821429 &  0.116505 &  0.163603 &  1843 \\
+10 &  pz\_act\_feb\_rot\_drop0.2\_ep10 &  0.969697 &     0.821429 &  0.155340 &  0.136029 &  1424 \\
+11 &  pz\_act\_feb\_rot\_drop0.3\_ep14 &  0.946970 &     0.714286 &  0.145631 &  0.152574 &  1695 \\
+12 &          pz\_act\_q\_0.1\_0.9\_12 &  0.962121 &     0.821429 &  0.145631 &  0.139706 &  1039 \\
+13 &          pz\_act\_q\_0.1\_0.9\_14 &  0.962121 &     0.750000 &  0.165049 &  0.148897 &  1290 \\
+14 &               pz\_act\_found13 &  0.954545 &     0.785714 &  0.145631 &  0.139706 &  1232 \\
+15 &               pz\_act\_found16 &  0.946970 &     0.821429 &  0.126214 &  0.125000 &  1073 \\
+16 &               pz\_act\_found21 &  0.946970 &     0.750000 &  0.165049 &  0.136029 &  1307 \\
+\bottomrule
+\end{tabular}
+\caption{Сравнение результатов последней модели pz\_act\_found с предыдущими.}
+\end{table}
+
+Отчет согласован с научным руководителем.\\
+Общее количество строк кода за эту неделю: \\
+\href{https://github.com/rt2122/data-segmentation-2}{Репозиторий}\\ 
+\end{document}
