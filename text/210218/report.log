@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.1.20)  13 FEB 2021 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  18 FEB 2021 17:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -497,7 +497,13 @@ Package caption Info: hyperref package is loaded.
 File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count274
 \l__pdf_internal_box=\box47
-) (./report.aux)
+) (./report.aux
+LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 2
+2.
+
+(/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
+File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
@@ -513,11 +519,6 @@ LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 21.
-LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 2
-1.
-(/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
-File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
-)
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
@@ -626,42 +627,57 @@ Underfull \hbox (badness 10000) in paragraph at lines 37--40
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 43.
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--43
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 43--47
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 51.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 43.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 51.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 69--72
+Underfull \hbox (badness 10000) in paragraph at lines 93--96
 
  []
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+[1
 
-] (./report.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11936 strings out of 479383
- 173387 string characters out of 5875830
- 486216 words of memory out of 5000000
+ 11941 strings out of 479383
+ 173426 string characters out of 5875830
+ 484207 words of memory out of 5000000
  28913 multiletter control sequences out of 15000+600000
  406734 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,8n,74p,280b,349s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,8n,74p,355b,352s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
 texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/font
 s/type1/public/cm-super/sfrm2074.pfb>
-Output written on report.pdf (1 page, 39213 bytes).
+Output written on report.pdf (2 pages, 41916 bytes).
 PDF statistics:
- 26 PDF objects out of 1000 (max. 8388607)
- 20 compressed objects within 1 object stream
- 5 named destinations out of 1000 (max. 500000)
+ 36 PDF objects out of 1000 (max. 8388607)
+ 29 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
