@@ -4,19 +4,24 @@ def stat_split_cats(files, big_pix=list(range(48))):
     from DS_healpix_fragmentation import radec2pix
 
     res_df = []
+    comp_df = []
     for model in files:
         df = pd.read_csv(files[model])
         df = df.iloc[np.in1d(radec2pix(df['RA'], df['DEC'], 2), big_pix)]
         df.index = np.arange(len(df))
-        line = {'name' : model}
+        line = {}
+        line_c = {}
         for cat in ['planck_z', 'planck_no_z', 'mcxcwp', 'actwp']:
             cur_df = df[df['catalog'] == cat]
             cur_df.index = np.arange(len(cur_df))
-            line[cat] = np.count_nonzero(cur_df['status'] == 'tp') / len(cur_df)
+            line_c[cat] = np.count_nonzero(cur_df['status'] == 'tp')
+            line[cat] = line_c[cat] / len(cur_df)
         line['fp'] = np.count_nonzero(df['status'] == 'fp')
-        res_df.append(pd.DataFrame(line, index=[0]))
-    res_df = pd.concat(res_df, ignore_index=True)
-    return res_df
+        res_df.append(pd.DataFrame(line, index=[model]))
+        comp_df.append(pd.DataFrame(line_c, index=[model]))
+    res_df = pd.concat(res_df)
+    comp_df = pd.concat(comp_df)
+    return res_df, comp_df
 
 def cut_cat(df, dict_cut = {}, 
            big_pix=None):
