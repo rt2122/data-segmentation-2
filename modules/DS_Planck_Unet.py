@@ -4,6 +4,8 @@ train_pix = [i for i in range(48) if not (i in val_pix) and not (i in test_pix)]
 train_pix_act = [2, 8, 10, 11, 13, 15, 32, 33, 36, 37, 40, 42, 43, 44, 45, 46]
 planck_side = 2048
 min_rad_64 = 0.62
+east_val = [38, 6]
+west_val = [9, 41]
 
 def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
     from DS_healpix_fragmentation import find_biggest_pixel, one_pixel_fragmentation,\
