@@ -1,3 +1,4 @@
+import numpy as np
 def find_centroid(pic):
     from skimage.measure import moments
     import numpy as np
@@ -105,10 +106,10 @@ def clusters_in_pix(clusters, pix, nside, search_nside=None):
     
     return df
 
-
 def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10, 
         mask_radius=15/60, clusters_dir='/home/rt2122/Data/clusters/', 
-        planck_dirname='/home/rt2122/Data/Planck/normalized/'):
+        planck_dirname='/home/rt2122/Data/Planck/normalized/', data_type=np.float64, 
+        only=False, only_idx=100):
     from DS_healpix_fragmentation import one_pixel_fragmentation, pix2radec, radec2pix
     from DS_Planck_Unet import draw_pic_with_mask, draw_pic
     import pandas as pd
@@ -126,6 +127,7 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
                             mask_radius=mask_radius,
                             clusters_arr=np.array(true_clusters[['RA', 'DEC']]), 
                             dirname=planck_dirname)
+    big_pic = big_pic.astype(data_type)
     
     pics, matrs, masks = [], [], []
     pic_idx = []
@@ -144,12 +146,20 @@ def gen_pics_for_detection(ipix, model, big_nside=2, step=64, size=64, depth=10,
             
             if pic.shape == (size, size, pic.shape[-1]):
                 pics.append(pic)
+                pic_idx.append((i, j))
                 matrs.append(matr)
                 masks.append(mask)
-                pic_idx.append((i, j))
  
-    
-    ans = model.predict(np.array(pics))
+    ans = None
+    if only:
+        ans = []
+        for i in range(0, len(pics), only_idx):
+            ans.append(model.predict(np.array(pics[i:i+only_idx])))
+        ans = np.concatenate(ans, axis=0)
+    else:
+        ans = model.predict(np.array(pics))
+    if only:
+        return {'ans' : ans, 'pic_idx' : pic_idx}
     return {'true_clusters' : true_clusters,
             'pics' : pics, 'matrs' : matrs, 'masks' : masks, 'ans' : ans,
             'pic_idx' : pic_idx} 
@@ -163,16 +173,16 @@ def detect_clusters_on_pic(ans, matr, thr, binary):
     return dd
 
 
-def connect_masks(ans, pic_idx, size=64, big_shape=(1024, 1024, 1)):
+def connect_masks(ans, pic_idx, size=64, big_shape=(1024, 1024, 1), data_type=np.float64):
     import numpy as np
     
-    connected_ans = np.zeros(big_shape)
-    coef = np.zeros(big_shape)
+    connected_ans = np.zeros(big_shape, dtype=data_type)
+    coef = np.zeros(big_shape, dtype=data_type)
     
     for i in range(len(ans)):
         x, y = pic_idx[i]
         connected_ans[x:x+size, y:y+size, :] += ans[i]
-        coef[x:x+size,y:y+size, :] += np.ones((size, size, 1))
+        coef[x:x+size,y:y+size, :] += np.ones((size, size, 1), dtype=data_type)
     
     connected_ans /= coef
     return connected_ans
