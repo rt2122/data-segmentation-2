@@ -251,6 +251,7 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
         clusters_dir='/home/rt2122/Data/clusters/', 
         planck_dirname='/home/rt2122/Data/Planck/normalized/', val_cats=None):
     from tqdm.notebook import tqdm
+    import os
     import pandas as pd 
     from DS_Planck_Unet import load_planck_model, val_pix
 
@@ -258,6 +259,9 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
         big_pix = list(set(big_pix) - set(val_pix))
     
     for model_name in tqdm(models):
+        save_name = cat_name.format(model=model_name, thr=thr, step=step)
+        if os.path.isfile(save_name):
+            continue
         cur_cat = []
         for i in tqdm(big_pix):
             model = load_planck_model(models[model_name])
@@ -270,7 +274,7 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
         cur_cat = pd.concat(cur_cat, ignore_index=True)
         if not (val_cats is None):
             cur_cat = pd.concat([cur_cat, pd.read_csv(val_cats[model_name])])
-        cur_cat.to_csv(cat_name.format(model=model_name, thr=thr, step=step), index=False)
+        cur_cat.to_csv(save_name, index=False)
 
 
 def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
