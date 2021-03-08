@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  4 MAR 2021 15:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  4 MAR 2021 17:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,11 +503,7 @@ LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 2
 
 (/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
 File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
-)
-
-LaTeX Warning: Label `Fig:Val' multiply defined.
-
-)
+))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
@@ -627,9 +623,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--35
  []
 
 
-LaTeX Warning: Reference `Fig:Recall' on page 1 undefined on input line 36.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 35--37
 
  []
@@ -639,17 +632,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 37--39
 
  []
 
-<val.png, id=6, 603.75563pt x 326.21875pt>
+<val.png, id=7, 603.75563pt x 326.21875pt>
 File: val.png Graphic file (type png)
 <use val.png>
 Package pdftex.def Info: val.png  used on input line 45.
 (pdftex.def)             Requested size: 300.29344pt x 162.2528pt.
-<recall.png, id=8, 947.03813pt x 373.89688pt>
+<recall.png, id=9, 947.03813pt x 373.89688pt>
 File: recall.png Graphic file (type png)
 <use recall.png>
 Package pdftex.def Info: recall.png  used on input line 51.
 (pdftex.def)             Requested size: 400.38872pt x 158.07396pt.
-<cluster.png, id=9, 874.26625pt x 852.68562pt>
+<cluster.png, id=10, 874.26625pt x 852.68562pt>
 File: cluster.png Graphic file (type png)
 <use cluster.png>
 Package pdftex.def Info: cluster.png  used on input line 57.
@@ -668,30 +661,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 62--65
  [2 <./cluster.png>] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
- 11943 strings out of 479383
- 173372 string characters out of 5875830
- 476477 words of memory out of 5000000
- 28926 multiletter control sequences out of 15000+600000
- 405852 words of font info for 30 fonts, out of 8000000 for 9000
+ 11941 strings out of 479383
+ 173349 string characters out of 5875830
+ 476571 words of memory out of 5000000
+ 28925 multiletter control sequences out of 15000+600000
+ 405035 words of font info for 29 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,6n,74p,291b,346s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
-texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/font
-s/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/
-cm-super/sfrm2074.pfb>
-Output written on report.pdf (2 pages, 271116 bytes).
+texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/font
+s/type1/public/cm-super/sfrm2074.pfb>
+Output written on report.pdf (2 pages, 260217 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 45 PDF objects out of 1000 (max. 8388607)
+ 32 compressed objects within 1 object stream
  9 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
