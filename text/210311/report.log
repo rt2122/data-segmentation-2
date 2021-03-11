@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  11 MAR 2021 16:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  11 MAR 2021 17:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -644,33 +644,41 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--40
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--42
+
+ []
+
 <unet.jpg, id=6, 521.44812pt x 304.13625pt>
 File: unet.jpg Graphic file (type jpg)
 <use unet.jpg>
-Package pdftex.def Info: unet.jpg  used on input line 46.
+Package pdftex.def Info: unet.jpg  used on input line 48.
 (pdftex.def)             Requested size: 400.38872pt x 233.53128pt.
 <recall.jpg, id=7, 445.85927pt x 108.405pt>
 File: recall.jpg Graphic file (type jpg)
 <use recall.jpg>
-Package pdftex.def Info: recall.jpg  used on input line 51.
+Package pdftex.def Info: recall.jpg  used on input line 53.
 (pdftex.def)             Requested size: 400.38872pt x 97.35185pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 <recall2epoch.png, id=8, 947.03813pt x 373.89688pt>
 File: recall2epoch.png Graphic file (type png)
 <use recall2epoch.png>
-Package pdftex.def Info: recall2epoch.png  used on input line 57.
+Package pdftex.def Info: recall2epoch.png  used on input line 59.
 (pdftex.def)             Requested size: 400.38872pt x 158.07396pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 62--65
+Underfull \hbox (badness 10000) in paragraph at lines 64--67
 
  []
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./unet.jpg> <./recall.jpg>
-] [2 <./recall2epoch.png>] (./report.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./unet.jpg>] [2 <./recall.
+jpg> <./recall2epoch.png>] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
@@ -682,21 +690,21 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 11947 strings out of 479383
- 173441 string characters out of 5875830
- 476498 words of memory out of 5000000
+ 11948 strings out of 479383
+ 173447 string characters out of 5875830
+ 477498 words of memory out of 5000000
  28928 multiletter control sequences out of 15000+600000
  405852 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,6n,74p,322b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,6n,74p,322b,346s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
 texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/font
 s/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/
 cm-super/sfrm2074.pfb>
-Output written on report.pdf (2 pages, 250824 bytes).
+Output written on report.pdf (2 pages, 251872 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
- 35 compressed objects within 1 object stream
- 10 named destinations out of 1000 (max. 500000)
+ 48 PDF objects out of 1000 (max. 8388607)
+ 36 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
