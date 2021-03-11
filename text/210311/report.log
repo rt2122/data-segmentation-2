@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  11 MAR 2021 15:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  11 MAR 2021 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,7 +503,11 @@ LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 2
 
 (/usr/share/texmf-dist/tex/latex/cyrillic/t2acmr.fd
 File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
-))
+)
+
+LaTeX Warning: Label `Fig:Recall' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
@@ -632,43 +636,67 @@ Underfull \hbox (badness 10000) in paragraph at lines 36--38
 
  []
 
+
+LaTeX Warning: Reference `Fig:Epoch' on page 1 undefined on input line 39.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--40
+
+ []
+
 <unet.jpg, id=6, 521.44812pt x 304.13625pt>
 File: unet.jpg Graphic file (type jpg)
 <use unet.jpg>
-Package pdftex.def Info: unet.jpg  used on input line 44.
-(pdftex.def)             Requested size: 300.29344pt x 175.14613pt.
+Package pdftex.def Info: unet.jpg  used on input line 46.
+(pdftex.def)             Requested size: 400.38872pt x 233.53128pt.
 <recall.jpg, id=7, 445.85927pt x 108.405pt>
 File: recall.jpg Graphic file (type jpg)
 <use recall.jpg>
-Package pdftex.def Info: recall.jpg  used on input line 49.
-(pdftex.def)             Requested size: 300.29344pt x 73.01471pt.
+Package pdftex.def Info: recall.jpg  used on input line 51.
+(pdftex.def)             Requested size: 400.38872pt x 97.35185pt.
+<recall2epoch.png, id=8, 947.03813pt x 373.89688pt>
+File: recall2epoch.png Graphic file (type png)
+<use recall2epoch.png>
+Package pdftex.def Info: recall2epoch.png  used on input line 57.
+(pdftex.def)             Requested size: 400.38872pt x 158.07396pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--58
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--65
 
  []
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./unet.jpg> <./recall.jpg>
-] (./report.aux)
+] [2 <./recall2epoch.png>] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 11934 strings out of 479383
- 173248 string characters out of 5875830
- 475370 words of memory out of 5000000
- 28919 multiletter control sequences out of 15000+600000
- 405035 words of font info for 29 fonts, out of 8000000 for 9000
+ 11947 strings out of 479383
+ 173441 string characters out of 5875830
+ 476498 words of memory out of 5000000
+ 28928 multiletter control sequences out of 15000+600000
+ 405852 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,6n,74p,280b,345s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,6n,74p,322b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
-texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/font
-s/type1/public/cm-super/sfrm2074.pfb>
-Output written on report.pdf (1 page, 126420 bytes).
+texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/font
+s/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/
+cm-super/sfrm2074.pfb>
+Output written on report.pdf (2 pages, 250824 bytes).
 PDF statistics:
- 34 PDF objects out of 1000 (max. 8388607)
- 26 compressed objects within 1 object stream
- 7 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 47 PDF objects out of 1000 (max. 8388607)
+ 35 compressed objects within 1 object stream
+ 10 named destinations out of 1000 (max. 500000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
