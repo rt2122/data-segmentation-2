@@ -1,0 +1,19 @@
+find maxima = performs optimised search of maxima and minima
+   !                      inside a face and uses neighbours_nest
+   !                      to find the neighbours of a pixel on the border
+   !                      of the face.
+====================================================================
+      !     Finds all maxima in the face face_num
+      !     INPUTS:
+      !     map:      REAL array, length NPIX which contains the map
+      !     face_num: INTEGER Number of the face in which extremum search is to be
+      !               performed
+      !     OUTPUTS:  
+      !     peak:     INTEGER array, length NPIX which contains 1 in the pixels
+      !               where maxima were found and -1 in the pixels where minima
+      !               were found.
+      !
+      !     Benjamin D. Wandelt October 1997
+      ! 2010-11-23, E. Hivon: accept maps with Nside > 8192
+      !====================================================================
+
