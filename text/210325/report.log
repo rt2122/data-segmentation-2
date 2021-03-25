@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  25 MAR 2021 15:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2021.2.18)  25 MAR 2021 16:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -667,49 +667,103 @@ Underfull \hbox (badness 10000) in paragraph at lines 51--55
 
  []
 
-<2circles_histogram.png, id=6, 1439.3775pt x 317.185pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--57
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--60
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--64
+
+ []
+
+<2circles_histogram.png, id=9, 1439.3775pt x 317.185pt>
 File: 2circles_histogram.png Graphic file (type png)
 <use 2circles_histogram.png>
-Package pdftex.def Info: 2circles_histogram.png  used on input line 61.
-(pdftex.def)             Requested size: 500.484pt x 110.28558pt.
-<2circles_histogram_06.png, id=8, 1439.3775pt x 317.185pt>
-File: 2circles_histogram_06.png Graphic file (type png)
-<use 2circles_histogram_06.png>
-Package pdftex.def Info: 2circles_histogram_06.png  used on input line 67.
+Package pdftex.def Info: 2circles_histogram.png  used on input line 70.
 (pdftex.def)             Requested size: 500.484pt x 110.28558pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+<2circles_histogram_06.png, id=11, 1439.3775pt x 317.185pt>
+File: 2circles_histogram_06.png Graphic file (type png)
+<use 2circles_histogram_06.png>
+Package pdftex.def Info: 2circles_histogram_06.png  used on input line 76.
+(pdftex.def)             Requested size: 500.484pt x 110.28558pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--76
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<map_all.png, id=12, 1153.30875pt x 1139.25626pt>
+File: map_all.png Graphic file (type png)
+<use map_all.png>
+Package pdftex.def Info: map_all.png  used on input line 83.
+(pdftex.def)             Requested size: 500.484pt x 494.39038pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<map_psz2.png, id=13, 1153.30875pt x 1139.25626pt>
+File: map_psz2.png Graphic file (type png)
+<use map_psz2.png>
+Package pdftex.def Info: map_psz2.png  used on input line 91.
+(pdftex.def)             Requested size: 500.484pt x 494.39038pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<map_act.png, id=14, 1153.30875pt x 1139.25626pt>
+File: map_act.png Graphic file (type png)
+<use map_act.png>
+Package pdftex.def Info: map_act.png  used on input line 99.
+(pdftex.def)             Requested size: 500.484pt x 494.39038pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--108
 
  []
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./2circles_histogram.png>]
- [2 <./2circles_histogram_06.png>] (./report.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./2circles_histogram.p
+ng> <./2circles_histogram_06.png>] [3 <./map_all.png>] [4 <./map_psz2.png>]
+[5 <./map_act.png>] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11960 strings out of 479383
- 173865 string characters out of 5875830
- 479592 words of memory out of 5000000
- 28933 multiletter control sequences out of 15000+600000
+ 11992 strings out of 479383
+ 174278 string characters out of 5875830
+ 484784 words of memory out of 5000000
+ 28957 multiletter control sequences out of 15000+600000
  406734 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,7n,74p,338b,346s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,7n,74p,546b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbo
-ls/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb><
-/usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm2074.pfb>
-Output written on report.pdf (2 pages, 169583 bytes).
+ts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+sy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><
+/usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texm
+f-dist/fonts/type1/public/cm-super/sfrm2074.pfb>
+Output written on report.pdf (5 pages, 1249246 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
- 41 compressed objects within 1 object stream
- 7 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 87 PDF objects out of 1000 (max. 8388607)
+ 62 compressed objects within 1 object stream
+ 15 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
