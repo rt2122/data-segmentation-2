@@ -77,6 +77,11 @@ def n_max_flux_df(df, n, ch):
 def normalize(pic):
     import numpy as np
 
+    if len(pic.shape) == 2:
+        pic -= np.mean(pic)
+        pic /= np.std(pic)
+        return pic
+
     pic = np.copy(pic)
     for i in range(pic.shape[-1]):
         pic[:,:,i] -= np.mean(pic[:,:,i])

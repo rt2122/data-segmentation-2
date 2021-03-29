@@ -51,7 +51,8 @@ def cut_cat(df, dict_cut = {},
     return df
 
 def stat_orig_cats(det_cats_dict, true_cats_dir, 
-        dict_cut = {}, big_pix = None, match_dist=5/60, n_try=200):
+        dict_cut = {}, big_pix = None, match_dist=5/60, n_try=200, max_pred_lim=None, 
+        recall_only=False, format_s=lambda x:x, no_err=False):
     import os
     from astropy.coordinates import SkyCoord
     from astropy import units as u
@@ -71,7 +72,11 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
     
     for name in det_cats:
         df = det_cats[name]
-        df = df[df['status'] != 'fn']
+        if 'status' in list(df):
+            df = df[df['status'] != 'fn']
+        if not (max_pred_lim is None):
+            df = df[df['max_pred'] >= max_pred_lim]
+        df['found'] = False
         df.index = np.arange(len(df))
         if 'b' in dict_cut:
             det_cats[name] = cut_cat(df, {'b' : dict_cut['b']}, big_pix)
@@ -95,14 +100,16 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
             
             idx, d2d, _ = tr_sc.match_to_catalog_sky(det_sc)
             matched = d2d.degree <= match_dist
+            det['found'].iloc[idx[matched]] = True
             
             line[tr_name] = np.count_nonzero(matched)
-            line[tr_name+'_err'], line[tr_name+'_std'] = calc_error(det, tr, n_try=n_try)
+            if not recall_only and not no_err:
+                line[tr_name+'_err'], line[tr_name+'_std'] = calc_error(det, tr, n_try=n_try)
 
-            line_r[tr_name] = line[tr_name] / len(tr)
+            line_r[tr_name] = format_s(line[tr_name] / len(tr))
             
         line['all'] = len(det)
-        line['fp'] = np.count_nonzero(det['status'] == 'fp')
+        line['fp'] = np.count_nonzero(det['found'] == False)
         line_r['fp'] = line['fp']
         line_r['all'] = line['all']
         comp_df.append(pd.DataFrame(line, index=[det_name]))
@@ -118,4 +125,11 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
     
     comp_df = pd.concat(comp_df)
     recall_df = pd.concat(recall_df)
+    if recall_only:
+        return recall_df
     return comp_df, recall_df
+
+def make_histogram(ax, tp, fp, n_bins, label1='Yes matches', label2='No matches'):
+    ax.hist(tp, n_bins, color='r', log=True, histtype='step', label=label1)
+    ax.hist(fp, n_bins, color='b', log=True, histtype='step', label=label2)
+    ax.legend()

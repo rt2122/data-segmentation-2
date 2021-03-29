@@ -293,8 +293,8 @@ def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
     
     res_cat_sc = SkyCoord(ra=np.array(res_cat['RA'])*u.degree, 
                           dec=np.array(res_cat['DEC'])*u.degree, frame='icrs')
-    true_clusters_sc = SkyCoord(ra=true_clusters['RA']*u.degree, 
-                               dec=true_clusters['DEC']*u.degree)
+    true_clusters_sc = SkyCoord(ra=np.array(true_clusters['RA'])*u.degree, 
+                               dec=np.array(true_clusters['DEC'])*u.degree)
     
     idx, d2d, _ = res_cat_sc.match_to_catalog_sky(true_clusters_sc)
     matched = d2d.degree <= tp_dist
@@ -308,10 +308,16 @@ def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
     res_cat['tRA'].iloc[matched] = np.array(true_clusters['RA'][idx[matched]])
     res_cat['tDEC'] = np.nan
     res_cat['tDEC'].iloc[matched] = np.array(true_clusters['DEC'][idx[matched]])
-    res_cat['M500'] = np.nan
-    res_cat['M500'].iloc[matched] = np.array(true_clusters['M500'][idx[matched]])
-    res_cat['z'] = np.nan
-    res_cat['z'].iloc[matched] = np.array(true_clusters['z'][idx[matched]])
+    if 'M500' in list(true_clusters):
+        res_cat['M500'] = np.nan
+        res_cat['M500'].iloc[matched] = np.array(true_clusters['M500'][idx[matched]])
+    if 'z' in list(true_clusters):
+        res_cat['z'] = np.nan
+        res_cat['z'].iloc[matched] = np.array(true_clusters['z'][idx[matched]])
+    if 'LAMBDA' in list(true_clusters):
+        res_cat['LAMBDA'] = np.nan
+        res_cat['LAMBDA'].iloc[matched] = np.array(true_clusters['LAMBDA'][idx[matched]])
+
     
     res_cat_tp = res_cat[res_cat['status'] == 'tp']
     res_cat_tp = res_cat_tp.drop_duplicates(subset=['tRA', 'tDEC'])
@@ -325,7 +331,9 @@ def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
     true_clusters['tRA'] = true_clusters['RA']
     true_clusters['tDEC'] = true_clusters['DEC']
     
-    res_cat = pd.concat([res_cat, true_clusters[['RA', 'DEC', 'status', 'catalog', 'M500', 'z', 
-                            'tRA', 'tDEC']]
-                         [true_clusters['found']==False]], ignore_index=True)
+    prm = ['RA', 'DEC', 'status', 'catalog', 'M500', 'z', 'tRA', 'tDEC', 'LAMBDA']
+    prm = list(set(prm).intersection(list(true_clusters)))
+
+    res_cat = pd.concat([res_cat, true_clusters[prm][true_clusters['found']==False]], 
+            ignore_index=True)
     return res_cat
