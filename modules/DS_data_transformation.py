@@ -311,3 +311,11 @@ def mark_cat(cat, d):
     for name in d:
         cat['pix2'].loc[np.in1d(pix2, d[name])] = name
     return cat
+
+def colors_iterator():
+    c = ['r', 'b', 'g', 'c', 'm', 'y', 'k', 'tab:blue', 'tab:orange', 'tab:green',
+            'tab:purple', 'tab:brown', 'tab:pink', 'tab:gray', 'tab:olive']
+
+    while True:
+        yield c[0]
+        c = c[1:]
