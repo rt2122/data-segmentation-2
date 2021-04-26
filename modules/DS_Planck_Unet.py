@@ -7,6 +7,11 @@ min_rad_64 = 0.62
 east_val = [38, 6]
 west_val = [9, 41]
 
+east = [0,  1,  2,  3,  4,  5,  6,  7, 16, 17, 20, 21, 22, 23, 24, 26, 27,
+       32, 33, 34, 35, 36, 37, 38, 39]
+west = [ 8,  9, 10, 11, 12, 13, 14, 15, 18, 19, 25, 28, 29, 30, 31, 40, 41,
+       42, 43, 44, 45, 46, 47]
+
 def gen_matr(ra, dec, radius=0.84, size=64, fin_nside=2048):
     from DS_healpix_fragmentation import find_biggest_pixel, one_pixel_fragmentation,\
         draw_proper_circle, matr2dict
