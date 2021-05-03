@@ -319,3 +319,8 @@ def colors_iterator():
     while True:
         yield c[0]
         c = c[1:]
+
+def get_cat_name(filename):
+    import os
+
+    return os.path.splitext(os.path.basename(filename))[0]

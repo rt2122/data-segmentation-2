@@ -1,0 +1,45 @@
+\documentclass{article}
+    \usepackage{amssymb}
+    \usepackage[utf8]{inputenc}
+    \usepackage[russian]{babel}
+    \usepackage[left=2cm,right=2cm,
+        top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+    \usepackage{hyperref}
+    \hypersetup{
+        colorlinks=true,
+        linkcolor=blue,
+        filecolor=magenta,      
+        urlcolor=cyan,
+    }
+  \usepackage{graphicx}
+  \usepackage{booktabs}
+  \usepackage{hyperref}
+  \graphicspath{{pictures/}}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage{subcaption}
+%\captionsetup{compatibility=false}
+
+\begin{document}
+\begin{center}{\hugeОтчет по дипломной работе за неделю\\}\end{center}
+Дата: 29.4.2021\\
+Научные руководители: Герасимов С.В., Мещеряков А.В.\\
+Студент: Немешаева Алиса\\
+Курс: 4\\
+
+\renewcommand{\labelitemi}{$\blacksquare$}
+\renewcommand\labelitemii{$\square$}
+
+\begin{enumerate}
+    \item Проведена работа над текстом выпускной квалификационной работы и над презентацией.\\
+    \item Чтобы определелить взаимосвязь морфологии объектов и карт сегментации, проводилось сравнение карт prediction index и карт y-параметра. Во-первых, по отсутствию искажений формы, характерных для проекции HEALPix, можно судить, что нейросетевая модель не использует данные о координатах карт, которые можно подчерпнуть из искажений. Во-вторых, наглядно можно проследить схожесть карт y-параметра и масок сегментации.\\
+\end{enumerate}
+
+\begin{figure}[h]
+    \center{\includegraphics[width=0.9\linewidth]{fav_clusters}}
+    \caption{Карты сегментации и карты y-параметра для нескольких известных скоплений (карты сегментации в логарифмической шкале)}
+\end{figure}
+
+Отчет согласован с научным руководителем.\\
+Общее количество строк кода за эту неделю: 103\\
+\href{https://github.com/rt2122/data-segmentation-2}{Репозиторий}\\ 
+\end{document}
