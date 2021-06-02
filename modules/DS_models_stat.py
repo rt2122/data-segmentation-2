@@ -28,7 +28,7 @@ def cut_cat(df, dict_cut = {},
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import numpy as np
-    from DS_healpix_fragmentation import radec2pix
+    from DS_healpix_fragmentation import radec2pix, cut_cat_by_pix
  
     sc = SkyCoord(ra=np.array(df['RA'])*u.degree, 
                   dec=np.array(df['DEC'])*u.degree, frame='icrs')
@@ -44,9 +44,7 @@ def cut_cat(df, dict_cut = {},
             df.index = np.arange(len(df))
     
     if not (big_pix is None):
-        pix2 = radec2pix(df['RA'], df['DEC'], 2)
-        df = df[np.in1d(pix2, big_pix)]
-        df.index = np.arange(len(df))
+        df = cut_cat_by_pix(df, big_pix)
     
     return df
 
@@ -133,3 +131,40 @@ def make_histogram(ax, tp, fp, n_bins, label1='Yes matches', label2='No matches'
     ax.hist(tp, n_bins, color='r', log=True, histtype='step', label=label1)
     ax.hist(fp, n_bins, color='b', log=True, histtype='step', label=label2)
     ax.legend()
+
+
+def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[]):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import numpy as np
+    import pandas as pd
+    
+    if true_cats_sc is None:
+        true_cats_sc = {}
+        for true_name in true_cats:
+            df = true_cats[true_name]
+            true_cats_sc[true_name] = SkyCoord(ra=np.array(df['RA'])*u.degree, 
+                                               dec=np.array(df['DEC'])*u.degree, frame='icrs')
+    
+    det_cat = det_cat[det_cat['status'] != 'fn']
+    det_cat.index = np.arange(len(det_cat))
+    det_cat['found'] = False
+    
+    det_cat_sc = SkyCoord(ra=np.array(det_cat['RA'])*u.degree, 
+                         dec=np.array(det_cat['DEC'])*u.degree, frame='icrs')
+    
+    line_r = {}
+    for true_name in true_cats: 
+        tr_sc = true_cats_sc[true_name]
+        idx, d2d, _ = tr_sc.match_to_catalog_sky(det_cat_sc)
+        matched = d2d.degree <= match_dist
+        det_cat.loc[idx[matched], 'found'] = True
+        n_matched = np.count_nonzero(matched)
+        line_r[true_name] =  n_matched / len(true_cats[true_name])
+
+        if true_name in spec_precision:
+            line_r['precision_' + true_name] = n_matched / len(det_cat)
+    
+    line_r['precision'] = np.count_nonzero(det_cat['found']) / len(det_cat)
+    line_r['all'] = len(det_cat)
+    return line_r

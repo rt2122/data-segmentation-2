@@ -219,3 +219,10 @@ def radec2vec(ra, dec):
     
     sc = SkyCoord(ra=np.array(ra)*u.degree, dec=np.array(dec)*u.degree, frame='icrs')
     return hp.ang2vec(theta=sc.galactic.l.degree, phi=sc.galactic.b.degree, lonlat=True)
+
+def cut_cat_by_pix(df, big_pix):
+    import numpy as np
+    pix = radec2pix(df['RA'], df['DEC'], 2)
+    df = df[np.in1d(pix, big_pix)]
+    df.index = np.arange(len(df))
+    return df
