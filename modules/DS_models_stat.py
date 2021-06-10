@@ -38,7 +38,7 @@ def cut_cat(df, dict_cut = {},
             df = df[np.abs(df[prm]) >= dict_cut[prm][0]]
             df = df[np.abs(df[prm]) < dict_cut[prm][1]]
             df.index = np.arange(len(df))
-        else: 
+        elif prm in list(df):
             df = df[df[prm] >= dict_cut[prm][0]]
             df = df[df[prm] < dict_cut[prm][1]]
             df.index = np.arange(len(df))
@@ -50,7 +50,9 @@ def cut_cat(df, dict_cut = {},
 
 def stat_orig_cats(det_cats_dict, true_cats_dir, 
         dict_cut = {}, big_pix = None, match_dist=5/60, n_try=200, max_pred_lim=None, 
-        recall_only=False, format_s=lambda x:x, no_err=False):
+        recall_only=False, format_s=lambda x:x, no_err=False, 
+        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
+            'PSZ2(z)' : '~/Data/clusters/planck_z.csv'}):
     import os
     from astropy.coordinates import SkyCoord
     from astropy import units as u
@@ -62,6 +64,7 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
     true_cats_files = [os.path.join(true_cats_dir, file) for file in true_cats_files]
     
     true_cats = {os.path.splitext(os.path.basename(file))[0] : pd.read_csv(file) for file in true_cats_files}
+    true_cats.update({name : pd.read_csv(other_cats[name]) for name in other_cats})
     det_cats = {name : 
                 pd.read_csv(det_cats_dict[name]) for name in det_cats_dict}
     
@@ -149,12 +152,16 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
     det_cat = det_cat[det_cat['status'] != 'fn']
     det_cat.index = np.arange(len(det_cat))
     det_cat['found'] = False
+    for cat in spec_precision:
+        det_cat['found_' + cat] = False
     
     det_cat_sc = SkyCoord(ra=np.array(det_cat['RA'])*u.degree, 
                          dec=np.array(det_cat['DEC'])*u.degree, frame='icrs')
     
     line_r = {}
     for true_name in true_cats: 
+        if len(true_cats[true_name]) == 0:
+            continue
         tr_sc = true_cats_sc[true_name]
         idx, d2d, _ = tr_sc.match_to_catalog_sky(det_cat_sc)
         matched = d2d.degree <= match_dist
@@ -162,9 +169,55 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
         n_matched = np.count_nonzero(matched)
         line_r[true_name] =  n_matched / len(true_cats[true_name])
 
+
         if true_name in spec_precision:
-            line_r['precision_' + true_name] = n_matched / len(det_cat)
+            det_cat.loc[idx[matched], 'found_' + true_name] = True
+            n_true_matched = np.count_nonzero(det_cat['found_' + true_name])
+            line_r['precision_' + true_name] = n_true_matched / len(det_cat)
+            line_r['found_' + true_name] = n_true_matched
     
-    line_r['precision'] = np.count_nonzero(det_cat['found']) / len(det_cat)
+    line_r['found'] = np.count_nonzero(det_cat['found'])
+    line_r['precision'] = line_r['found'] / len(det_cat)
     line_r['all'] = len(det_cat)
     return line_r
+
+def change_df(df, format_s=lambda x:'{:.2f}'.format(x)):
+    for prm in list(df):
+        for i in df.index:
+            df.loc[i, prm] = format_s(df.loc[i, prm])
+    return df
+
+def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict_cut={}, 
+        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
+            'PSZ2(z)' : '~/Data/clusters/planck_z.csv'}):
+    import os
+    import numpy as np
+    import pandas as pd
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    from DS_data_transformation import get_cat_name
+    from DS_healpix_fragmentation import cut_cat_by_pix
+    
+    true_cats_dir = '/home/rt2122/Data/original_catalogs/csv/'
+    if not orig:
+        true_cats_dir = '/home/rt2122/Data/clusters/'
+    
+    files = next(os.walk(true_cats_dir))[-1]
+    true_cats = {get_cat_name(file) : pd.read_csv(os.path.join(true_cats_dir, file)) 
+            for file in files}
+    true_cats.update({name : pd.read_csv(other_cats[name]) for name in other_cats})
+    true_cats = {name : cut_cat(true_cats[name], dict_cut=dict_cut, big_pix=big_pix) 
+            for name in true_cats}
+    true_cats_sc = {name : SkyCoord(ra=np.array(true_cats[name]['RA'])*u.degree,
+                                   dec=np.array(true_cats[name]['DEC'])*u.degree, frame='icrs') 
+                                   for name in true_cats}
+    
+    recall_df = []
+    
+    for det_name in det_cats:
+        det = pd.read_csv(det_cats[det_name])
+        det = cut_cat(det, dict_cut=dict_cut, big_pix=big_pix)
+        line = do_all_stats(det, true_cats, true_cats_sc, match_dist=match_dist)
+        recall_df.append(pd.DataFrame(line, index=[det_name]))
+    recall_df = pd.concat(recall_df)
+    return recall_df
