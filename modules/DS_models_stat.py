@@ -148,9 +148,10 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
             df = true_cats[true_name]
             true_cats_sc[true_name] = SkyCoord(ra=np.array(df['RA'])*u.degree, 
                                                dec=np.array(df['DEC'])*u.degree, frame='icrs')
-    
-    det_cat = det_cat[det_cat['status'] != 'fn']
-    det_cat.index = np.arange(len(det_cat))
+   
+    if 'status' in list(det_cat):
+        det_cat = det_cat[det_cat['status'] != 'fn']
+        det_cat.index = np.arange(len(det_cat))
     det_cat['found'] = False
     for cat in spec_precision:
         det_cat['found_' + cat] = False
@@ -219,5 +220,48 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
         det = cut_cat(det, dict_cut=dict_cut, big_pix=big_pix)
         line = do_all_stats(det, true_cats, true_cats_sc, match_dist=match_dist)
         recall_df.append(pd.DataFrame(line, index=[det_name]))
+    recall_df = pd.concat(recall_df)
+    return recall_df
+
+def stat_orig_cats_simple(det_cats_dict, big_pix=None, 
+        true_cats_dir='/home/rt2122/Data/original_catalogs/csv/', match_dist=5/60, 
+        read_det_files=True, excl_cats=[], spec_precision=[], 
+        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
+                        'PSZ2(z)' : '~/Data/clusters/planck_z.csv'}):
+    import os
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import numpy as np
+    import pandas as pd
+    from DS_healpix_fragmentation import cut_cat_by_pix
+    
+    
+    true_cats_files = next(os.walk(true_cats_dir))[-1]
+    true_cats_files = [os.path.join(true_cats_dir, file) for file in true_cats_files]
+    
+    true_cats = {os.path.splitext(os.path.basename(file))[0] : pd.read_csv(file) 
+            for file in true_cats_files}
+    true_cats.update({name : pd.read_csv(other_cats[name]) for name in other_cats})
+
+    true_cats = {tr_cat_name : true_cats[tr_cat_name] 
+            for tr_cat_name in true_cats if not (tr_cat_name in excl_cats)}
+    det_cats = det_cats_dict
+    if read_det_files:
+        det_cats = {name : 
+                pd.read_csv(det_cats_dict[name]) for name in det_cats_dict}
+    
+    recall_df = []
+    if not (big_pix is None):
+        for tr_name in true_cats:
+            true_cats[tr_name] = cut_cat_by_pix(true_cats[tr_name], big_pix)
+        for name in det_cats:
+            det_cats[name] = cut_cat_by_pix(det_cats[name], big_pix)
+    
+    
+    for det_name in det_cats:
+        det = det_cats[det_name]
+        line_r = do_all_stats(det, true_cats, match_dist=match_dist, spec_precision=spec_precision)
+        recall_df.append(pd.DataFrame(line_r, index=[det_name]))
+    
     recall_df = pd.concat(recall_df)
     return recall_df
