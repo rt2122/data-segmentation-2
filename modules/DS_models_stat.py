@@ -178,6 +178,7 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
             line_r['found_' + true_name] = n_true_matched
     
     line_r['found'] = np.count_nonzero(det_cat['found'])
+    #line_r['recall']
     line_r['precision'] = line_r['found'] / len(det_cat)
     line_r['all'] = len(det_cat)
     return line_r
