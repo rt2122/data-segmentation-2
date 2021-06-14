@@ -324,3 +324,22 @@ def get_cat_name(filename):
     import os
 
     return os.path.splitext(os.path.basename(filename))[0]
+
+def this_ax(ax, ylim=[0, 1.05], yticks=[0.1, 1, 0.1], xlim=[0.1, 1]):
+    import numpy as np
+
+    l = ax.axvline(0.65, c='brown', linestyle='-.')
+    l.set_label('max_pred=0.65')
+    ax.set_xlabel('max_pred')
+    ax.set_xticks(np.arange(0.1, 1, 0.1), minor=True)
+    ax.set_xlim(*xlim)
+    
+    
+    ax.set_ylim(*ylim)
+    ax.set_yticks(np.arange(*yticks), minor=False)
+    
+    
+    #ax.set_yticks(np.arange(*yticks)[::2], minor=False)
+    ax.grid(True, axis='both', which='major', linestyle=':')
+    ax.grid(True, axis='both', which='minor', alpha=0.2, linestyle=':')
+    ax.legend()

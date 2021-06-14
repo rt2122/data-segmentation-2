@@ -228,7 +228,9 @@ def stat_orig_cats_simple(det_cats_dict, big_pix=None,
         true_cats_dir='/home/rt2122/Data/original_catalogs/csv/', match_dist=5/60, 
         read_det_files=True, excl_cats=[], spec_precision=[], 
         other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
-                        'PSZ2(z)' : '~/Data/clusters/planck_z.csv'}):
+                        'PSZ2(z)' : '~/Data/clusters/planck_z.csv', 
+                        'all_true' : 
+                        '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_Abell_united.csv'}):
     import os
     from astropy.coordinates import SkyCoord
     from astropy import units as u
