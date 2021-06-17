@@ -325,18 +325,18 @@ def get_cat_name(filename):
 
     return os.path.splitext(os.path.basename(filename))[0]
 
-def this_ax(ax, ylim=[0, 1.05], yticks=[0.1, 1, 0.1], xlim=[0.1, 1]):
+def this_ax(ax, ylim=[0, 1.05], yticks=[0.1, 1.1, 0.1], xlim=[0.1, 1], xtitle='max_pred'):
     import numpy as np
 
     l = ax.axvline(0.65, c='brown', linestyle='-.')
     l.set_label('max_pred=0.65')
-    ax.set_xlabel('max_pred')
-    ax.set_xticks(np.arange(0.1, 1, 0.1), minor=True)
+    ax.set_xlabel(xtitle)
+    ax.set_xticks(np.arange(0.1, 1.1, 0.1), minor=True)
     ax.set_xlim(*xlim)
     
     
-    ax.set_ylim(*ylim)
     ax.set_yticks(np.arange(*yticks), minor=False)
+    ax.set_ylim(*ylim)
     
     
     #ax.set_yticks(np.arange(*yticks)[::2], minor=False)

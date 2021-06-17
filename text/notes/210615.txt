@@ -1,0 +1,7 @@
+(brcat - all_found) (объекты brcat которых нет у all_found и наоборот) - найти precision по erosita, какие у них m500-z
+gen - сделать с разным параметром mpp
+
+3 вида объектов - пересеч brcat, allf, есть в одном но нет в другом, 
+precision2max_pred/s/n для пересечения brcat и all_found
+
+precision/recall - east_val

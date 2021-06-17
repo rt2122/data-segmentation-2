@@ -130,10 +130,21 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
         return recall_df
     return comp_df, recall_df
 
-def make_histogram(ax, tp, fp, n_bins, label1='Yes matches', label2='No matches'):
-    ax.hist(tp, n_bins, color='r', log=True, histtype='step', label=label1)
-    ax.hist(fp, n_bins, color='b', log=True, histtype='step', label=label2)
-    ax.legend()
+def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=True, 
+        add_legend=True, title=''):
+    from DS_data_transformation import colors_iterator
+    if coef_list is None:
+        coef_list = [1] * len(counts_list)
+    if label_list is None:
+        label_list = [''] * len(counts_list)
+    
+    ci = colors_iterator()
+    for i, counts in enumerate(counts_list):
+         ax.hist(bins[:-1], bins, weights=counts * coef_list[i], 
+                  histtype='step', log=log, label=label_list[i], color=next(ci))
+    ax.set_title(title)
+    if add_legend:
+        ax.legend(loc='upper left')
 
 
 def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[]):
@@ -263,6 +274,8 @@ def stat_orig_cats_simple(det_cats_dict, big_pix=None,
     
     for det_name in det_cats:
         det = det_cats[det_name]
+        if len(det) == 0:
+            continue
         line_r = do_all_stats(det, true_cats, match_dist=match_dist, spec_precision=spec_precision)
         recall_df.append(pd.DataFrame(line_r, index=[det_name]))
     
