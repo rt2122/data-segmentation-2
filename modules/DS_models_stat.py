@@ -1,3 +1,5 @@
+b20_coef = 0.06324110671936758
+
 def stat_split_cats(files, big_pix=list(range(48))):
     import pandas as pd
     import numpy as np
@@ -33,6 +35,7 @@ def cut_cat(df, dict_cut = {},
     sc = SkyCoord(ra=np.array(df['RA'])*u.degree, 
                   dec=np.array(df['DEC'])*u.degree, frame='icrs')
     df['b'] = sc.galactic.b.degree
+    df['l'] = sc.galactic.l.degree
     for prm in dict_cut:
         if prm == 'b':
             df = df[np.abs(df[prm]) >= dict_cut[prm][0]]
@@ -201,8 +204,10 @@ def change_df(df, format_s=lambda x:'{:.2f}'.format(x)):
     return df
 
 def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict_cut={}, 
-        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
-            'PSZ2(z)' : '~/Data/clusters/planck_z.csv'}):
+        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_b20_edit.csv', 
+            'PSZ2(z)' : '~/Data/clusters/planck_z.csv',
+            'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_Abell_united.csv'},
+        spec_precision=[], read_det_files=True):
     import os
     import numpy as np
     import pandas as pd
@@ -228,13 +233,18 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
     recall_df = []
     
     for det_name in det_cats:
-        det = pd.read_csv(det_cats[det_name])
+        det = det_cats[det_name]
+        if read_det_files:
+            det = pd.read_csv(det)
         det = cut_cat(det, dict_cut=dict_cut, big_pix=big_pix)
-        line = do_all_stats(det, true_cats, true_cats_sc, match_dist=match_dist)
+        if len(det) == 0:
+            continue
+        line = do_all_stats(det, true_cats, true_cats_sc, match_dist=match_dist,
+                spec_precision=spec_precision)
         recall_df.append(pd.DataFrame(line, index=[det_name]))
     recall_df = pd.concat(recall_df)
     return recall_df
-
+'''
 def stat_orig_cats_simple(det_cats_dict, big_pix=None, 
         true_cats_dir='/home/rt2122/Data/original_catalogs/csv/', match_dist=5/60, 
         read_det_files=True, excl_cats=[], spec_precision=[], 
@@ -281,3 +291,4 @@ def stat_orig_cats_simple(det_cats_dict, big_pix=None,
     
     recall_df = pd.concat(recall_df)
     return recall_df
+'''
