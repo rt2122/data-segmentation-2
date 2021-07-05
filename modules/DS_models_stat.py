@@ -134,7 +134,7 @@ def stat_orig_cats(det_cats_dict, true_cats_dir,
     return comp_df, recall_df
 
 def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=True, 
-        add_legend=True, title=''):
+        add_legend=True, title='', histtype='step', alpha=1):
     from DS_data_transformation import colors_iterator
     if coef_list is None:
         coef_list = [1] * len(counts_list)
@@ -144,7 +144,7 @@ def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=T
     ci = colors_iterator()
     for i, counts in enumerate(counts_list):
          ax.hist(bins[:-1], bins, weights=counts * coef_list[i], 
-                  histtype='step', log=log, label=label_list[i], color=next(ci))
+                  histtype=histtype, log=log, label=label_list[i], color=next(ci), alpha=alpha)
     ax.set_title(title)
     if add_legend:
         ax.legend(loc='upper left')
@@ -206,7 +206,7 @@ def change_df(df, format_s=lambda x:'{:.2f}'.format(x)):
 def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict_cut={}, 
         other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_b20_edit.csv', 
             'PSZ2(z)' : '~/Data/clusters/planck_z.csv',
-            'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_Abell_united.csv'},
+            'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv'},
         spec_precision=[], read_det_files=True):
     import os
     import numpy as np
@@ -251,7 +251,7 @@ def stat_orig_cats_simple(det_cats_dict, big_pix=None,
         other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
                         'PSZ2(z)' : '~/Data/clusters/planck_z.csv', 
                         'all_true' : 
-                        '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_Abell_united.csv'}):
+                        '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv'}):
     import os
     from astropy.coordinates import SkyCoord
     from astropy import units as u

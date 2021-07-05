@@ -328,8 +328,8 @@ def get_cat_name(filename):
 def this_ax(ax, ylim=[0, 1.05], yticks=[0.1, 1.1, 0.1], xlim=[0.1, 1], xtitle='max_pred'):
     import numpy as np
 
-    l = ax.axvline(0.65, c='brown', linestyle='-.')
-    l.set_label('max_pred=0.65')
+    #l = ax.axvline(0.65, c='brown', linestyle='-.')
+    #l.set_label('max_pred=0.65')
     ax.set_xlabel(xtitle)
     ax.set_xticks(np.arange(0.1, 1.1, 0.1), minor=True)
     ax.set_xlim(*xlim)
@@ -343,3 +343,114 @@ def this_ax(ax, ylim=[0, 1.05], yticks=[0.1, 1.1, 0.1], xlim=[0.1, 1], xtitle='m
     ax.grid(True, axis='both', which='major', linestyle=':')
     ax.grid(True, axis='both', which='minor', alpha=0.2, linestyle=':')
     ax.legend()
+
+
+def inter_cats(df_base, df_inter, rad=400/3600):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import numpy as np
+    import pandas as pd
+
+    sc_base = SkyCoord(ra=np.array(df_base['RA'])*u.degree, 
+            dec=np.array(df_base['DEC'])*u.degree, frame='icrs')
+    sc_inter = SkyCoord(ra=np.array(df_inter['RA'])*u.degree, 
+            dec=np.array(df_inter['DEC'])*u.degree, frame='icrs')
+
+    _, d2d, _ = sc_base.match_to_catalog_sky(sc_inter)
+    matched = d2d.degree < rad
+    
+    df_base = df_base[matched]
+    df_base.index = np.arange(len(df_base))
+    return df_base
+
+def dif_cats(df_base, df_inter, rad=400/3600):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import numpy as np
+    import pandas as pd
+
+    sc_base = SkyCoord(ra=np.array(df_base['RA'])*u.degree, 
+            dec=np.array(df_base['DEC'])*u.degree, frame='icrs')
+    sc_inter = SkyCoord(ra=np.array(df_inter['RA'])*u.degree, 
+            dec=np.array(df_inter['DEC'])*u.degree, frame='icrs')
+
+    _, d2d, _ = sc_base.match_to_catalog_sky(sc_inter)
+    matched = d2d.degree < rad
+    
+    df_base = df_base[np.logical_not(matched)]
+    df_base.index = np.arange(len(df_base))
+    return df_base
+
+class Counts_cat:
+    def __init__(self, bins, name, found_counts, error_counts, alls, found_coef, err_coef):
+        self.bins = bins
+        self.name = name
+        self.found_counts = found_counts
+        self.error_counts = error_counts
+        self.alls = alls
+        self.found_coef = found_coef
+        self.err_coef = err_coef
+        self.found = found_counts/found_coef
+        self.error = error_counts/err_coef
+        
+    def error_for_all(self):
+        import numpy as np
+        return np.nan_to_num(self.error_counts/self.alls)
+    
+    def err_ratio(self):
+        import numpy as np
+        return np.nan_to_num(self.error / self.found)
+    def precision(self):
+        import numpy as np
+        return np.nan_to_num(self.found_counts / self.alls)
+    def corr_precision(self):
+        return (1 - self.err_ratio()) * self.precision()
+def found_all_error_calculated(det_cat, true_cat, small_rads=[0, 400], big_rads=[1000, 1500],
+        saving=None, n_bins=20, func_cat=None,
+                              with_tqdm=False, name=''):
+    import numpy as np
+    import pandas as pd
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    from tqdm.notebook import tqdm
+    
+    def func(angle1, angle2, det_cat, true_cat):
+        colored = []
+        tr = SkyCoord(ra=np.array(true_cat['RA'])*u.degree, 
+                dec=np.array(true_cat['DEC'])*u.degree, frame='icrs')
+        
+        iterator = range(len(det_cat))
+        if with_tqdm:
+            iterator = tqdm(iterator)
+
+        for i in iterator:
+            det = SkyCoord(ra=det_cat.loc[i, 'RA']*u.degree, dec=det_cat.loc[i, 'DEC']*u.degree, frame='icrs')
+            sep = tr.separation(det).degree
+
+            count = np.count_nonzero(np.logical_and(angle1/3600 <= sep, sep < angle2/3600))
+            colored.extend(count * [det_cat.loc[i, 'max_pred']])
+
+        return colored
+    
+    def square(rads):
+        return np.pi * (rads[1] ** 2 - rads[0] ** 2)
+    
+    if not (func_cat is None):
+        det_cat = func_cat(det_cat)
+        true_cat = func_cat(true_cat)
+    
+    found = func(*small_rads, det_cat, true_cat)
+    error = func(*big_rads, det_cat, true_cat)
+    
+    small_sq = square(small_rads)
+    big_sq = square(big_rads)
+    
+    bins = np.arange(0, 1 + 1/n_bins, 1/n_bins)
+    
+    found_counts, _ = np.histogram(found, bins)
+    error_counts, _ = np.histogram(error, bins)
+    all_counts, _ = np.histogram(det_cat['max_pred'], bins)
+    
+    cc = Counts_cat(bins=bins, name=name, found_counts=found_counts, error_counts=error_counts, alls=all_counts, found_coef=small_sq, 
+                   err_coef=big_sq)
+    return cc
