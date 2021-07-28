@@ -277,7 +277,7 @@ def gen_catalog(models, big_pix, cat_name, step=8, thr=0.1, save_inter_cats=None
         cur_cat.to_csv(save_name, index=False)
 
 
-def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
+def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60, add_fn=False):
     import numpy as np
     import pandas as pd
     import os
@@ -334,6 +334,7 @@ def rematch_cat(name, clusters_dir='/home/rt2122/Data/clusters/', tp_dist=5/60):
     prm = ['RA', 'DEC', 'status', 'catalog', 'M500', 'z', 'tRA', 'tDEC', 'LAMBDA']
     prm = list(set(prm).intersection(list(true_clusters)))
 
-    res_cat = pd.concat([res_cat, true_clusters[prm][true_clusters['found']==False]], 
+    if add_fn:
+        res_cat = pd.concat([res_cat, true_clusters[prm][true_clusters['found']==False]], 
             ignore_index=True)
     return res_cat

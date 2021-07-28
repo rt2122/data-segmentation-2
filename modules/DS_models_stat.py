@@ -206,7 +206,9 @@ def change_df(df, format_s=lambda x:'{:.2f}'.format(x)):
 def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict_cut={}, 
         other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_b20_edit.csv', 
             'PSZ2(z)' : '~/Data/clusters/planck_z.csv',
-            'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv'},
+            'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv',
+            'PSZ2_inter_all_true' : '~/Data/original_catalogs/csv/other/psz2_inter_all_true.csv',
+            'PSZ2_inter_eROSITA' : '~/Data/original_catalogs/csv/other/psz2_inter_eROSITA.csv'},
         spec_precision=[], read_det_files=True):
     import os
     import numpy as np
@@ -244,51 +246,3 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
         recall_df.append(pd.DataFrame(line, index=[det_name]))
     recall_df = pd.concat(recall_df)
     return recall_df
-'''
-def stat_orig_cats_simple(det_cats_dict, big_pix=None, 
-        true_cats_dir='/home/rt2122/Data/original_catalogs/csv/', match_dist=5/60, 
-        read_det_files=True, excl_cats=[], spec_precision=[], 
-        other_cats={'eROSITA' :'~/Data/SRGz/clusters/clusters1_east_val_edit.csv', 
-                        'PSZ2(z)' : '~/Data/clusters/planck_z.csv', 
-                        'all_true' : 
-                        '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv'}):
-    import os
-    from astropy.coordinates import SkyCoord
-    from astropy import units as u
-    import numpy as np
-    import pandas as pd
-    from DS_healpix_fragmentation import cut_cat_by_pix
-    
-    
-    true_cats_files = next(os.walk(true_cats_dir))[-1]
-    true_cats_files = [os.path.join(true_cats_dir, file) for file in true_cats_files]
-    
-    true_cats = {os.path.splitext(os.path.basename(file))[0] : pd.read_csv(file) 
-            for file in true_cats_files}
-    true_cats.update({name : pd.read_csv(other_cats[name]) for name in other_cats})
-
-    true_cats = {tr_cat_name : true_cats[tr_cat_name] 
-            for tr_cat_name in true_cats if not (tr_cat_name in excl_cats)}
-    det_cats = det_cats_dict
-    if read_det_files:
-        det_cats = {name : 
-                pd.read_csv(det_cats_dict[name]) for name in det_cats_dict}
-    
-    recall_df = []
-    if not (big_pix is None):
-        for tr_name in true_cats:
-            true_cats[tr_name] = cut_cat_by_pix(true_cats[tr_name], big_pix)
-        for name in det_cats:
-            det_cats[name] = cut_cat_by_pix(det_cats[name], big_pix)
-    
-    
-    for det_name in det_cats:
-        det = det_cats[det_name]
-        if len(det) == 0:
-            continue
-        line_r = do_all_stats(det, true_cats, match_dist=match_dist, spec_precision=spec_precision)
-        recall_df.append(pd.DataFrame(line_r, index=[det_name]))
-    
-    recall_df = pd.concat(recall_df)
-    return recall_df
-'''
