@@ -127,22 +127,25 @@ def get_prm(prm, s, w='\d'):
     import re
     return re.search(prm + r'(' + w + '+)', s)[0][len(prm):]
 
-def calc_error(det_cat, true_cat, shift=15/60, match_dist=5/60, n_try=20, seed=0):
+def calc_error(det_cat, true_cat, shift=15/60, match_dist=5/60, n_try=20, seed=0, sc_mode=False):
     import numpy as np
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     
     error = []
     np.random.seed(seed)
-    for _ in range(n_try):
+    true_sc = true_cat
+    det_sc = det_cat
+    if not sc_mode:
+        true_sc = SkyCoord(ra=np.array(true_cat['RA']) * u.degree, 
+                       dec=np.array(true_cat['DEC']) * u.degree, frame='icrs')
         det_sc = SkyCoord(ra=np.array(det_cat['RA']) * u.degree, 
                           dec=np.array(det_cat['DEC']) * u.degree, frame='icrs')
+    for _ in range(n_try):
         angles = np.random.randint(0, 360, len(det_cat))
-        det_sc = det_sc.directional_offset_by(angles*u.degree, shift)
+        det_sc_off = det_sc.directional_offset_by(angles*u.degree, shift)
 
-        true_sc = SkyCoord(ra=np.array(true_cat['RA']) * u.degree, 
-                           dec=np.array(true_cat['DEC']) * u.degree, frame='icrs')
-        _, d2d, _ = det_sc.match_to_catalog_sky(true_sc)
+        _, d2d, _ = det_sc_off.match_to_catalog_sky(true_sc)
         c_error = np.count_nonzero(d2d.degree < match_dist)
         error.append(c_error)
     error = np.array(error)

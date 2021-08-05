@@ -149,8 +149,41 @@ def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=T
     if add_legend:
         ax.legend(loc='upper left')
 
+def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600, 1500/3600], with_tqdm=False):
+    import numpy as np
+    import pandas as pd
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    
+    def func(angle1, angle2, det_cat, true_cat):
+        count = 0
+        tr = SkyCoord(ra=np.array(true_cat['RA'])*u.degree, dec=np.array(true_cat['DEC'])*u.degree, frame='icrs')
+        
+        iterator = range(len(det_cat))
+        if with_tqdm:
+            iterator = tqdm(iterator)
 
-def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[]):
+        for i in iterator:
+            det = SkyCoord(ra=det_cat.loc[i, 'RA']*u.degree, dec=det_cat.loc[i, 'DEC']*u.degree, frame='icrs')
+            sep = tr.separation(det).degree
+
+            count += np.count_nonzero(np.logical_and(angle1 <= sep, sep < angle2))
+
+        return count 
+    
+    def square(rads):
+        return np.pi * (rads[1] ** 2 - rads[0] ** 2)
+    
+    found = func(*small_rads, det_cat, true_cat)
+    error = func(*big_rads, det_cat, true_cat)
+    
+    found_sq = square(small_rads)
+    err_sq = square(big_rads)
+    
+    return 1 - (error / err_sq) * (found_sq / found)
+
+def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[], 
+        use_err=False):
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     import numpy as np
@@ -182,6 +215,13 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
         matched = d2d.degree <= match_dist
         det_cat.loc[idx[matched], 'found'] = True
         n_matched = np.count_nonzero(matched)
+        n_err = -1
+
+        if use_err:
+            corr_coef = calc_corr_b(det_cat, true_cats[true_name], small_rads=[0, match_dist])
+            n_err = int(n_matched * (1 - corr_coef))
+            n_matched -= n_err
+
         line_r[true_name] =  n_matched / len(true_cats[true_name])
 
 
@@ -190,6 +230,8 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
             n_true_matched = np.count_nonzero(det_cat['found_' + true_name])
             line_r['precision_' + true_name] = n_true_matched / len(det_cat)
             line_r['found_' + true_name] = n_true_matched
+            if use_err:
+                line_r['err_' + true_name] = n_err
     
     line_r['found'] = np.count_nonzero(det_cat['found'])
     #line_r['recall']
@@ -209,7 +251,7 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
             'all_true' : '~/Data/original_catalogs/csv/other/PSZ2(z)_MCXC_ACT_united.csv',
             'PSZ2_inter_all_true' : '~/Data/original_catalogs/csv/other/psz2_inter_all_true.csv',
             'PSZ2_inter_eROSITA' : '~/Data/original_catalogs/csv/other/psz2_inter_eROSITA.csv'},
-        spec_precision=[], read_det_files=True):
+        spec_precision=[], read_det_files=True, use_err=False):
     import os
     import numpy as np
     import pandas as pd
@@ -242,7 +284,7 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
         if len(det) == 0:
             continue
         line = do_all_stats(det, true_cats, true_cats_sc, match_dist=match_dist,
-                spec_precision=spec_precision)
+                spec_precision=spec_precision, use_err=use_err)
         recall_df.append(pd.DataFrame(line, index=[det_name]))
     recall_df = pd.concat(recall_df)
     return recall_df
