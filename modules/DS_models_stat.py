@@ -179,8 +179,9 @@ def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600
     
     found_sq = square(small_rads)
     err_sq = square(big_rads)
+    not_found = error / len(true_cat)
     
-    return 1 - (error / err_sq) * (found_sq / found)
+    return (1 - (error / err_sq) * (found_sq / found)) * (1 + not_found)
 
 def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[], 
         use_err=False):
@@ -215,12 +216,10 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
         matched = d2d.degree <= match_dist
         det_cat.loc[idx[matched], 'found'] = True
         n_matched = np.count_nonzero(matched)
-        n_err = -1
 
         if use_err:
             corr_coef = calc_corr_b(det_cat, true_cats[true_name], small_rads=[0, match_dist])
-            n_err = int(n_matched * (1 - corr_coef))
-            n_matched -= n_err
+            n_matched *= corr_coef 
 
         line_r[true_name] =  n_matched / len(true_cats[true_name])
 
@@ -230,8 +229,6 @@ def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_pr
             n_true_matched = np.count_nonzero(det_cat['found_' + true_name])
             line_r['precision_' + true_name] = n_true_matched / len(det_cat)
             line_r['found_' + true_name] = n_true_matched
-            if use_err:
-                line_r['err_' + true_name] = n_err
     
     line_r['found'] = np.count_nonzero(det_cat['found'])
     #line_r['recall']
