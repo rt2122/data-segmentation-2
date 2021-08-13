@@ -149,16 +149,25 @@ def make_histogram(ax, counts_list, bins, label_list=None, coef_list=None, log=T
     if add_legend:
         ax.legend(loc='upper left')
 
-def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600, 1500/3600], with_tqdm=False):
+def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600, 1500/3600], with_tqdm=False, 
+        get_coefs=False):
     import numpy as np
     import pandas as pd
     from astropy.coordinates import SkyCoord
     from astropy import units as u
     
-    def func(angle1, angle2, det_cat, true_cat):
+    def func(angle1, angle2, det_cat, true_cat, fast=False):
+
         count = 0
-        tr = SkyCoord(ra=np.array(true_cat['RA'])*u.degree, dec=np.array(true_cat['DEC'])*u.degree, frame='icrs')
-        
+        tr = SkyCoord(ra=np.array(true_cat['RA'])*u.degree, 
+                dec=np.array(true_cat['DEC'])*u.degree, frame='icrs')
+        if fast:
+            det = SkyCoord(ra=np.array(det_cat['RA'])*u.degree, 
+                    dec=np.array(det_cat['DEC'])*u.degree, frame='icrs')
+            _, d2d, _ = det.match_to_catalog_sky(tr)
+            return np.count_nonzero(np.logical_and(angle1 <= d2d.degree, 
+                d2d.degree < angle2))
+
         iterator = range(len(det_cat))
         if with_tqdm:
             iterator = tqdm(iterator)
@@ -176,12 +185,19 @@ def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600
     
     found = func(*small_rads, det_cat, true_cat)
     error = func(*big_rads, det_cat, true_cat)
+    not_found = func(small_rads[1], big_rads[0], det_cat, true_cat, fast=True) / len(true_cat)
     
     found_sq = square(small_rads)
     err_sq = square(big_rads)
-    not_found = error / len(true_cat)
+
+    error_coef = (error / err_sq) * (found_sq / found) 
+
+    ans = (1 - error_coef) * (1 + not_found)
+
+    if get_coefs:
+        return ans, error_coef, not_found 
     
-    return (1 - (error / err_sq) * (found_sq / found)) * (1 + not_found)
+    return ans 
 
 def do_all_stats(det_cat, true_cats, true_cats_sc=None, match_dist=5/60, spec_precision=[], 
         use_err=False):
@@ -285,3 +301,16 @@ def stat_cat(det_cats, orig=True, big_pix=list(range(48)), match_dist=5/60, dict
         recall_df.append(pd.DataFrame(line, index=[det_name]))
     recall_df = pd.concat(recall_df)
     return recall_df
+
+def simple_recall(det_cat, true_cat, match=400/3600):
+    from astropy.coordinates import SkyCoord
+    from astropy import units as u
+    import numpy as np
+    
+    det_sc = SkyCoord(ra=np.array(det_cat['RA'])*u.degree, 
+            dec=np.array(det_cat['DEC'])*u.degree, frame='icrs')
+    tr_sc = SkyCoord(ra=np.array(true_cat['RA'])*u.degree, 
+            dec=np.array(true_cat['DEC'])*u.degree, frame='icrs')
+    
+    _, d2d, _ = tr_sc.match_to_catalog_sky(det_sc)
+    return np.count_nonzero(d2d.degree < match) / len(true_cat)
