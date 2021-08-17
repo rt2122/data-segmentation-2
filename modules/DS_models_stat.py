@@ -155,6 +155,7 @@ def calc_corr_b(det_cat, true_cat, small_rads=[0, 400/3600], big_rads=[1000/3600
     import pandas as pd
     from astropy.coordinates import SkyCoord
     from astropy import units as u
+    from tqdm.notebook import tqdm
     
     def func(angle1, angle2, det_cat, true_cat, fast=False):
 
